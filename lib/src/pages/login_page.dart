@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:scootermerchant/src/blocs/login_bloc.dart';
+import 'package:scootermerchant/src/blocs/provider.dart';
 import 'package:scootermerchant/utilities/constants.dart';
 
 class LoginPage extends StatelessWidget {
@@ -33,6 +35,7 @@ class LoginPage extends StatelessWidget {
 
   Widget _formLogin(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final bloc = Provider.of(context);
 
     return SingleChildScrollView(
       child: Column(
@@ -46,7 +49,7 @@ class LoginPage extends StatelessWidget {
           SizedBox(
             height: 20.0,
           ),
-          _formContainer(size.width * 0.85, size.height * 0.6),
+          _formContainer(size.width * 0.85, size.height * 0.7, bloc),
           SizedBox(
             height: 15.0,
             width: size.width,
@@ -59,7 +62,7 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  Widget _formContainer(double width, double height) {
+  Widget _formContainer(double width, double height, LoginBloc bloc) {
     return Container(
       width: width,
       height: height,
@@ -83,40 +86,72 @@ class LoginPage extends StatelessWidget {
           Expanded(
             child: Container(),
           ),
-          _createTextField(TextInputType.emailAddress, 'Ingresa tu correo',
-              false, Icons.alternate_email),
+          _emailStreamBuilder(bloc),
+          SizedBox(height: 16.0),
+          _passwordStreamBuilder(bloc),
           SizedBox(
-            height: 40.0,
+            height: 16.0,
           ),
-          _createTextField(TextInputType.visiblePassword,
-              'Ingresa tu contraseña', true, Icons.lock),
-          SizedBox(
-            height: 30.0,
-          ),
-          RaisedButton(
-            onPressed: () {},
-            color: primaryColor,
-            textColor: Colors.white,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(15.0))),
-            child: Text('Ingresar', style: textStyleBtnComprar),
-          )
+          _buttonForm(bloc)
         ],
       ),
     );
   }
 
-  Widget _createTextField(
-      TextInputType type, String label, bool obscureText, IconData icon) {
-    return TextField(
-      keyboardType: type,
-      decoration: InputDecoration(
-        border: OutlineInputBorder(),
-        labelText: label,
-        contentPadding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
-        prefixIcon: Icon(icon),
-      ),
-      obscureText: obscureText,
+  Widget _buttonForm(LoginBloc bloc) {
+    return StreamBuilder(
+        stream: bloc.validationStream,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          return RaisedButton(
+            onPressed: snapshot.hasData
+                ? () => _login(bloc.email, bloc.password)
+                : null,
+            color: primaryColor,
+            textColor: Colors.white,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(15.0))),
+            child: Text('Ingresar', style: textStyleBtnComprar),
+          );
+        });
+  }
+
+  void _login(String email, String password) {}
+
+  Widget _emailStreamBuilder(LoginBloc bloc) {
+    return StreamBuilder(
+        stream: bloc.emailStream,
+        builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+          return TextField(
+            keyboardType: TextInputType.emailAddress,
+            decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Correo electrónico',
+                contentPadding:
+                    EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
+                prefixIcon: Icon(Icons.alternate_email),
+                errorText: snapshot.error),
+            onChanged: bloc.changeEmail,
+          );
+        });
+  }
+
+  Widget _passwordStreamBuilder(LoginBloc bloc) {
+    return StreamBuilder(
+      stream: bloc.passwordStream,
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        return TextField(
+          keyboardType: TextInputType.text,
+          decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'Contraseña',
+              contentPadding:
+                  EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
+              prefixIcon: Icon(Icons.alternate_email),
+              errorText: snapshot.error),
+          obscureText: true,
+          onChanged: bloc.changePassword,
+        );
+      },
     );
   }
 }
