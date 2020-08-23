@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:scootermerchant/src/blocs/login_bloc.dart';
 import 'package:scootermerchant/src/blocs/provider.dart';
+import 'package:scootermerchant/src/models/auth_model.dart';
+import 'package:scootermerchant/src/providers/login_provider.dart';
 import 'package:scootermerchant/utilities/constants.dart';
 
 class LoginPage extends StatelessWidget {
@@ -115,7 +117,13 @@ class LoginPage extends StatelessWidget {
         });
   }
 
-  void _login(String email, String password) {}
+  void _login(String email, String password) {
+    final user = AuthModel(username: email, password: password);
+    final loginProvider = LoginProvider();
+    loginProvider.login(user).then((Map<String, dynamic> value) {
+      print('${value}');
+    });
+  }
 
   Widget _emailStreamBuilder(LoginBloc bloc) {
     return StreamBuilder(
