@@ -19,16 +19,20 @@ class MyApp extends StatefulWidget {
   MyApp(this.prefs);
 
   @override
-  _MyAppState createState() => _MyAppState();
+  _MyAppState createState() => _MyAppState(prefs);
 }
 
 class _MyAppState extends State<MyApp> {
+  final MerchantPreferences prefs;
+
+  _MyAppState(this.prefs);
+
   @override
   Widget build(BuildContext context) {
     return Provider(
       child: MaterialApp(
         title: 'Scooter',
-        initialRoute: 'login',
+        initialRoute: getInitialRoute(prefs),
         debugShowCheckedModeBanner: false,
         theme:
             ThemeData(primaryColor: primaryColor, accentColor: secondaryColor),
@@ -38,5 +42,12 @@ class _MyAppState extends State<MyApp> {
         },
       ),
     );
+  }
+
+  String getInitialRoute(MerchantPreferences prefs) {
+    if (prefs.access == null) {
+      return 'login';
+    }
+    return 'home';
   }
 }

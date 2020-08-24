@@ -55,7 +55,7 @@ final textStyleSubtitleListTile = TextStyle(
 
 final textStyleWordDescListTile = TextStyle(
   color: Colors.grey[600],
-  fontSize: 10,
+  fontSize: 16,
   fontFamily: fontFamily,
   fontWeight: FontWeight.bold,
 );
@@ -81,7 +81,7 @@ final kLabelStyle =
     TextStyle(color: Colors.black, fontSize: 17, fontFamily: fontFamily);
 
 final signinLogin =
-    TextStyle(color: primaryColor, fontWeight: FontWeight.bold, fontSize: 19);
+    TextStyle(color: primaryColor, fontWeight: FontWeight.bold, fontSize: 18);
 
 final kBoxDecorationStyle = BoxDecoration(
   color: Color(0xFFe8769c),
