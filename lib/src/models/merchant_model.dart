@@ -32,6 +32,25 @@ class MerchantModel {
     approximatePreparationTime = json['approximate_preparation_time'];
     isOpen = json['is_open'];
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'user': user.toJson(),
+      'contact_person': contactPerson,
+      'picture': picture,
+      'merchant_name': merchantName,
+      'phone_number': phoneNumber,
+      'is_delivery_by_store': isDeliveryByStore,
+      'information_is_complete': informationIsComplete,
+      'category': category,
+      'subcategory': subcategory,
+      'reputation': reputation,
+      'description': description,
+      'approximate_preparation_time': approximatePreparationTime,
+      'is_open': isOpen
+    };
+  }
 }
 
 class UserData {
@@ -45,5 +64,13 @@ class UserData {
     username = json['username'];
     isVerified = json['is_verified'];
     authFacebook = json['auth_facebook'];
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'username': username,
+      'is_verified': isVerified,
+      'auth_facebook': authFacebook
+    };
   }
 }

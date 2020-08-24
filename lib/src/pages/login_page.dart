@@ -121,7 +121,7 @@ class LoginPage extends StatelessWidget {
     final user = AuthModel(username: email, password: password);
     final loginProvider = LoginProvider();
     loginProvider.login(user).then((Map<String, dynamic> value) {
-      print('${value}');
+      print(value);
     });
   }
 
