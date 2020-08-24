@@ -106,10 +106,11 @@ class LoginPage extends StatelessWidget {
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           return RaisedButton(
             onPressed: snapshot.hasData
-                ? () => _login(bloc.email, bloc.password)
+                ? () => _login(bloc.email, bloc.password, context: context)
                 : null,
             color: primaryColor,
             textColor: Colors.white,
+            padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 40.0),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(15.0))),
             child: Text('Ingresar', style: textStyleBtnComprar),
@@ -117,11 +118,16 @@ class LoginPage extends StatelessWidget {
         });
   }
 
-  void _login(String email, String password) {
+  void _login(String email, String password, {context: BuildContext}) {
     final user = AuthModel(username: email, password: password);
     final loginProvider = LoginProvider();
     loginProvider.login(user).then((Map<String, dynamic> value) {
       print(value);
+      if (value['ok']) {
+        Navigator.pushReplacementNamed(context, 'home');
+      }
+    }).catchError((error) {
+      print(error);
     });
   }
 

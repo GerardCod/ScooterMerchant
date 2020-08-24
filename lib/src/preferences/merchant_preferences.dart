@@ -22,11 +22,11 @@ class MerchantPreferences {
     this._prefs.remove(key);
   }
 
-  get accessToken {
+  get access {
     return this._prefs.get('access') ?? null;
   }
 
-  set accessToken(String accessToken) {
+  set access(String accessToken) {
     this._prefs.setString('access', accessToken);
   }
 
