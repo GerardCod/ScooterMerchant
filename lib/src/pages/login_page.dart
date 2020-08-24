@@ -160,7 +160,7 @@ class LoginPage extends StatelessWidget {
               labelText: 'Contraseña',
               contentPadding:
                   EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
-              prefixIcon: Icon(Icons.alternate_email),
+              prefixIcon: Icon(Icons.lock),
               errorText: snapshot.error),
           obscureText: true,
           onChanged: bloc.changePassword,

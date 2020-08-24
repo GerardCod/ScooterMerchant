@@ -14,7 +14,7 @@ void main() async {
 }
 
 class MyApp extends StatefulWidget {
-  MerchantPreferences prefs;
+  final prefs;
 
   MyApp(this.prefs);
 

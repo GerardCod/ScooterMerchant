@@ -231,7 +231,7 @@ final textFormFielInformation = InputDecoration(
 
 final textStyleForAppBar = TextStyle(
   color: Colors.white,
-  fontFamily: fontFamily,
+  fontFamily: fontFamilySecondary,
   fontSize: 20,
   fontWeight: FontWeight.bold,
 );
