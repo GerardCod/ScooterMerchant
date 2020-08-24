@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:scootermerchant/utilities/constants.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final String title;
-  const CustomAppBar({Key key, this.title}) : super(key: key);
+  CustomAppBar({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       title: Text(
-        this.title,
+        'SCOOTER',
         style: textStyleForAppBar,
       ),
       actions: <Widget>[
@@ -22,5 +21,5 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(45.0);
+  Size get preferredSize => Size.fromHeight(60.0);
 }
