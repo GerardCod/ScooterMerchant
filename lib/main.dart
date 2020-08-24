@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scootermerchant/src/blocs/provider.dart';
-import 'package:scootermerchant/src/pages/home_page.dart';
+import 'package:scootermerchant/src/pages/home/home_page.dart';
 import 'package:scootermerchant/src/pages/login_page.dart';
 import 'package:scootermerchant/src/preferences/merchant_preferences.dart';
 import 'package:scootermerchant/utilities/constants.dart';

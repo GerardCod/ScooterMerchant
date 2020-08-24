@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 String baseUrl = 'https://www.scooterdev.tech/api/v1/';
 String fontFamily = 'Aspira';
 String fontFamilySecondary = 'Slant';
+String baseUri = "www.scooter-app.team";
 
 const backgroundColor = Color(0xfff2f6fc);
 const primaryColor = Color(0xffff724e);
