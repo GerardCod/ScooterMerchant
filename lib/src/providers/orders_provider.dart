@@ -26,9 +26,9 @@ class OrdersProvider {
     }
 
     List<OrderModel> orders = new List();
-    List<Map<String, dynamic>> results = decodedData['results'];
+    List<dynamic> results = decodedData['results'];
 
-    results.forEach((Map<String, dynamic> element) {
+    results.forEach((element) {
       orders.add(OrderModel.fromJson(element));
     });
 

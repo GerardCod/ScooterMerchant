@@ -3,8 +3,8 @@ class OrderModel {
   String service;
   Address fromAddress;
   Address toAddress;
-  int servicePrice;
-  int distance;
+  double servicePrice;
+  double distance;
   String indications;
   String approximatePriceOrder;
   String reasonRejection;
@@ -24,8 +24,8 @@ class OrderModel {
   bool isSafeOrder;
   StationObject stationObject;
   Point merchantLocation;
-  int orderPrice;
-  int totalOrder;
+  double orderPrice;
+  double totalOrder;
   bool isDeliveryByStore;
   bool isOrderToMerchant;
 
@@ -209,7 +209,7 @@ class Customer {
   int id;
   String name;
   String phoneNumber;
-  int reputation;
+  double reputation;
   bool isSafeUser;
 
   Customer(
