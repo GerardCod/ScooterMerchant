@@ -48,7 +48,6 @@ class OrderDetailsPage extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(16.0),
       width: size.width * 0.85,
-      height: size.height * 0.75,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.all(Radius.circular(20.0)),
@@ -60,8 +59,7 @@ class OrderDetailsPage extends StatelessWidget {
               spreadRadius: 2.0),
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Wrap(
         children: <Widget>[
           _containerHeader(model),
           SizedBox(
@@ -80,7 +78,7 @@ class OrderDetailsPage extends StatelessWidget {
             'Total: ${model.totalOrder} pesos',
             style: textStyleOrderDetailsSectionTitle,
           ),
-          _actions()
+          _actions(),
         ],
       ),
     );
@@ -130,6 +128,7 @@ class OrderDetailsPage extends StatelessWidget {
 
   Widget _actions() {
     return ButtonBar(
+      alignment: MainAxisAlignment.center,
       children: <Widget>[
         RaisedButton(
             padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 10.0),
