@@ -20,14 +20,14 @@ final textStyleOrderDetailsSectionTitle = TextStyle(
   fontFamily: fontFamily,
   color: Colors.black,
   fontWeight: FontWeight.w800,
-  fontSize: 20.0,
+  fontSize: 17.0,
 );
 
 final textStyleOrderDetailsText = TextStyle(
     fontFamily: fontFamily,
     color: Colors.grey[700],
     fontWeight: FontWeight.normal,
-    fontSize: 17.0);
+    fontSize: 16.0);
 
 final textStyleScooter = TextStyle(
     color: Colors.white,

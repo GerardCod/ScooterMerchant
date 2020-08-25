@@ -16,16 +16,21 @@ class OrderDetailsPage extends StatelessWidget {
       body: Stack(
         children: <Widget>[
           _header(size),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              SizedBox(
-                width: double.infinity,
-              ),
-              _containerInfo(size, args)
-            ],
-          )
+          SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(
+                  height: 40.0,
+                  width: double.infinity,
+                ),
+                _containerInfo(size, args),
+                SizedBox(
+                  height: 40.0,
+                )
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -47,7 +52,8 @@ class OrderDetailsPage extends StatelessWidget {
   Widget _containerInfo(Size size, OrderModel model) {
     return Container(
       padding: EdgeInsets.all(16.0),
-      width: size.width * 0.85,
+      width: size.width * 0.9,
+      height: size.height * 0.9,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.all(Radius.circular(20.0)),
@@ -59,7 +65,8 @@ class OrderDetailsPage extends StatelessWidget {
               spreadRadius: 2.0),
         ],
       ),
-      child: Wrap(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           _containerHeader(model),
           SizedBox(
@@ -131,14 +138,14 @@ class OrderDetailsPage extends StatelessWidget {
       alignment: MainAxisAlignment.center,
       children: <Widget>[
         RaisedButton(
-            padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 10.0),
+            padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 8.0),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10.0))),
             color: primaryColor,
             child: Text('Aceptar', style: textStyleBtnComprar),
             onPressed: () {}),
         RaisedButton(
-          padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 10.0),
+          padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 8.0),
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(10.0))),
           onPressed: () {},
