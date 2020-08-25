@@ -25,13 +25,8 @@ class OrdersProvider {
       return [];
     }
 
-    List<OrderModel> orders = new List();
     List<dynamic> results = decodedData['results'];
 
-    results.forEach((element) {
-      orders.add(OrderModel.fromJson(element));
-    });
-
-    return orders;
+    return results.map((e) => OrderModel.fromJson(e)).toList();
   }
 }

@@ -30,6 +30,8 @@ class OrderList extends StatelessWidget {
       itemBuilder: (BuildContext context, int index) {
         return _listItem(snapshot.data[index]);
       },
+      shrinkWrap: true,
+      scrollDirection: Axis.vertical,
     );
   }
 
