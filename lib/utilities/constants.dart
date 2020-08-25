@@ -16,6 +16,13 @@ const textColorTF = Color(0xffFF724C);
 const backgroundBtnFacebook = Color(0xFF3B5998);
 const textColorWhite = Colors.white;
 
+final textStyleOrderDetailsSectionTitle = TextStyle(
+  fontFamily: fontFamily,
+  color: Colors.black,
+  fontWeight: FontWeight.w800,
+  fontSize: 20.0,
+);
+
 final textStyleOrderDetailsText = TextStyle(
     fontFamily: fontFamily,
     color: Colors.grey[700],

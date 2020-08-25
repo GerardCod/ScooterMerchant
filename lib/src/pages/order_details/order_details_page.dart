@@ -68,13 +68,19 @@ class OrderDetailsPage extends StatelessWidget {
             height: 16.0,
           ),
           Text('Dirección de entrega',
-              style: textStyleModalBottomMenuHomeAccount),
+              style: textStyleOrderDetailsSectionTitle),
           _address(model),
           Text(
             'Lista de productos',
-            style: textStyleModalBottomMenuHomeAccount,
+            style: textStyleOrderDetailsSectionTitle,
           ),
-          _productList(model)
+          _productList(model),
+          Expanded(child: Container()),
+          Text(
+            'Total: ${model.totalOrder} pesos',
+            style: textStyleOrderDetailsSectionTitle,
+          ),
+          _actions()
         ],
       ),
     );
@@ -119,6 +125,32 @@ class OrderDetailsPage extends StatelessWidget {
       padding: EdgeInsets.all(16.0),
       child: Text(orderModel.toAddress.fullAddress,
           style: textStyleOrderDetailsText),
+    );
+  }
+
+  Widget _actions() {
+    return ButtonBar(
+      children: <Widget>[
+        RaisedButton(
+            padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 10.0),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10.0))),
+            color: primaryColor,
+            child: Text('Aceptar', style: textStyleBtnComprar),
+            onPressed: () {}),
+        RaisedButton(
+          padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 10.0),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10.0))),
+          onPressed: () {},
+          color: Colors.white,
+          elevation: 0.0,
+          child: Text(
+            'Cancelar',
+            style: signinLogin,
+          ),
+        )
+      ],
     );
   }
 }
