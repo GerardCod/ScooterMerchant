@@ -38,8 +38,10 @@ class MerchantPreferences {
     this._prefs.setString('refresh', refresh);
   }
 
-  get merchant {
-    return this._prefs.get('merchant') ?? null;
+  MerchantModel get merchant {
+    return MerchantModel.fromJson(
+            json.decode(this._prefs.getString('merchant'))) ??
+        null;
   }
 
   set merchant(MerchantModel merchant) {

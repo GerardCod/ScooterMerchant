@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:scootermerchant/src/preferences/merchant_preferences.dart';
 import 'package:scootermerchant/utilities/constants.dart';
 
 class Header extends StatelessWidget {
-  const Header({Key key}) : super(key: key);
+  final MerchantPreferences _prefs = MerchantPreferences();
+  Header({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -10,12 +12,22 @@ class Header extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      height: size.height * 0.4,
+      height: size.height * 0.25,
       decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: <Color>[primaryColor, secondaryColor],
-          ),
-          borderRadius: BorderRadius.all(Radius.circular(40.0))),
+        borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(40.0),
+            bottomRight: Radius.circular(40.0)),
+        image: DecorationImage(
+            image: NetworkImage(this._prefs.merchant.picture),
+            fit: BoxFit.cover),
+      ),
+      child: Center(
+        child: Text(
+          _prefs.merchant.merchantName,
+          style: TextStyle(
+              fontSize: 30.0, color: Colors.white, fontFamily: fontFamily),
+        ),
+      ),
     );
   }
 }
