@@ -9,6 +9,7 @@ String baseUri = "www.scooter-app.team";
 
 const backgroundColor = Color(0xfff2f6fc);
 const primaryColor = Color(0xffff724e);
+const primaryColorSecondary = Color(0xffff894e);
 const secondaryColor = Color(0xff3B5998);
 
 const textColorTF = Color(0xffFF724C);

@@ -4,6 +4,7 @@ import 'package:scootermerchant/src/pages/home/home_page.dart';
 import 'package:scootermerchant/src/pages/login_page.dart';
 import 'package:scootermerchant/src/preferences/merchant_preferences.dart';
 import 'package:scootermerchant/utilities/constants.dart';
+import 'package:scootermerchant/src/pages/order_details/order_details_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,7 +39,8 @@ class _MyAppState extends State<MyApp> {
             ThemeData(primaryColor: primaryColor, accentColor: secondaryColor),
         routes: {
           'login': (BuildContext context) => LoginPage(),
-          'home': (BuildContext context) => HomePage()
+          'home': (BuildContext context) => HomePage(),
+          'orderDetails': (BuildContext context) => OrderDetailsPage(),
         },
       ),
     );

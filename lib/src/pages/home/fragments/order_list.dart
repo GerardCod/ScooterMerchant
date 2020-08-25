@@ -19,23 +19,24 @@ class OrderList extends StatelessWidget {
       stream: orderBloc.orderListStream,
       builder:
           (BuildContext context, AsyncSnapshot<List<OrderModel>> snapshot) {
-        return _listBuilder(snapshot);
+        return _listBuilder(context, snapshot);
       },
     );
   }
 
-  Widget _listBuilder(AsyncSnapshot<List<OrderModel>> snapshot) {
+  Widget _listBuilder(
+      BuildContext context, AsyncSnapshot<List<OrderModel>> snapshot) {
     return ListView.builder(
       itemCount: snapshot.hasData ? snapshot.data.length : 0,
       itemBuilder: (BuildContext context, int index) {
-        return _listItem(snapshot.data[index]);
+        return _listItem(snapshot.data[index], context);
       },
       shrinkWrap: true,
       scrollDirection: Axis.vertical,
     );
   }
 
-  Widget _listItem(OrderModel model) {
+  Widget _listItem(OrderModel model, BuildContext context) {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
       color: Colors.white,
@@ -43,7 +44,10 @@ class OrderList extends StatelessWidget {
       child: Column(
         children: <Widget>[
           ListTile(
-            leading: Icon(Icons.person),
+            leading: Icon(
+              Icons.person,
+              size: 48.0,
+            ),
             title: Text(model.customer.name, style: textStyleTitleListTile),
             subtitle: Text(DateTime.parse(model.orderDate).toLocal().toString(),
                 style: textStyleSubtitleListTile),
@@ -54,7 +58,7 @@ class OrderList extends StatelessWidget {
               style: textStyleWordDescListTile,
             ),
             trailing: Icon(Icons.keyboard_arrow_right),
-            onTap: () {},
+            onTap: () => this._navigateToDetails(context),
           ),
           ButtonBar(
             alignment: MainAxisAlignment.start,
@@ -83,5 +87,9 @@ class OrderList extends StatelessWidget {
       shadowColor: Color.fromRGBO(0, 0, 0, 0.75),
       elevation: 2.0,
     );
+  }
+
+  void _navigateToDetails(BuildContext context) {
+    Navigator.pushNamed(context, 'orderDetails');
   }
 }
