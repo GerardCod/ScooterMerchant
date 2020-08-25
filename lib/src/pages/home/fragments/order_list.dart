@@ -58,7 +58,7 @@ class OrderList extends StatelessWidget {
               style: textStyleWordDescListTile,
             ),
             trailing: Icon(Icons.keyboard_arrow_right),
-            onTap: () => this._navigateToDetails(context),
+            onTap: () => this._navigateToDetails(context, model),
           ),
           ButtonBar(
             alignment: MainAxisAlignment.start,
@@ -89,7 +89,7 @@ class OrderList extends StatelessWidget {
     );
   }
 
-  void _navigateToDetails(BuildContext context) {
-    Navigator.pushNamed(context, 'orderDetails');
+  void _navigateToDetails(BuildContext context, OrderModel model) {
+    Navigator.pushNamed(context, 'orderDetails', arguments: model);
   }
 }

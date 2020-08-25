@@ -16,6 +16,12 @@ const textColorTF = Color(0xffFF724C);
 const backgroundBtnFacebook = Color(0xFF3B5998);
 const textColorWhite = Colors.white;
 
+final textStyleOrderDetailsText = TextStyle(
+    fontFamily: fontFamily,
+    color: Colors.grey[700],
+    fontWeight: FontWeight.normal,
+    fontSize: 17.0);
+
 final textStyleScooter = TextStyle(
     color: Colors.white,
     fontSize: 50.0,

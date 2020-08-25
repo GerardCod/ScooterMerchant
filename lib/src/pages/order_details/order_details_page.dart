@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scootermerchant/src/models/order_model.dart';
 import 'package:scootermerchant/src/widgets/appbar_widget.dart';
 import 'package:scootermerchant/utilities/constants.dart';
 
@@ -8,6 +9,7 @@ class OrderDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    final OrderModel args = ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
       appBar: CustomAppBar(),
@@ -21,7 +23,7 @@ class OrderDetailsPage extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
               ),
-              _containerInfo(size)
+              _containerInfo(size, args)
             ],
           )
         ],
@@ -42,8 +44,9 @@ class OrderDetailsPage extends StatelessWidget {
     );
   }
 
-  Widget _containerInfo(Size size) {
+  Widget _containerInfo(Size size, OrderModel model) {
     return Container(
+      padding: EdgeInsets.all(16.0),
       width: size.width * 0.85,
       height: size.height * 0.75,
       decoration: BoxDecoration(
@@ -57,6 +60,65 @@ class OrderDetailsPage extends StatelessWidget {
               spreadRadius: 2.0),
         ],
       ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          _containerHeader(model),
+          SizedBox(
+            height: 16.0,
+          ),
+          Text('Dirección de entrega',
+              style: textStyleModalBottomMenuHomeAccount),
+          _address(model),
+          Text(
+            'Lista de productos',
+            style: textStyleModalBottomMenuHomeAccount,
+          ),
+          _productList(model)
+        ],
+      ),
+    );
+  }
+
+  Widget _containerHeader(OrderModel model) {
+    return ListTile(
+      leading: Icon(
+        Icons.person,
+        size: 48.0,
+      ),
+      title: Text(
+        model.customer.name,
+        style: textStyleTitleListTile,
+      ),
+      subtitle: Text(DateTime.parse(model.orderDate).toString(),
+          style: textStyleSubtitleListTile),
+    );
+  }
+
+  Widget _productList(OrderModel model) {
+    return ListView.builder(
+      itemCount: model.details.length,
+      itemBuilder: (BuildContext context, int index) {
+        return _product(model.details[index]);
+      },
+      shrinkWrap: true,
+      scrollDirection: Axis.vertical,
+    );
+  }
+
+  Widget _product(Details product) {
+    return ListTile(
+      title: Text(product.productName, style: textStyleOrderDetailsText),
+      trailing: Text('x${product.quantity}', style: textStyleOrderDetailsText),
+    );
+  }
+
+  Widget _address(OrderModel orderModel) {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.all(16.0),
+      child: Text(orderModel.toAddress.fullAddress,
+          style: textStyleOrderDetailsText),
     );
   }
 }
