@@ -64,7 +64,7 @@ class OrdersProvider {
 
     http.Response response = await http.put(uri,
         headers: {'Authorization': 'Bearer ' + _prefs.access},
-        body: {'message': message});
+        body: {'reason_rejection': message});
 
     String source = Utf8Decoder().convert(response.bodyBytes);
 

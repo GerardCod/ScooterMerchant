@@ -103,7 +103,7 @@ class OrderRejectDialog extends StatelessWidget {
           color: Colors.white,
           padding: EdgeInsets.symmetric(horizontal: 36, vertical: 8.0),
           onPressed: snapshot.hasData
-              ? () => this._rejectOrder(model, snapshot.data)
+              ? () => this._rejectOrder(model, snapshot.data, context: context)
               : null,
         );
       },

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scootermerchant/src/blocs/order_bloc_provider.dart';
 import 'package:scootermerchant/src/blocs/provider.dart';
 import 'package:scootermerchant/src/models/order_model.dart';
+import 'package:scootermerchant/src/widgets/order_reject_dialog.dart';
 import 'package:scootermerchant/utilities/constants.dart';
 
 class OrderList extends StatelessWidget {
@@ -87,7 +88,8 @@ class OrderList extends StatelessWidget {
                   padding:
                       EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
                   child: Text('Rechazar', style: signinLogin),
-                  onPressed: () {})
+                  onPressed: () => this._showRejectDialog(
+                      model: model, context: context, bloc: bloc))
             ],
           )
         ],
@@ -106,5 +108,18 @@ class OrderList extends StatelessWidget {
     if (response['ok']) {
       await bloc.getOrders();
     }
+  }
+
+  Future<void> _showRejectDialog(
+      {OrderBlocProvider bloc, OrderModel model, BuildContext context}) async {
+    return await showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return OrderRejectDialog(
+            bloc: bloc,
+            order: model,
+          );
+        });
   }
 }
