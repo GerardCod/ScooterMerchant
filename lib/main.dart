@@ -3,6 +3,7 @@ import 'package:scootermerchant/src/blocs/provider.dart';
 import 'package:scootermerchant/src/pages/home/home_page.dart';
 import 'package:scootermerchant/src/pages/login_page.dart';
 import 'package:scootermerchant/src/preferences/merchant_preferences.dart';
+import 'package:scootermerchant/src/providers/notification_provider.dart';
 import 'package:scootermerchant/utilities/constants.dart';
 import 'package:scootermerchant/src/pages/order_details/order_details_page.dart';
 
@@ -16,6 +17,7 @@ void main() async {
 
 class MyApp extends StatefulWidget {
   final prefs;
+  // final notificationProvider = new NotificationsProvider();
 
   MyApp(this.prefs);
 
@@ -27,6 +29,13 @@ class _MyAppState extends State<MyApp> {
   final MerchantPreferences prefs;
 
   _MyAppState(this.prefs);
+
+  @override
+  void initState() {
+    super.initState();
+    final notificationProvider = new NotificationsProvider();
+    notificationProvider.initNotifications();
+  }
 
   @override
   Widget build(BuildContext context) {
