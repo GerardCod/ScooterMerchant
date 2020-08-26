@@ -1,4 +1,4 @@
-package com.example.scootermerchant
+package com.devopsti.scooter.merchant
 
 import io.flutter.embedding.android.FlutterActivity
 

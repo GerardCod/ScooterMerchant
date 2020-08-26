@@ -27,9 +27,11 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: CustomAppBar(),
       body: Column(
+        // shrinkWrap: true,
         children: <Widget>[
           Header(),
-          _pages.elementAt(_currentPage),
+          Expanded(child: _pages.elementAt(_currentPage),),
+          // SizedBox(height: 50,)
         ],
       ),
       bottomNavigationBar: _bottomNavigationBar(),
