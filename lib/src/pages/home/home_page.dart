@@ -26,11 +26,14 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(),
-      body: Column(
-        children: <Widget>[
-          Header(),
-          _pages.elementAt(_currentPage),
-        ],
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Column(
+          children: <Widget>[
+            Header(),
+            _pages.elementAt(_currentPage),
+          ],
+        ),
       ),
       bottomNavigationBar: _bottomNavigationBar(),
       extendBody: true,

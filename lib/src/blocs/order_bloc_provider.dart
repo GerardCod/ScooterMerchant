@@ -6,10 +6,16 @@ class OrderBlocProvider {
   final _orderProvider = OrdersProvider();
   final _orderListController = BehaviorSubject<List<OrderModel>>();
 
-  Future<List<OrderModel>> getOrders() async {
-    final orders = await _orderProvider.getOrders();
+  Future<List<OrderModel>> getOrders(
+      {int status = 14, bool inProcess = false}) async {
+    final orders =
+        await _orderProvider.getOrders(status: status, inProcess: inProcess);
     changeOrderList(orders);
     return orders;
+  }
+
+  Future<Map<String, dynamic>> acceptOrder(OrderModel model) async {
+    return await _orderProvider.acceptOrder(model);
   }
 
   Stream<List<OrderModel>> get orderListStream => _orderListController.stream;

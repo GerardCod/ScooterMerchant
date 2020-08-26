@@ -5,7 +5,13 @@ import 'package:flutter/material.dart';
 String baseUrl = 'https://www.scooterdev.tech/api/v1/';
 String fontFamily = 'Aspira';
 String fontFamilySecondary = 'Slant';
-String baseUri = "www.scooter-app.team";
+String baseUri = "www.scooterdev.tech";
+
+final Map<String, int> status = {
+  'incoming': 14,
+  'in_process': 15,
+  'canceled': 16
+};
 
 const backgroundColor = Color(0xfff2f6fc);
 const primaryColor = Color(0xffff724e);

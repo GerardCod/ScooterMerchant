@@ -19,24 +19,26 @@ class OrderList extends StatelessWidget {
       stream: orderBloc.orderListStream,
       builder:
           (BuildContext context, AsyncSnapshot<List<OrderModel>> snapshot) {
-        return _listBuilder(context, snapshot);
+        return _listBuilder(context, snapshot, bloc: orderBloc);
       },
     );
   }
 
   Widget _listBuilder(
-      BuildContext context, AsyncSnapshot<List<OrderModel>> snapshot) {
+      BuildContext context, AsyncSnapshot<List<OrderModel>> snapshot,
+      {OrderBlocProvider bloc}) {
     return ListView.builder(
       itemCount: snapshot.hasData ? snapshot.data.length : 0,
       itemBuilder: (BuildContext context, int index) {
-        return _listItem(snapshot.data[index], context);
+        return _listItem(snapshot.data[index], context, bloc: bloc);
       },
       shrinkWrap: true,
       scrollDirection: Axis.vertical,
     );
   }
 
-  Widget _listItem(OrderModel model, BuildContext context) {
+  Widget _listItem(OrderModel model, BuildContext context,
+      {OrderBlocProvider bloc}) {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
       color: Colors.white,
@@ -70,7 +72,7 @@ class OrderList extends StatelessWidget {
                   color: primaryColor,
                   padding:
                       EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                  onPressed: () {}),
+                  onPressed: () => this._acceptOrder(model, bloc)),
               RaisedButton(
                   color: Colors.white,
                   shape: RoundedRectangleBorder(
@@ -91,5 +93,12 @@ class OrderList extends StatelessWidget {
 
   void _navigateToDetails(BuildContext context, OrderModel model) {
     Navigator.pushNamed(context, 'orderDetails', arguments: model);
+  }
+
+  void _acceptOrder(OrderModel model, OrderBlocProvider bloc) {
+    bloc
+        .acceptOrder(model)
+        .then((value) => print(value))
+        .catchError((error) => print(error));
   }
 }
