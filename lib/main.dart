@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scootermerchant/src/blocs/provider.dart';
+import 'package:scootermerchant/src/pages/accepted_order_details/accepted_order_details_page.dart';
 import 'package:scootermerchant/src/pages/home/home_page.dart';
 import 'package:scootermerchant/src/pages/login_page.dart';
 import 'package:scootermerchant/src/preferences/merchant_preferences.dart';
@@ -50,6 +51,8 @@ class _MyAppState extends State<MyApp> {
           'login': (BuildContext context) => LoginPage(),
           'home': (BuildContext context) => HomePage(),
           'orderDetails': (BuildContext context) => OrderDetailsPage(),
+          'acceptedOrderDetails': (BuildContext context) =>
+              AcceptedOrderDetailsPage()
         },
       ),
     );
