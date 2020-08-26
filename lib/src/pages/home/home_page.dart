@@ -30,7 +30,9 @@ class _HomePageState extends State<HomePage> {
         // shrinkWrap: true,
         children: <Widget>[
           Header(),
-          Expanded(child: _pages.elementAt(_currentPage),),
+          Expanded(
+            child: _pages.elementAt(_currentPage),
+          ),
           // SizedBox(height: 50,)
         ],
       ),
