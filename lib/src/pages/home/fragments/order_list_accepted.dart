@@ -35,11 +35,11 @@ class OrderListAccepted extends StatelessWidget {
     return ListView.builder(
         itemCount: snapshot.hasData ? snapshot.data.length : 0,
         itemBuilder: (BuildContext context, int index) {
-          return _listItem(snapshot.data[index]);
+          return _listItem(snapshot.data[index], context);
         });
   }
 
-  Widget _listItem(OrderModel model) {
+  Widget _listItem(OrderModel model, BuildContext context) {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
       color: Colors.white,
@@ -61,10 +61,14 @@ class OrderListAccepted extends StatelessWidget {
               style: textStyleWordDescListTile,
             ),
             trailing: Icon(Icons.keyboard_arrow_right),
-            onTap: () => {},
+            onTap: () => this._navigateToDetails(model, context),
           )
         ],
       ),
     );
+  }
+
+  void _navigateToDetails(OrderModel model, BuildContext context) {
+    Navigator.of(context).pushNamed('acceptedOrderDetails', arguments: model);
   }
 }
