@@ -1,0 +1,135 @@
+{
+  "project_info": {
+    "project_number": "566246125587",
+    "firebase_url": "https://scooter-277719.firebaseio.com",
+    "project_id": "scooter-277719",
+    "storage_bucket": "scooter-277719.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:566246125587:android:6e189fe61697cdd49acfe6",
+        "android_client_info": {
+          "package_name": "com.devopsti.scooter.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "566246125587-4bpcfut3aitai53aepbnikoh0hg5i1jh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.devopsti.scooter.app",
+            "certificate_hash": "6acf794eb07f0716b49c5d72d9aae6252c75e8c7"
+          }
+        },
+        {
+          "client_id": "566246125587-hgd3jhnt3vs1nqn1f1q1k61erqophahr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.devopsti.scooter.app",
+            "certificate_hash": "79f494d59b2b815db7ebed817d447f9671ece909"
+          }
+        },
+        {
+          "client_id": "566246125587-bkfad0cekm5oa0gk4r1c98561bs9rhk5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMLgEEEt5ebrVkFi20xKn7kwm8hQsOFSU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "566246125587-bkfad0cekm5oa0gk4r1c98561bs9rhk5.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "566246125587-gimcd1hpaso0e0h44d5iotiigu5m966s.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.devopsti.scooter.app"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:566246125587:android:26751999ecd6373e9acfe6",
+        "android_client_info": {
+          "package_name": "com.devopsti.scooter.delivery"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "566246125587-bkfad0cekm5oa0gk4r1c98561bs9rhk5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMLgEEEt5ebrVkFi20xKn7kwm8hQsOFSU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "566246125587-bkfad0cekm5oa0gk4r1c98561bs9rhk5.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "566246125587-gimcd1hpaso0e0h44d5iotiigu5m966s.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.devopsti.scooter.app"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:566246125587:android:c66501d6eee372229acfe6",
+        "android_client_info": {
+          "package_name": "com.devopsti.scooter.merchant"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "566246125587-bkfad0cekm5oa0gk4r1c98561bs9rhk5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMLgEEEt5ebrVkFi20xKn7kwm8hQsOFSU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "566246125587-bkfad0cekm5oa0gk4r1c98561bs9rhk5.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "566246125587-gimcd1hpaso0e0h44d5iotiigu5m966s.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.devopsti.scooter.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
