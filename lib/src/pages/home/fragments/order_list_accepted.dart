@@ -10,6 +10,7 @@ class OrderListAccepted extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final OrderBlocProvider bloc = Provider.orderBlocProviderOf(context);
+    bloc.changeOrderList(null);
     bloc.getOrders(status: status['in_process'], inProcess: true);
     return _listStreamBuilder(bloc);
   }
@@ -19,7 +20,12 @@ class OrderListAccepted extends StatelessWidget {
         stream: bloc.orderListStream,
         builder:
             (BuildContext context, AsyncSnapshot<List<OrderModel>> snapshot) {
-          return _listBuilder(context, snapshot);
+          return snapshot.hasData
+              ? _listBuilder(context, snapshot)
+              : CircularProgressIndicator(
+                  backgroundColor: primaryColor,
+                  semanticsLabel: 'Cargando pedidos',
+                );
         });
   }
 

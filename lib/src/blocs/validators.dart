@@ -21,4 +21,13 @@ class Validators {
       sink.addError('La contraseña debe tener mínimo 8 caracteres.');
     }
   });
+
+  final validateRejectReason = StreamTransformer<String, String>.fromHandlers(
+      handleData: (String data, EventSink<String> sink) {
+    if (data.length > 0) {
+      sink.add(data);
+    } else {
+      sink.addError('Escriba por qué rechaza este pedido.');
+    }
+  });
 }

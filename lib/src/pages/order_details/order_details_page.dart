@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:scootermerchant/src/blocs/order_bloc_provider.dart';
+import 'package:scootermerchant/src/blocs/provider.dart';
 import 'package:scootermerchant/src/models/order_model.dart';
 import 'package:scootermerchant/src/widgets/appbar_widget.dart';
+import 'package:scootermerchant/src/widgets/order_reject_dialog.dart';
 import 'package:scootermerchant/utilities/constants.dart';
 
 class OrderDetailsPage extends StatelessWidget {
@@ -10,6 +13,7 @@ class OrderDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     final OrderModel args = ModalRoute.of(context).settings.arguments;
+    final OrderBlocProvider bloc = Provider.orderBlocProviderOf(context);
 
     return Scaffold(
       appBar: CustomAppBar(),
@@ -24,7 +28,8 @@ class OrderDetailsPage extends StatelessWidget {
                   height: 40.0,
                   width: double.infinity,
                 ),
-                _containerInfo(size, args),
+                _containerInfo(
+                    size: size, bloc: bloc, context: context, model: args),
                 SizedBox(
                   height: 40.0,
                 )
@@ -49,7 +54,11 @@ class OrderDetailsPage extends StatelessWidget {
     );
   }
 
-  Widget _containerInfo(Size size, OrderModel model) {
+  Widget _containerInfo(
+      {Size size,
+      OrderModel model,
+      OrderBlocProvider bloc,
+      BuildContext context}) {
     return Container(
       padding: EdgeInsets.all(16.0),
       width: size.width * 0.9,
@@ -85,7 +94,7 @@ class OrderDetailsPage extends StatelessWidget {
             'Total: ${model.totalOrder} pesos',
             style: textStyleOrderDetailsSectionTitle,
           ),
-          _actions(),
+          _actions(context: context, model: model, provider: bloc),
         ],
       ),
     );
@@ -133,7 +142,8 @@ class OrderDetailsPage extends StatelessWidget {
     );
   }
 
-  Widget _actions() {
+  Widget _actions(
+      {OrderBlocProvider provider, OrderModel model, BuildContext context}) {
     return ButtonBar(
       alignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -143,12 +153,13 @@ class OrderDetailsPage extends StatelessWidget {
                 borderRadius: BorderRadius.all(Radius.circular(10.0))),
             color: primaryColor,
             child: Text('Aceptar', style: textStyleBtnComprar),
-            onPressed: () {}),
+            onPressed: () => this._acceptOrder(model, provider, context)),
         RaisedButton(
           padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 8.0),
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(10.0))),
-          onPressed: () {},
+          onPressed: () => this._showRejectDialog(
+              bloc: provider, context: context, model: model),
           color: Colors.white,
           elevation: 0.0,
           child: Text(
@@ -158,5 +169,33 @@ class OrderDetailsPage extends StatelessWidget {
         )
       ],
     );
+  }
+
+  void _acceptOrder(
+      OrderModel model, OrderBlocProvider bloc, BuildContext context) async {
+    final Map<String, dynamic> response = await bloc.acceptOrder(model);
+    if (response['ok']) {
+      _showSnackBar(context, 'El pedido ha sido aceptado');
+    } else {
+      _showSnackBar(context, 'Ocurrió un error al aceptar el pedido');
+    }
+  }
+
+  Future<void> _showRejectDialog(
+      {OrderBlocProvider bloc, OrderModel model, BuildContext context}) async {
+    return await showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return OrderRejectDialog(
+            bloc: bloc,
+            order: model,
+          );
+        });
+  }
+
+  void _showSnackBar(BuildContext context, String text) {
+    final SnackBar snackBar = SnackBar(content: Text(text));
+    Scaffold.of(context).showSnackBar(snackBar);
   }
 }
