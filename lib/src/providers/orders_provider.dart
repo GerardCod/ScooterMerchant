@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:scootermerchant/src/models/merchant_model.dart';
 import 'dart:convert';
@@ -56,6 +57,24 @@ class OrdersProvider {
     return {'ok': true, 'message': decodedData['message']};
   }
 
+  Future<Map<String, dynamic>> orderReady(OrderModel model) async {
+    final MerchantModel merchant = _prefs.merchant;
+    final Uri uri = Uri.https(_baseUri,
+        '/api/v1/merchants/${merchant.id}/orders/${model.id}/order_ready/');
+
+    http.Response response = await http.put(uri,
+        headers: {'Authorization': 'Bearer ' + _prefs.access}, body: {});
+
+    String source = Utf8Decoder().convert(response.bodyBytes);
+
+    final Map<String, dynamic> decodedData = json.decode(source);
+
+    if (response.statusCode >= 400) {
+      return {'ok': false, 'message': decodedData['errors']['message']};
+    }
+    return {'ok': true, 'message': decodedData['message']};
+  }
+
   Future<Map<String, dynamic>> rejectOrder(
       OrderModel model, String message) async {
     final MerchantModel merchant = _prefs.merchant;
@@ -69,6 +88,25 @@ class OrdersProvider {
     String source = Utf8Decoder().convert(response.bodyBytes);
 
     final Map<String, dynamic> decodedData = json.decode(source);
+
+    if (response.statusCode >= 400) {
+      return {'ok': false, 'message': decodedData['errors']['message']};
+    }
+    return {'ok': true, 'message': decodedData['message']};
+  }
+
+  Future<Map<String, dynamic>> cancelOrder(
+      OrderModel model, String reason) async {
+    final MerchantModel merchant = _prefs.merchant;
+    final Uri uri = Uri.https(_baseUri,
+        '/api/v1/merchants/${merchant.id}/orders/${model.id}/cancel_order/');
+
+    http.Response response = await http.put(uri,
+        headers: {'Authorization': 'Bearer ' + _prefs.access},
+        body: {'reason_rejection': reason});
+
+    String source = Utf8Decoder().convert(response.bodyBytes);
+    Map<String, dynamic> decodedData = json.decode(source);
 
     if (response.statusCode >= 400) {
       return {'ok': false, 'message': decodedData['errors']['message']};

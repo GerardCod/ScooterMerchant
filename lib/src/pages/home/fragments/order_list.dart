@@ -74,19 +74,15 @@ class OrderList extends StatelessWidget {
             children: <Widget>[
               RaisedButton(
                   child: Text('Aceptar', style: textStyleBtnComprar),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0)),
+                  shape: radiusButtons,
                   color: primaryColor,
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                  padding: paddingButtons,
                   onPressed: () => this._acceptOrder(model, bloc)),
               RaisedButton(
                   color: Colors.white,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0)),
+                  shape: radiusButtons,
                   elevation: 0.0,
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                  padding: paddingButtons,
                   child: Text('Rechazar', style: signinLogin),
                   onPressed: () => this._showRejectDialog(
                       model: model, context: context, bloc: bloc))
