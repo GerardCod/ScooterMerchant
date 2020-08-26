@@ -95,10 +95,10 @@ class OrderList extends StatelessWidget {
     Navigator.pushNamed(context, 'orderDetails', arguments: model);
   }
 
-  void _acceptOrder(OrderModel model, OrderBlocProvider bloc) {
-    bloc
-        .acceptOrder(model)
-        .then((value) => print(value))
-        .catchError((error) => print(error));
+  void _acceptOrder(OrderModel model, OrderBlocProvider bloc) async {
+    final Map<String, dynamic> response = await bloc.acceptOrder(model);
+    if (response['ok']) {
+      await bloc.getOrders();
+    }
   }
 }
