@@ -5,15 +5,35 @@ import 'package:flutter/material.dart';
 String baseUrl = 'https://www.scooterdev.tech/api/v1/';
 String fontFamily = 'Aspira';
 String fontFamilySecondary = 'Slant';
-String baseUri = "www.scooter-app.team";
+String baseUri = "www.scooterdev.tech";
+
+final Map<String, int> status = {
+  'incoming': 14,
+  'in_process': 15,
+  'canceled': 16
+};
 
 const backgroundColor = Color(0xfff2f6fc);
 const primaryColor = Color(0xffff724e);
+const primaryColorSecondary = Color(0xffff894e);
 const secondaryColor = Color(0xff3B5998);
 
 const textColorTF = Color(0xffFF724C);
 const backgroundBtnFacebook = Color(0xFF3B5998);
 const textColorWhite = Colors.white;
+
+final textStyleOrderDetailsSectionTitle = TextStyle(
+  fontFamily: fontFamily,
+  color: Colors.black,
+  fontWeight: FontWeight.w800,
+  fontSize: 17.0,
+);
+
+final textStyleOrderDetailsText = TextStyle(
+    fontFamily: fontFamily,
+    color: Colors.grey[700],
+    fontWeight: FontWeight.normal,
+    fontSize: 16.0);
 
 final textStyleScooter = TextStyle(
     color: Colors.white,

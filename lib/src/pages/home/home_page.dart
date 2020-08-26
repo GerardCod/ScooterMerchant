@@ -29,6 +29,7 @@ class _HomePageState extends State<HomePage> {
       endDrawer: NavDrawer(),
       appBar:CustomAppBar(),
       body: Column(
+        // shrinkWrap: true,
         children: <Widget>[
           Header(),
           Expanded(child: _pages.elementAt(_currentPage),),
