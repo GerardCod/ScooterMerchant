@@ -5,6 +5,7 @@ import 'package:scootermerchant/src/pages/home/fragments/order_list.dart';
 import 'package:scootermerchant/src/pages/home/fragments/order_list_accepted.dart';
 import 'package:scootermerchant/src/widgets/appbar_widget.dart';
 import 'package:scootermerchant/src/widgets/header_widget.dart';
+import 'package:scootermerchant/src/widgets/nav_drawer_widget.dart';
 import 'package:scootermerchant/utilities/constants.dart';
 
 class HomePage extends StatefulWidget {
@@ -25,13 +26,12 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(),
+      endDrawer: NavDrawer(),
+      appBar:CustomAppBar(),
       body: Column(
-        // shrinkWrap: true,
         children: <Widget>[
           Header(),
           Expanded(child: _pages.elementAt(_currentPage),),
-          // SizedBox(height: 50,)
         ],
       ),
       bottomNavigationBar: _bottomNavigationBar(),
@@ -68,4 +68,10 @@ class _HomePageState extends State<HomePage> {
       this._currentPage = index;
     });
   }
+
+  // Widget _customAppBar(){
+  //   return AppBar(
+  //     title: Text('Title'),
+  //   );
+  // }
 }
