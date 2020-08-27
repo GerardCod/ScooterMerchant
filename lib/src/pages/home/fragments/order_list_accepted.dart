@@ -84,7 +84,7 @@ class OrderListAccepted extends StatelessWidget {
           padding: paddingButtons,
           shape: radiusButtons,
           color: primaryColor,
-          onPressed: () {},
+          onPressed: () => this._orderReady(model, bloc),
         ),
         FlatButton(
           child: Text(
@@ -114,5 +114,12 @@ class OrderListAccepted extends StatelessWidget {
               bloc: bloc,
               model: model,
             ));
+  }
+
+  void _orderReady(OrderModel model, OrderBlocProvider bloc) async {
+    final response = await bloc.orderReady(model);
+    if (response['ok']) {
+      bloc.getOrders(status: status['in_process'], inProcess: true);
+    }
   }
 }
