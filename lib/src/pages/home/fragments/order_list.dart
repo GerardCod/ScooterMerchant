@@ -14,7 +14,7 @@ class OrderList extends StatelessWidget {
     final orderListBloc = Provider.orderBlocProviderOf(context);
     final size = MediaQuery.of(context).size;
     orderListBloc.changeOrderList(null);
-    orderListBloc.getOrders();
+    orderListBloc.getOrders(status: status['order_ready'], inProcess: true);
     return _listStreamBuilder(orderListBloc, size);
   }
 
@@ -121,7 +121,7 @@ class OrderList extends StatelessWidget {
   void _acceptOrder(OrderModel model, OrderBlocProvider bloc) async {
     final Map<String, dynamic> response = await bloc.acceptOrder(model);
     if (response['ok']) {
-      await bloc.getOrders();
+      await bloc.getOrders(status: status['order_ready'], inProcess: true);
     }
   }
 
@@ -152,7 +152,7 @@ class OrderList extends StatelessWidget {
     List listings = List<Widget>();
     for (int i = 0; i < 5; i++) {
       listings.add(
-          Container(
+        Container(
           margin: EdgeInsets.only(bottom: 10),
           width: double.infinity,
           height: 150.0,

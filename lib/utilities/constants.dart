@@ -10,7 +10,7 @@ String baseUri = "www.scooterdev.tech";
 final Map<String, int> status = {
   'incoming': 14,
   'in_process': 15,
-  'canceled': 16
+  'order_ready': 16
 };
 
 const backgroundColor = Color(0xfff2f6fc);
