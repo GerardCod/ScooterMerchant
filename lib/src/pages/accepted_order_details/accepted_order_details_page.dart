@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scootermerchant/src/blocs/order_bloc_provider.dart';
 import 'package:scootermerchant/src/models/order_model.dart';
 import 'package:scootermerchant/src/widgets/appbar_widget.dart';
+import 'package:scootermerchant/src/widgets/cancel_order_dialog.dart';
 import 'package:scootermerchant/utilities/constants.dart';
 
 class AcceptedOrderDetailsPage extends StatelessWidget {
@@ -116,5 +117,50 @@ class AcceptedOrderDetailsPage extends StatelessWidget {
       padding: EdgeInsets.all(16.0),
       child: Text(model.toAddress.fullAddress),
     );
+  }
+
+  Widget _actions(
+      OrderModel model, OrderBlocProvider bloc, BuildContext context) {
+    return ButtonBar(
+      alignment: MainAxisAlignment.center,
+      children: <Widget>[
+        RaisedButton(
+          onPressed: () => this._orderReady(model, bloc, context),
+          child: Text('Terminado', style: textStyleBtnComprar),
+          shape: radiusButtons,
+          padding: paddingButtons,
+          color: primaryColor,
+        ),
+        FlatButton(
+          child: Text(
+            'Cancelar',
+            style: signinLogin,
+          ),
+          shape: radiusButtons,
+          color: Colors.white,
+          padding: paddingButtons,
+          onPressed: () => this._showCancelDialog(model, bloc, context),
+        ),
+      ],
+    );
+  }
+
+  void _orderReady(
+      OrderModel model, OrderBlocProvider bloc, BuildContext context) async {
+    final response = await bloc.orderReady(model);
+    if (response['ok']) {
+      Navigator.of(context).pop();
+    }
+  }
+
+  Future<void> _showCancelDialog(
+      OrderModel model, OrderBlocProvider bloc, BuildContext context) async {
+    return await showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) => CancelOrderDialog(
+              model: model,
+              bloc: bloc,
+            ));
   }
 }

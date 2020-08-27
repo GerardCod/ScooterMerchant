@@ -12,12 +12,17 @@ class OrdersProvider {
   OrdersProvider();
 
   Future<List<OrderModel>> getOrders(
-      {int status = 14, bool inProcess = false}) async {
+      {int status = 14, bool inProcess = false, bool allOrders = false}) async {
     final merchant = _prefs.merchant;
-    var uri = Uri.https(_baseUri, '/api/v1/merchants/${merchant.id}/orders/', {
-      'order_status': status.toString(),
-      'in_process': inProcess.toString()
-    });
+    Uri uri;
+    if (allOrders) {
+      uri = Uri.https(_baseUri, '/api/v1/merchants/${merchant.id}/orders/');
+    } else {
+      uri = Uri.https(_baseUri, '/api/v1/merchants/${merchant.id}/orders/', {
+        'order_status': status.toString(),
+        'in_process': inProcess.toString()
+      });
+    }
 
     http.Response response = await http.get(uri, headers: {
       'Authorization': 'Bearer ' + _prefs.access,
