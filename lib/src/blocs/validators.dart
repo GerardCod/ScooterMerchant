@@ -27,7 +27,7 @@ class Validators {
     if (data.length > 0) {
       sink.add(data);
     } else {
-      sink.addError('Escriba por qué rechaza este pedido.');
+      sink.addError('Escriba por qué rechaza o cancela este pedido.');
     }
   });
 }

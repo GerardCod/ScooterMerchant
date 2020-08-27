@@ -22,6 +22,11 @@ const textColorTF = Color(0xffFF724C);
 const backgroundBtnFacebook = Color(0xFF3B5998);
 const textColorWhite = Colors.white;
 
+final paddingButtons = EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0);
+final radiusButtons = RoundedRectangleBorder(
+  borderRadius: BorderRadius.circular(20.0),
+);
+
 final textStyleOrderDetailsSectionTitle = TextStyle(
   fontFamily: fontFamily,
   color: Colors.black,
