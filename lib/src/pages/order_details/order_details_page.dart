@@ -21,20 +21,8 @@ class OrderDetailsPage extends StatelessWidget {
         children: <Widget>[
           _header(size),
           SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  height: 40.0,
-                  width: double.infinity,
-                ),
-                _containerInfo(
-                    size: size, bloc: bloc, context: context, model: args),
-                SizedBox(
-                  height: 40.0,
-                )
-              ],
-            ),
+            child: _containerInfo(
+                size: size, bloc: bloc, context: context, model: args),
           ),
         ],
       ),
@@ -59,43 +47,39 @@ class OrderDetailsPage extends StatelessWidget {
       OrderModel model,
       OrderBlocProvider bloc,
       BuildContext context}) {
-    return Container(
-      padding: EdgeInsets.all(16.0),
-      width: size.width * 0.9,
-      height: size.height * 0.9,
-      decoration: BoxDecoration(
+    return SingleChildScrollView(
+      child: Card(
+        margin: EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
+        borderOnForeground: true,
         color: Colors.white,
-        borderRadius: BorderRadius.all(Radius.circular(20.0)),
-        boxShadow: [
-          BoxShadow(
-              color: Color.fromRGBO(0, 0, 0, 0.25),
-              offset: Offset(0, 1.5),
-              blurRadius: 1.5,
-              spreadRadius: 2.0),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          _containerHeader(model),
-          SizedBox(
-            height: 16.0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        child: Container(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              _containerHeader(model),
+              SizedBox(
+                height: 16.0,
+              ),
+              Text('Dirección de entrega',
+                  style: textStyleOrderDetailsSectionTitle),
+              _address(model),
+              Text(
+                'Lista de productos',
+                style: textStyleOrderDetailsSectionTitle,
+              ),
+              _productList(model),
+              Text(
+                'Total: ${model.totalOrder} pesos',
+                style: textStyleOrderDetailsSectionTitle,
+              ),
+              _actions(context: context, model: model, provider: bloc),
+            ],
           ),
-          Text('Dirección de entrega',
-              style: textStyleOrderDetailsSectionTitle),
-          _address(model),
-          Text(
-            'Lista de productos',
-            style: textStyleOrderDetailsSectionTitle,
-          ),
-          _productList(model),
-          Expanded(child: Container()),
-          Text(
-            'Total: ${model.totalOrder} pesos',
-            style: textStyleOrderDetailsSectionTitle,
-          ),
-          _actions(context: context, model: model, provider: bloc),
-        ],
+        ),
       ),
     );
   }
