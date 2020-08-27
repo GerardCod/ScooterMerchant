@@ -14,7 +14,7 @@ class OrderList extends StatelessWidget {
     final orderListBloc = Provider.orderBlocProviderOf(context);
     final size = MediaQuery.of(context).size;
     orderListBloc.changeOrderList(null);
-    orderListBloc.getOrders();
+    orderListBloc.getOrders(status: status['order_ready'], inProcess: true);
     return _listStreamBuilder(orderListBloc, size);
   }
 
@@ -89,19 +89,15 @@ class OrderList extends StatelessWidget {
             children: <Widget>[
               RaisedButton(
                   child: Text('Aceptar', style: textStyleBtnComprar),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0)),
+                  shape: radiusButtons,
                   color: primaryColor,
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                  padding: paddingButtons,
                   onPressed: () => this._acceptOrder(model, bloc)),
               RaisedButton(
                   color: Colors.white,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0)),
+                  shape: radiusButtons,
                   elevation: 0.0,
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                  padding: paddingButtons,
                   child: Text('Rechazar', style: signinLogin),
                   onPressed: () => this._showRejectDialog(
                       model: model, context: context, bloc: bloc))
@@ -121,7 +117,7 @@ class OrderList extends StatelessWidget {
   void _acceptOrder(OrderModel model, OrderBlocProvider bloc) async {
     final Map<String, dynamic> response = await bloc.acceptOrder(model);
     if (response['ok']) {
-      await bloc.getOrders();
+      await bloc.getOrders(status: status['order_ready'], inProcess: true);
     }
   }
 
@@ -152,7 +148,7 @@ class OrderList extends StatelessWidget {
     List listings = List<Widget>();
     for (int i = 0; i < 5; i++) {
       listings.add(
-          Container(
+        Container(
           margin: EdgeInsets.only(bottom: 10),
           width: double.infinity,
           height: 150.0,

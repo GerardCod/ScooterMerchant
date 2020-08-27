@@ -67,7 +67,7 @@ class OrderRejectDialog extends StatelessWidget {
       decoration: InputDecoration(
         border: OutlineInputBorder(),
         labelText: 'Mensaje',
-        contentPadding: EdgeInsets.symmetric(horizontal: 18.0, vertical: 16.0),
+        contentPadding: EdgeInsets.all(16.0),
         errorText: snapshot.error,
       ),
       onChanged: bloc.changeRejectReason,
@@ -83,11 +83,9 @@ class OrderRejectDialog extends StatelessWidget {
         'No',
         style: textStyleBtnComprar,
       ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(20.0)),
-      ),
+      shape: radiusButtons,
       color: primaryColor,
-      padding: EdgeInsets.symmetric(horizontal: 36, vertical: 8.0),
+      padding: paddingButtons,
     );
   }
 
@@ -101,7 +99,7 @@ class OrderRejectDialog extends StatelessWidget {
             style: signinLogin,
           ),
           color: Colors.white,
-          padding: EdgeInsets.symmetric(horizontal: 36, vertical: 8.0),
+          padding: paddingButtons,
           onPressed: snapshot.hasData
               ? () => this._rejectOrder(model, snapshot.data, context: context)
               : null,
@@ -113,18 +111,12 @@ class OrderRejectDialog extends StatelessWidget {
   void _rejectOrder(OrderModel model, String message,
       {BuildContext context}) async {
     final response = await bloc.rejectOrder(model, message);
-    print(response);
     if (response['ok']) {
-      Navigator.of(context).pop();
-      _showSnackBar('Pedido rechazado', context);
+      Navigator.of(context)
+          .pop({'ok': true, 'message': 'El pedido fue rechazado'});
+    } else {
+      Navigator.of(context)
+          .pop({'ok': false, 'message': 'Error al rechazar el pedido'});
     }
-  }
-
-  void _showSnackBar(String message, BuildContext context) {
-    final SnackBar snackBar = SnackBar(
-      content: Text(message),
-    );
-
-    Scaffold.of(context).showSnackBar(snackBar);
   }
 }
