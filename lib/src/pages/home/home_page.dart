@@ -8,8 +8,12 @@ import 'package:scootermerchant/src/widgets/header_widget.dart';
 import 'package:scootermerchant/src/widgets/nav_drawer_widget.dart';
 import 'package:scootermerchant/utilities/constants.dart';
 
+import '../../../utilities/constants.dart';
+import '../../preferences/merchant_preferences.dart';
+import '../../widgets/nav_drawer_widget.dart';
+
 class HomePage extends StatefulWidget {
-  const HomePage({Key key}) : super(key: key);
+  // const HomePage({Key key}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -22,22 +26,80 @@ class _HomePageState extends State<HomePage> {
     OrderListAccepted(),
     OrderHistory(),
   ];
+  final MerchantPreferences _prefs = MerchantPreferences();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       endDrawer: NavDrawer(),
-      appBar:CustomAppBar(),
-      body: Column(
-        // shrinkWrap: true,
-        children: <Widget>[
-          Header(),
-          Expanded(child: _pages.elementAt(_currentPage),),
+      body: CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar(
+            title: Text(
+              'Scooter',
+              style: textStyleForAppBar,
+            ),
+            floating: false,
+            pinned: true,
+            expandedHeight: 160,
+            iconTheme: IconThemeData(color: Colors.white),
+            automaticallyImplyLeading: false,
+            flexibleSpace: FlexibleSpaceBar(
+              background: Container(
+                color: Colors.white,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey,
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(40.0),
+                        bottomRight: Radius.circular(40.0)),
+                    image: DecorationImage(
+                      image: NetworkImage(_prefs.merchant.picture),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  child: Center(
+                    child: Text(
+                      _prefs.merchant.merchantName,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 30,
+                        fontFamily: 'Arial',
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1.5,
+                        shadows: <Shadow>[
+                          Shadow(
+                            offset: Offset(1.0, 1.0),
+                            blurRadius: 2.0,
+                            color: Color(0xff808080),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          _pages.elementAt(_currentPage),
         ],
       ),
       bottomNavigationBar: _bottomNavigationBar(),
       extendBody: true,
     );
+    //  Scaffold(
+    //   endDrawer: NavDrawer(),
+    //   appBar:CustomAppBar(),
+    //   body: Column(
+    //     // shrinkWrap: true,
+    //     children: <Widget>[
+    // Header(),
+    //       Expanded(child: _pages.elementAt(_currentPage),),
+    //     ],
+    //   ),
+    //   bottomNavigationBar: _bottomNavigationBar(),
+    //   extendBody: true,
+    // );
   }
 
   Widget _bottomNavigationBar() {

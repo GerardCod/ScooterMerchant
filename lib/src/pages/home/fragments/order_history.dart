@@ -5,8 +5,10 @@ class OrderHistory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text('Order history'),
+    return SliverToBoxAdapter(
+      child: Center(
+        child: Text('Order history'),
+      ),
     );
   }
 }
