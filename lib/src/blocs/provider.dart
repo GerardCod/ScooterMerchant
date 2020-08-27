@@ -1,10 +1,12 @@
 import 'package:flutter/widgets.dart';
 import 'package:scootermerchant/src/blocs/order_bloc_provider.dart';
 import 'package:scootermerchant/src/blocs/login_bloc.dart';
+import 'package:scootermerchant/src/blocs/pages/notification_order_details_page_bloc.dart';
 
 class Provider extends InheritedWidget {
   final loginBloc = LoginBloc();
   final orderBlocProvider = OrderBlocProvider();
+   final _notificationOrderDetailsPageBloc = new NotificationOrderDetailsPageBloc();
 
   static Provider _instance;
 
@@ -31,5 +33,11 @@ class Provider extends InheritedWidget {
     return context
         .dependOnInheritedWidgetOfExactType<Provider>()
         .orderBlocProvider;
+  }
+
+  static NotificationOrderDetailsPageBloc notificationOrderDetailsPageBloc(
+      BuildContext context) {
+    return (context.dependOnInheritedWidgetOfExactType<Provider>())
+        ._notificationOrderDetailsPageBloc;
   }
 }

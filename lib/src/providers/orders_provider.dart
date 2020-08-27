@@ -5,6 +5,8 @@ import 'package:scootermerchant/src/preferences/merchant_preferences.dart';
 import 'package:scootermerchant/utilities/constants.dart';
 import 'package:scootermerchant/src/models/order_model.dart';
 
+import '../models/merchant_model.dart';
+
 class OrdersProvider {
   String _baseUri = baseUri;
   MerchantPreferences _prefs = new MerchantPreferences();
@@ -111,5 +113,28 @@ class OrdersProvider {
       return {'ok': false, 'message': decodedData['errors']['message']};
     }
     return {'ok': true, 'message': decodedData['message']};
+  }
+
+  Future<Map<String, dynamic>> getOrder(String orderId) async {
+    try {
+      final MerchantModel merchant = _prefs.merchant;
+      final Uri uri = Uri.https(
+          _baseUri, 'api/v1/merchants/${merchant.id}/orders/' + orderId + '/');
+
+      http.Response resp = await http.get(uri, headers: {
+        "Authorization": "Bearer " + _prefs.access,
+      });
+      String source = Utf8Decoder().convert(resp.bodyBytes);
+
+      Map<String, dynamic> jsonResp = json.decode(source);
+
+      if (resp.statusCode >= 400) {
+        return {'ok': false, 'message': jsonResp['errors']['message']};
+      } else {
+        return {'ok': true, 'order': OrderModel.fromJson(jsonResp)};
+      }
+    } catch (error) {
+      print(error);
+    }
   }
 }

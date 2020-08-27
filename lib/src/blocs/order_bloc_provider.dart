@@ -37,6 +37,9 @@ class OrderBlocProvider with Validators {
   Future<Map<String, dynamic>> orderReady(OrderModel model) async {
     return await _orderProvider.orderReady(model);
   }
+  Future<Map<String, dynamic>> getOrder(String orderId) async {
+    return await _orderProvider.getOrder(orderId);
+  }
 
   //Order list stream
 

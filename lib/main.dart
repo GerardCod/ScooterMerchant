@@ -3,6 +3,7 @@ import 'package:scootermerchant/src/blocs/provider.dart';
 import 'package:scootermerchant/src/pages/accepted_order_details/accepted_order_details_page.dart';
 import 'package:scootermerchant/src/pages/home/home_page.dart';
 import 'package:scootermerchant/src/pages/login_page.dart';
+import 'package:scootermerchant/src/pages/notification_order_details/notification_order_details_page.dart';
 import 'package:scootermerchant/src/preferences/merchant_preferences.dart';
 import 'package:scootermerchant/src/providers/notification_provider.dart';
 import 'package:scootermerchant/utilities/constants.dart';
@@ -31,11 +32,20 @@ class _MyAppState extends State<MyApp> {
 
   _MyAppState(this.prefs);
 
+  final GlobalKey<NavigatorState> navigatorKey =
+      new GlobalKey<NavigatorState>();
+
   @override
   void initState() {
     super.initState();
     final notificationProvider = new NotificationsProvider();
     notificationProvider.initNotifications();
+    notificationProvider.messages.listen((data) {
+      if (data['type'] == 'NEW_ORDER') {
+        navigatorKey.currentState
+            .pushNamed('notificationOrderDetails', arguments: data['data']);
+      }
+    });
   }
 
   @override
@@ -43,6 +53,7 @@ class _MyAppState extends State<MyApp> {
     return Provider(
       child: MaterialApp(
         title: 'Scooter',
+        navigatorKey: navigatorKey,
         initialRoute: getInitialRoute(prefs),
         debugShowCheckedModeBanner: false,
         theme:
@@ -51,8 +62,8 @@ class _MyAppState extends State<MyApp> {
           'login': (BuildContext context) => LoginPage(),
           'home': (BuildContext context) => HomePage(),
           'orderDetails': (BuildContext context) => OrderDetailsPage(),
-          'acceptedOrderDetails': (BuildContext context) =>
-              AcceptedOrderDetailsPage()
+          'acceptedOrderDetails': (BuildContext context) => AcceptedOrderDetailsPage(),
+          'notificationOrderDetails': (BuildContext context) => NotificationOrderDetailsPage(),
         },
       ),
     );

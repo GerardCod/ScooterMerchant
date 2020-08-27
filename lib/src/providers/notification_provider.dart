@@ -16,7 +16,6 @@ class NotificationsProvider {
 
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
-
   final _messageStreamController =
       StreamController<Map<String, dynamic>>.broadcast();
   // Preferencias
@@ -53,7 +52,7 @@ class NotificationsProvider {
     await notificationsPlugin.initialize(initializationSettings,
         onSelectNotification: null);
     // Termina local notifications
-    
+
     // _firebaseMessaging.requestNotificationPermissions();
 
     await _firebaseMessaging.requestNotificationPermissions();
@@ -93,7 +92,7 @@ class NotificationsProvider {
     Map<String, dynamic> decodedResp = json.decode(resp.body);
     print('Resigtrar Token');
     print(decodedResp);
-    // print(statusCode); 
+    // print(statusCode);
   }
 
   Future<dynamic> onMessage(Map<String, dynamic> message) async {
@@ -107,11 +106,11 @@ class NotificationsProvider {
 
     if (Platform.isAndroid) {
       String dataMessage = message['data']['order_id'] ?? 'no-data';
-      print('DataMessage');
-      print(dataMessage);
-      // String typeMessage = message['data']['type'] ?? 'no-type';
-      // argument['data'] = dataMessage;
-      // argument['type'] = typeMessage;
+      argument['data'] = dataMessage;
+      String typeMessage = message['data']['type'] ?? 'no-type';
+      argument['type'] = typeMessage;
+      // print(dataMessage);
+      // print('DataMessage');
     }
     _messageStreamController.sink.add(argument);
     return Future<void>.value();
@@ -129,11 +128,11 @@ class NotificationsProvider {
 
     if (Platform.isAndroid) {
       String dataMessage = message['data']['order_id'] ?? 'no-data';
-      print('DataMessage');
-      print(dataMessage);
-      // String typeMessage = message['data']['type'] ?? 'no-type';
-      // argument['data'] = dataMessage;
-      // argument['type'] = typeMessage;
+      argument['data'] = dataMessage;
+      String typeMessage = message['data']['type'] ?? 'no-type';
+      argument['type'] = typeMessage;
+      // print(dataMessage);
+      // print('DataMessage');
     }
     _messageStreamController.sink.add(argument);
     return Future<void>.value();
@@ -147,10 +146,12 @@ class NotificationsProvider {
     Map<String, dynamic> argument = {'data': 'no-data', 'type': 'no-type'};
 
     if (Platform.isAndroid) {
-      // String dataMessage = message['data']['order_id'] ?? 'no-data';
-      // String typeMessage = message['data']['type'] ?? 'no-type';
-      // argument['data'] = dataMessage;
-      // argument['type'] = typeMessage;
+      String dataMessage = message['data']['order_id'] ?? 'no-data';
+      argument['data'] = dataMessage;
+      String typeMessage = message['data']['type'] ?? 'no-type';
+      argument['type'] = typeMessage;
+      // print(dataMessage);
+      // print('DataMessage');
     }
     _messageStreamController.sink.add(argument);
     return Future<void>.value();
@@ -158,7 +159,9 @@ class NotificationsProvider {
 
   Future<void> _showNotification(title, body, data) async {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-      'messages', 'Messages', 'channel for messages',
+      'messages',
+      'Messages',
+      'channel for messages',
       importance: Importance.Max,
       playSound: true,
       sound: RawResourceAndroidNotificationSound('ringtone'),
