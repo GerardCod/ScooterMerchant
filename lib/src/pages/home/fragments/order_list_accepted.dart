@@ -23,25 +23,25 @@ class OrderListAccepted extends StatelessWidget {
         stream: bloc.orderListStream,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-          return SliverToBoxAdapter(
-            child: Shimmer.fromColors(
-              baseColor: Colors.grey[300],
-              highlightColor: Colors.grey[100],
-              child: _itemSkeleton(size),
-            ),
-          );
-        }
-        if (snapshot.data.length == 0) {
-          return SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'No hay ningun pedido.',
-                textAlign: TextAlign.center,
+            return SliverToBoxAdapter(
+              child: Shimmer.fromColors(
+                baseColor: Colors.grey[300],
+                highlightColor: Colors.grey[100],
+                child: _itemSkeleton(size),
               ),
-            ),
-          );
-        }
+            );
+          }
+          if (snapshot.data.length == 0) {
+            return SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'No hay ningun pedido.',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            );
+          }
           return _listBuilder(context, snapshot);
         });
   }
@@ -49,11 +49,9 @@ class OrderListAccepted extends StatelessWidget {
   Widget _listBuilder(
       BuildContext context, AsyncSnapshot<List<OrderModel>> snapshot,
       {OrderBlocProvider orderBloc}) {
-
-        return SliverList(
+    return SliverList(
       delegate: SliverChildBuilderDelegate(
-        (context, index) =>
-            _listItem(snapshot.data[index]),
+        (context, index) => _listItem(snapshot.data[index], context, orderBloc),
         childCount: snapshot.hasData ? snapshot.data.length : 0,
       ),
     );
@@ -141,7 +139,7 @@ class OrderListAccepted extends StatelessWidget {
       bloc.getOrders(status: status['in_process'], inProcess: true);
     }
   }
-    
+
   Widget _itemSkeleton(Size size) {
     return Padding(
       padding: const EdgeInsets.all(10),
