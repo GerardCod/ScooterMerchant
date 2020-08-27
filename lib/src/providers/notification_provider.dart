@@ -101,12 +101,14 @@ class NotificationsProvider {
     // await _createNofification(message);
     print('====== onMessage ====== ');
     print('message: $message');
-
+    // await _createNofification(message);
 
     Map<String, dynamic> argument = {'data': 'no-data', 'type': 'no-type'};
 
     if (Platform.isAndroid) {
-      // String dataMessage = message['data']['order_id'] ?? 'no-data';
+      String dataMessage = message['data']['order_id'] ?? 'no-data';
+      print('DataMessage');
+      print(dataMessage);
       // String typeMessage = message['data']['type'] ?? 'no-type';
       // argument['data'] = dataMessage;
       // argument['type'] = typeMessage;
@@ -126,7 +128,9 @@ class NotificationsProvider {
     Map<String, dynamic> argument = {'data': 'no-data', 'type': 'no-type'};
 
     if (Platform.isAndroid) {
-      // String dataMessage = message['data']['order_id'] ?? 'no-data';
+      String dataMessage = message['data']['order_id'] ?? 'no-data';
+      print('DataMessage');
+      print(dataMessage);
       // String typeMessage = message['data']['type'] ?? 'no-type';
       // argument['data'] = dataMessage;
       // argument['type'] = typeMessage;

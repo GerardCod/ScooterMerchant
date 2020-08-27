@@ -3,14 +3,10 @@ import 'package:flutter/rendering.dart';
 import 'package:scootermerchant/src/pages/home/fragments/order_history.dart';
 import 'package:scootermerchant/src/pages/home/fragments/order_list.dart';
 import 'package:scootermerchant/src/pages/home/fragments/order_list_accepted.dart';
-import 'package:scootermerchant/src/widgets/appbar_widget.dart';
-import 'package:scootermerchant/src/widgets/header_widget.dart';
 import 'package:scootermerchant/src/widgets/nav_drawer_widget.dart';
 import 'package:scootermerchant/utilities/constants.dart';
 
-import '../../../utilities/constants.dart';
 import '../../preferences/merchant_preferences.dart';
-import '../../widgets/nav_drawer_widget.dart';
 
 class HomePage extends StatefulWidget {
   // const HomePage({Key key}) : super(key: key);
