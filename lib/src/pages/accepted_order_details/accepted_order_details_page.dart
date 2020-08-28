@@ -4,6 +4,7 @@ import 'package:scootermerchant/src/models/order_model.dart';
 import 'package:scootermerchant/src/widgets/appbar_widget.dart';
 import 'package:scootermerchant/src/widgets/cancel_order_dialog.dart';
 import 'package:scootermerchant/utilities/constants.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AcceptedOrderDetailsPage extends StatelessWidget {
   const AcceptedOrderDetailsPage({Key key}) : super(key: key);
@@ -14,7 +15,10 @@ class AcceptedOrderDetailsPage extends StatelessWidget {
     final OrderModel args = ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
-      appBar: CustomAppBar(),
+      appBar: AppBar(
+        title: Text('Detalles del pedido', style: textStyleBtnComprar),
+        iconTheme: IconThemeData(color: Colors.white),
+      ),
       body: Stack(
         children: <Widget>[_header(size), _containerInfo(model: args)],
       ),
@@ -55,6 +59,7 @@ class AcceptedOrderDetailsPage extends StatelessWidget {
               _sectionTitle('Lista de productos'),
               _productList(model),
               _sectionTitle('Total: ${model.totalOrder} pesos'),
+              _actions(model, bloc, context),
               SizedBox(
                 height: 16.0,
               ),
@@ -73,11 +78,14 @@ class AcceptedOrderDetailsPage extends StatelessWidget {
 
   Widget _cardHeader(OrderModel model) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         Icon(
           Icons.person,
-          size: 48.0,
+          size: sizeIconsDetails,
+        ),
+        SizedBox(
+          width: 6.0,
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -90,6 +98,10 @@ class AcceptedOrderDetailsPage extends StatelessWidget {
                 style: textStyleSubtitleListTile),
           ],
         ),
+        IconButton(
+          icon: Icon(Icons.call, size: sizeIconsDetails),
+          onPressed: () => this._launchCall(model.customer.phoneNumber),
+        )
       ],
     );
   }
@@ -162,5 +174,15 @@ class AcceptedOrderDetailsPage extends StatelessWidget {
               model: model,
               bloc: bloc,
             ));
+  }
+
+  void _launchCall(String phoneNumber) async {
+    final call = 'tel:$phoneNumber';
+
+    if (await canLaunch(call)) {
+      await launch(call);
+    } else {
+      throw 'No se puede realizar la llamada al número $phoneNumber';
+    }
   }
 }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:scootermerchant/src/blocs/order_bloc_provider.dart';
 import 'package:scootermerchant/src/blocs/provider.dart';
 import 'package:scootermerchant/src/models/order_model.dart';
-import 'package:scootermerchant/src/widgets/appbar_widget.dart';
 import 'package:scootermerchant/src/widgets/order_reject_dialog.dart';
 import 'package:scootermerchant/utilities/constants.dart';
 
@@ -16,7 +15,12 @@ class OrderDetailsPage extends StatelessWidget {
     final OrderBlocProvider bloc = Provider.orderBlocProviderOf(context);
 
     return Scaffold(
-      appBar: CustomAppBar(),
+      appBar: AppBar(
+        title: Text('Detalles del pedido', style: textStyleBtnComprar),
+        iconTheme: IconThemeData(
+          color: Colors.white,
+        ),
+      ),
       body: Stack(
         children: <Widget>[
           _header(size),
@@ -85,17 +89,28 @@ class OrderDetailsPage extends StatelessWidget {
   }
 
   Widget _containerHeader(OrderModel model) {
-    return ListTile(
-      leading: Icon(
-        Icons.person,
-        size: 48.0,
-      ),
-      title: Text(
-        model.customer.name,
-        style: textStyleTitleListTile,
-      ),
-      subtitle: Text(DateTime.parse(model.orderDate).toString(),
-          style: textStyleSubtitleListTile),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        Icon(
+          Icons.person,
+          size: sizeIconsDetails,
+        ),
+        SizedBox(
+          width: 6.0,
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              model.customer.name,
+              style: textStyleTitleListTile,
+            ),
+            Text(DateTime.parse(model.orderDate).toString(),
+                style: textStyleSubtitleListTile)
+          ],
+        ),
+      ],
     );
   }
 

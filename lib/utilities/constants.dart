@@ -12,6 +12,7 @@ final Map<String, int> status = {
   'in_process': 15,
   'order_ready': 16
 };
+const sizeIconsDetails = 28.0;
 
 const backgroundColor = Color(0xfff2f6fc);
 const primaryColor = Color(0xffff724e);
