@@ -1,9 +1,20 @@
 import 'package:rxdart/rxdart.dart';
 import 'package:scootermerchant/src/blocs/validators.dart';
+import 'package:scootermerchant/src/models/auth_model.dart';
+import 'package:scootermerchant/src/providers/login_provider.dart';
 
 class LoginBloc with Validators {
+  final _provider = LoginProvider();
   final _emailController = BehaviorSubject<String>();
   final _passwordController = BehaviorSubject<String>();
+
+  Future<Map<String, dynamic>> login(AuthModel model) async {
+    return await _provider.login(model);
+  }
+
+  Future<bool> logout() async {
+    return await _provider.logout();
+  }
 
   Stream<String> get emailStream =>
       _emailController.stream.transform(validateEmail);

@@ -47,4 +47,8 @@ class MerchantPreferences {
   set merchant(MerchantModel merchant) {
     this._prefs.setString('merchant', json.encode(merchant));
   }
+
+  Future<bool> clearPreferences() async {
+    return await this._prefs.clear();
+  }
 }

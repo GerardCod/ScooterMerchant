@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:scootermerchant/src/blocs/login_bloc.dart';
 import 'package:scootermerchant/src/blocs/provider.dart';
 import 'package:scootermerchant/src/models/auth_model.dart';
-import 'package:scootermerchant/src/providers/login_provider.dart';
 import 'package:scootermerchant/utilities/constants.dart';
 
 class LoginPage extends StatelessWidget {
@@ -106,7 +105,7 @@ class LoginPage extends StatelessWidget {
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           return RaisedButton(
             onPressed: snapshot.hasData
-                ? () => _login(bloc.email, bloc.password, context: context)
+                ? () => _login(bloc.email, bloc.password, context, bloc)
                 : null,
             color: primaryColor,
             textColor: Colors.white,
@@ -118,17 +117,13 @@ class LoginPage extends StatelessWidget {
         });
   }
 
-  void _login(String email, String password, {context: BuildContext}) {
+  Future<void> _login(String email, String password, BuildContext context,
+      LoginBloc bloc) async {
     final user = AuthModel(username: email, password: password);
-    final loginProvider = LoginProvider();
-    loginProvider.login(user).then((Map<String, dynamic> value) {
-      print(value);
-      if (value['ok']) {
-        Navigator.pushReplacementNamed(context, 'home');
-      }
-    }).catchError((error) {
-      print(error);
-    });
+    final response = await bloc.login(user);
+    if (response['ok']) {
+      Navigator.of(context).pushReplacementNamed('home');
+    }
   }
 
   Widget _emailStreamBuilder(LoginBloc bloc) {
