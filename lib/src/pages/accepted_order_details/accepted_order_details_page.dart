@@ -1,7 +1,7 @@
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:scootermerchant/src/blocs/order_bloc_provider.dart';
 import 'package:scootermerchant/src/models/order_model.dart';
-import 'package:scootermerchant/src/widgets/appbar_widget.dart';
 import 'package:scootermerchant/src/widgets/cancel_order_dialog.dart';
 import 'package:scootermerchant/utilities/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -94,7 +94,9 @@ class AcceptedOrderDetailsPage extends StatelessWidget {
               model.customer.name,
               style: textStyleTitleListTile,
             ),
-            Text(DateTime.parse(model.orderDate).toString(),
+            Text(
+                formatDate(DateTime.parse(model.orderDate),
+                    [dd, '/', mm, '/', yyyy, '  ', hh, ':', nn]),
                 style: textStyleSubtitleListTile),
           ],
         ),

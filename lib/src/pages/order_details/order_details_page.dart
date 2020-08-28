@@ -1,3 +1,4 @@
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:scootermerchant/src/blocs/order_bloc_provider.dart';
 import 'package:scootermerchant/src/blocs/provider.dart';
@@ -106,7 +107,9 @@ class OrderDetailsPage extends StatelessWidget {
               model.customer.name,
               style: textStyleTitleListTile,
             ),
-            Text(DateTime.parse(model.orderDate).toString(),
+            Text(
+                formatDate(DateTime.parse(model.orderDate),
+                    [dd, '/', mm, '/', yyyy, '  ', hh, ':', nn]),
                 style: textStyleSubtitleListTile)
           ],
         ),
