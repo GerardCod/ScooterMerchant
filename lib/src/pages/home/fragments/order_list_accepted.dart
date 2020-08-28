@@ -14,7 +14,7 @@ class OrderListAccepted extends StatelessWidget {
     final OrderBlocProvider bloc = Provider.orderBlocProviderOf(context);
     final size = MediaQuery.of(context).size;
     bloc.changeOrderList(null);
-    bloc.getOrders(allOrders: true);
+    bloc.getOrders(status: status['in_process'], inProcess: true);
     return _listStreamBuilder(bloc, size);
   }
 

@@ -11,6 +11,7 @@ class OrderHistory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final OrderBlocProvider bloc = Provider.orderBlocProviderOf(context);
+    bloc.changeOrderList(null);
     bloc.getOrders(allOrders: true);
     final Size size = MediaQuery.of(context).size;
     return _listStreamBuilder(bloc, size);
