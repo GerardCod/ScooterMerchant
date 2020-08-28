@@ -42,7 +42,7 @@ class OrderListAccepted extends StatelessWidget {
               ),
             );
           }
-          return _listBuilder(context, snapshot);
+          return _listBuilder(context, snapshot, orderBloc: bloc);
         });
   }
 

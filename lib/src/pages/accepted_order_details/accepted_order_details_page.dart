@@ -1,6 +1,7 @@
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:scootermerchant/src/blocs/order_bloc_provider.dart';
+import 'package:scootermerchant/src/blocs/provider.dart';
 import 'package:scootermerchant/src/models/order_model.dart';
 import 'package:scootermerchant/src/widgets/cancel_order_dialog.dart';
 import 'package:scootermerchant/utilities/constants.dart';
@@ -13,6 +14,7 @@ class AcceptedOrderDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     final OrderModel args = ModalRoute.of(context).settings.arguments;
+    final OrderBlocProvider bloc = Provider.orderBlocProviderOf(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -20,7 +22,10 @@ class AcceptedOrderDetailsPage extends StatelessWidget {
         iconTheme: IconThemeData(color: Colors.white),
       ),
       body: Stack(
-        children: <Widget>[_header(size), _containerInfo(model: args)],
+        children: <Widget>[
+          _header(size),
+          _containerInfo(model: args, bloc: bloc, context: context)
+        ],
       ),
     );
   }
@@ -78,7 +83,7 @@ class AcceptedOrderDetailsPage extends StatelessWidget {
 
   Widget _cardHeader(OrderModel model) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Icon(
           Icons.person,
@@ -88,7 +93,7 @@ class AcceptedOrderDetailsPage extends StatelessWidget {
           width: 6.0,
         ),
         Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Text(
               model.customer.name,
