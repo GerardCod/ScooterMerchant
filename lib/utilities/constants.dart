@@ -28,6 +28,13 @@ final radiusButtons = RoundedRectangleBorder(
   borderRadius: BorderRadius.circular(20.0),
 );
 
+final textStyleLinkTile = TextStyle(
+    fontFamily: fontFamily,
+    color: Colors.black,
+    fontWeight: FontWeight.bold,
+    decoration: TextDecoration.underline,
+    fontSize: 12.0);
+
 final textStyleOrderDetailsSectionTitle = TextStyle(
   fontFamily: fontFamily,
   color: Colors.black,

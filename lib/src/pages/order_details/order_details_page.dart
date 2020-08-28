@@ -98,10 +98,10 @@ class OrderDetailsPage extends StatelessWidget {
           size: sizeIconsDetails,
         ),
         SizedBox(
-          width: 6.0,
+          width: 32.0,
         ),
         Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Text(
               model.customer.name,
@@ -109,7 +109,7 @@ class OrderDetailsPage extends StatelessWidget {
             ),
             Text(
                 formatDate(DateTime.parse(model.orderDate),
-                    [dd, '/', mm, '/', yyyy, '  ', hh, ':', nn]),
+                    [dd, '/', mm, '/', yyyy, '  ', hh, ':', nn, ' ', am]),
                 style: textStyleSubtitleListTile)
           ],
         ),

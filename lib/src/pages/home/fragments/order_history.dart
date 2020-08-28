@@ -1,3 +1,4 @@
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:scootermerchant/src/blocs/order_bloc_provider.dart';
 import 'package:scootermerchant/src/blocs/provider.dart';
@@ -67,7 +68,9 @@ class OrderHistory extends StatelessWidget {
               size: 48.0,
             ),
             title: Text(model.customer.name, style: textStyleTitleListTile),
-            subtitle: Text(DateTime.parse(model.orderDate).toLocal().toString(),
+            subtitle: Text(
+                formatDate(DateTime.parse(model.orderDate),
+                    [dd, '/', mm, '/', yyyy, '  ', hh, ':', nn, ' ', am]),
                 style: textStyleSubtitleListTile),
           ),
           ListTile(

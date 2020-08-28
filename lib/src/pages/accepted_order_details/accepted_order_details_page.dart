@@ -101,7 +101,7 @@ class AcceptedOrderDetailsPage extends StatelessWidget {
             ),
             Text(
                 formatDate(DateTime.parse(model.orderDate),
-                    [dd, '/', mm, '/', yyyy, '  ', hh, ':', nn]),
+                    [dd, '/', mm, '/', yyyy, '  ', hh, ':', nn, ' ', am]),
                 style: textStyleSubtitleListTile),
           ],
         ),
