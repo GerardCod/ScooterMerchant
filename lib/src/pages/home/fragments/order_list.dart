@@ -1,3 +1,4 @@
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:scootermerchant/src/blocs/order_bloc_provider.dart';
 import 'package:scootermerchant/src/blocs/provider.dart';
@@ -14,7 +15,7 @@ class OrderList extends StatelessWidget {
     final orderListBloc = Provider.orderBlocProviderOf(context);
     final size = MediaQuery.of(context).size;
     orderListBloc.changeOrderList(null);
-    orderListBloc.getOrders(status: status['order_ready'], inProcess: true);
+    orderListBloc.getOrders();
     return _listStreamBuilder(orderListBloc, size);
   }
 
@@ -73,7 +74,9 @@ class OrderList extends StatelessWidget {
               size: 48.0,
             ),
             title: Text(model.customer.name, style: textStyleTitleListTile),
-            subtitle: Text(DateTime.parse(model.orderDate).toLocal().toString(),
+            subtitle: Text(
+                formatDate(DateTime.parse(model.orderDate),
+                    [dd, '/', mm, '/', yyyy, '  ', hh, ':', nn, ' ', am]),
                 style: textStyleSubtitleListTile),
           ),
           ListTile(
@@ -82,6 +85,7 @@ class OrderList extends StatelessWidget {
               style: textStyleWordDescListTile,
             ),
             trailing: Icon(Icons.keyboard_arrow_right),
+            subtitle: Text('Ver pedido completo', style: textStyleLinkTile),
             onTap: () => this._navigateToDetails(context, model),
           ),
           ButtonBar(

@@ -37,7 +37,7 @@ class _HomePageState extends State<HomePage> {
             ),
             floating: false,
             pinned: true,
-            expandedHeight: 160,
+            expandedHeight: 120,
             iconTheme: IconThemeData(color: Colors.white),
             automaticallyImplyLeading: false,
             flexibleSpace: FlexibleSpaceBar(
