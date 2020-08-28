@@ -22,11 +22,23 @@ const secondaryColor = Color(0xff3B5998);
 const textColorTF = Color(0xffFF724C);
 const backgroundBtnFacebook = Color(0xFF3B5998);
 const textColorWhite = Colors.white;
+const colorSuccess = Color(0xff56C568);
+const colorDanger = Color(0xffEB5757);
+const colorInformation = Color(0xff3FA2F7);
 
 final paddingButtons = EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0);
 final radiusButtons = RoundedRectangleBorder(
   borderRadius: BorderRadius.circular(20.0),
 );
+
+final paddingChips = EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0);
+final radiusChips = BorderRadius.circular(20.0);
+
+final textStyleStatusChip = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: 10.0,
+    color: Colors.white,
+    fontWeight: FontWeight.bold);
 
 final textStyleLinkTile = TextStyle(
     fontFamily: fontFamily,

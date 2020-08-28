@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:scootermerchant/src/blocs/order_bloc_provider.dart';
 import 'package:scootermerchant/src/blocs/provider.dart';
 import 'package:scootermerchant/src/models/order_model.dart';
+import 'package:scootermerchant/src/widgets/status_chip.dart';
 import 'package:scootermerchant/utilities/constants.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -62,16 +63,26 @@ class OrderHistory extends StatelessWidget {
       borderOnForeground: true,
       child: Column(
         children: <Widget>[
-          ListTile(
-            leading: Icon(
-              Icons.person,
-              size: 48.0,
-            ),
-            title: Text(model.customer.name, style: textStyleTitleListTile),
-            subtitle: Text(
-                formatDate(DateTime.parse(model.orderDate),
-                    [dd, '/', mm, '/', yyyy, '  ', hh, ':', nn, ' ', am]),
-                style: textStyleSubtitleListTile),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Icon(
+                Icons.person,
+                size: 48.0,
+              ),
+              Column(
+                children: <Widget>[
+                  Text(model.customer.name, style: textStyleTitleListTile),
+                  Text(
+                      formatDate(DateTime.parse(model.orderDate),
+                          [dd, '/', mm, '/', yyyy, '  ', hh, ':', nn, ' ', am]),
+                      style: textStyleSubtitleListTile),
+                ],
+              ),
+              StatusChipFactory(
+                statusId: model.orderStatus.id,
+              )
+            ],
           ),
           ListTile(
             title: Text(
