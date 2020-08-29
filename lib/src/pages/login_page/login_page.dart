@@ -126,6 +126,8 @@ class LoginPage extends StatelessWidget {
     final response = await bloc.login(user);
     if (response['ok']) {
       Navigator.of(context).pushReplacementNamed('home');
+    } else {
+      _showSnackbar(context, 'Usuario o contraseña incorrectos.', colorDanger);
     }
   }
 
@@ -165,5 +167,14 @@ class LoginPage extends StatelessWidget {
         );
       },
     );
+  }
+
+  void _showSnackbar(BuildContext context, String message, Color color) {
+    final SnackBar snackbar = SnackBar(
+      content: Text(message, style: textStyleSnackBar),
+      backgroundColor: color,
+    );
+
+    Scaffold.of(context).showSnackBar(snackbar);
   }
 }

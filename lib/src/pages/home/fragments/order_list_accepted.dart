@@ -82,6 +82,7 @@ class OrderListAccepted extends StatelessWidget {
               model.details[0].productName,
               style: textStyleWordDescListTile,
             ),
+            subtitle: Text('Ver pedido completo', style: textStyleLinkTile),
             trailing: Icon(Icons.keyboard_arrow_right),
             onTap: () => this._navigateToDetails(model, context),
           ),
