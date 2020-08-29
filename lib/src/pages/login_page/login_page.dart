@@ -56,7 +56,9 @@ class LoginPage extends StatelessWidget {
             width: size.width,
           ),
           FlatButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pushNamed('forgotPassword');
+              },
               child: Text('Olvidé mi contraseña', style: textHypervincule)),
         ],
       ),
@@ -83,6 +85,7 @@ class LoginPage extends StatelessWidget {
           Text(
             'Bienvenido querido comerciante',
             style: textStyleTitleListTile,
+            textAlign: TextAlign.center,
           ),
           Expanded(
             child: Container(),

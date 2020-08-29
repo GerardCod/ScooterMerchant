@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:scootermerchant/src/models/merchant_model.dart';
 import 'package:scootermerchant/src/preferences/merchant_preferences.dart';
@@ -43,5 +44,27 @@ class LoginProvider {
 
   Future<bool> logout() async {
     return await this._prefs.clearPreferences();
+  }
+
+  Future<Map<String, dynamic>> forgotPassword({@required String email}) async {
+    try {
+      final response = await http
+          .post(_baseUrl + 'users/forgot-password/', body: {'username': email});
+
+      if (response.statusCode >= 400) {
+        print(response.body);
+        return {
+          'ok': false,
+          'message': 'Error al enviar el email de recuperación'
+        };
+      } else {
+        String source = Utf8Decoder().convert(response.bodyBytes);
+        Map<String, dynamic> decodedData = json.decode(source);
+        print(decodedData);
+        return {'ok': true, 'message': 'Email enviado. Revisa tu email'};
+      }
+    } catch (e) {
+      throw e;
+    }
   }
 }
