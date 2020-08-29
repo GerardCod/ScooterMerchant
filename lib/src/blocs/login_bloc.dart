@@ -21,6 +21,11 @@ class LoginBloc with Validators {
     return await _provider.forgotPassword(email: email);
   }
 
+  Future<Map<String, dynamic>> changePassword(
+      {@required String password, @required String token}) async {
+    return await _provider.changePassword(password: password, token: token);
+  }
+
   Stream<String> get emailStream =>
       _emailController.stream.transform(validateEmail);
 

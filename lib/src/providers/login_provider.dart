@@ -67,4 +67,25 @@ class LoginProvider {
       throw e;
     }
   }
+
+  Future<Map<String, dynamic>> changePassword(
+      {@required String password, @required String token}) async {
+    try {
+      final response =
+          await http.post(_baseUrl + 'users/recover-password/', body: {
+        'token': token,
+        'password': password,
+      });
+
+      if (response.statusCode >= 400) {
+        return {'ok': false, 'message': 'Error al cambiar la contraseña.'};
+      } else {
+        String source = Utf8Decoder().convert(response.bodyBytes);
+        Map<String, dynamic> decodedData = json.decode(source);
+        return {'ok': true, 'message': 'Contraseña cambiada con éxito.'};
+      }
+    } catch (e) {
+      return {'ok': false, 'message': e.toString()};
+    }
+  }
 }
