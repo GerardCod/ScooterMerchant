@@ -21,7 +21,7 @@ class LoginBloc with Validators {
     return await _provider.forgotPassword(email: email);
   }
 
-  Future<Map<String, dynamic>> changePassword(
+  Future<Map<String, dynamic>> updatePassword(
       {@required String password, @required String token}) async {
     return await _provider.changePassword(password: password, token: token);
   }

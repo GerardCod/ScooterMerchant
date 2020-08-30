@@ -10,7 +10,6 @@ import '../../../utilities/constants.dart';
 import '../../blocs/order_bloc_provider.dart';
 import '../../blocs/provider.dart';
 import '../../models/order_model.dart';
-import '../../models/order_model.dart';
 
 class NotificationOrderDetailsPage extends StatelessWidget {
   OrderModel orderModel;
@@ -116,7 +115,6 @@ class NotificationOrderDetailsPage extends StatelessWidget {
           bloc.order.customer.name,
           style: TextStyle(
             color: Colors.black,
-
           ),
         ),
         Text(

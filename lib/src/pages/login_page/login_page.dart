@@ -3,6 +3,7 @@ import 'package:scootermerchant/src/blocs/login_bloc.dart';
 import 'package:scootermerchant/src/blocs/provider.dart';
 import 'package:scootermerchant/src/models/auth_model.dart';
 import 'package:scootermerchant/utilities/constants.dart';
+import 'package:scootermerchant/utilities/functions.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key key}) : super(key: key);
@@ -127,7 +128,7 @@ class LoginPage extends StatelessWidget {
     if (response['ok']) {
       Navigator.of(context).pushReplacementNamed('home');
     } else {
-      _showSnackbar(context, 'Usuario o contraseña incorrectos.', colorDanger);
+      showSnackBar(context, 'Usuario o contraseña incorrectos.', colorDanger);
     }
   }
 
@@ -167,14 +168,5 @@ class LoginPage extends StatelessWidget {
         );
       },
     );
-  }
-
-  void _showSnackbar(BuildContext context, String message, Color color) {
-    final SnackBar snackbar = SnackBar(
-      content: Text(message, style: textStyleSnackBar),
-      backgroundColor: color,
-    );
-
-    Scaffold.of(context).showSnackBar(snackbar);
   }
 }

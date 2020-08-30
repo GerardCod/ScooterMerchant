@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scootermerchant/src/blocs/login_bloc.dart';
 import 'package:scootermerchant/src/blocs/provider.dart';
 import 'package:scootermerchant/utilities/constants.dart';
+import 'package:scootermerchant/utilities/functions.dart';
 
 class ForgotPasswordPage extends StatelessWidget {
   const ForgotPasswordPage({Key key}) : super(key: key);
@@ -145,20 +146,9 @@ class ForgotPasswordPage extends StatelessWidget {
     final response = await bloc.forgotPassword(email: email);
 
     if (response['ok']) {
-      _showSnackbar(context, response['message'], colorSuccess);
+      showSnackBar(context, response['message'], colorSuccess);
     } else {
-      _showSnackbar(context, response['message'], colorDanger);
+      showSnackBar(context, response['message'], colorDanger);
     }
-  }
-
-  void _showSnackbar(BuildContext context, String message, Color color) {
-    final SnackBar snackbar = SnackBar(
-      content: Text(
-        message,
-        style: textStyleSnackBar,
-      ),
-      backgroundColor: color,
-    );
-    Scaffold.of(context).showSnackBar(snackbar);
   }
 }

@@ -5,7 +5,7 @@ import 'package:scootermerchant/src/pages/home/home_page.dart';
 import 'package:scootermerchant/src/pages/login_page/login_page.dart';
 import 'package:scootermerchant/src/pages/notification_order_details/notification_order_details_page.dart';
 import 'package:scootermerchant/src/pages/order_details/order_details_page.dart';
-import 'package:scootermerchant/src/pages/settings_page/change_password.dart';
+import 'package:scootermerchant/src/pages/change_password/change_password.dart';
 import 'package:scootermerchant/src/pages/settings_page/settings_page.dart';
 import 'package:scootermerchant/src/preferences/merchant_preferences.dart';
 
