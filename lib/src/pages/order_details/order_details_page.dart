@@ -98,7 +98,9 @@ class OrderDetailsPage extends StatelessWidget {
           ),
           SizedBox(height: 40),
           // _actions(context: context, model: model, provider: bloc),
-          _actionButtons(bloc, context, scaffoldKey, model),
+          model.inProcess == true
+              ? _actionButtonsInProcess(bloc, context, scaffoldKey, model)
+              : _actionButtons(bloc, context, scaffoldKey, model),
         ],
       ),
     );
@@ -372,19 +374,23 @@ class OrderDetailsPage extends StatelessWidget {
           title: Wrap(
             children: <Widget>[
               Text(
-                'Confirmación de rechazo',
+                order.inProcess == true
+                    ? 'Confirmación de cancelación'
+                    : 'Confirmación de rechazo',
                 style: textStyleOrderDetailsSectionTitle,
               ),
               Divider()
             ],
           ),
           // elevation: 10.0,
-          content: 
-          // Text('Something'),
-          _dialogContent(order, bloc),
+          content:
+              // Text('Something'),
+              _dialogContent(order, bloc),
           actions: <Widget>[
             _buttonCancel(context),
-            _buttonRejection(bloc, context, scaffoldKey, order)
+            order.inProcess == true
+                ? _buttonCancelation(bloc, context, scaffoldKey, order)
+                : _buttonRejection(bloc, context, scaffoldKey, order)
           ],
         );
       },
@@ -395,35 +401,42 @@ class OrderDetailsPage extends StatelessWidget {
     return Wrap(
       children: <Widget>[
         Text(
-          '¿En verdad quieres rechazar este pedido?',
+          order.inProcess == true
+              ? '¿En verdad quieres cancelar este pedido?'
+              : '¿En verdad quieres rechazar este pedido?',
           style: textStyleTitleListTile,
         ),
         Padding(
           padding: EdgeInsets.only(bottom: 10),
           child: Text(
-            'Escribe un mensaje para que ${order.customer.name} sepa por qué rechazaste su pedido',
+            order.inProcess == true
+                ? 'Escribe un mensaje para que ${order.customer.name} sepa por qué cancelaste su pedido'
+                : 'Escribe un mensaje para que ${order.customer.name} sepa por qué rechazaste su pedido',
             style: textStyleSubtitleListTile,
           ),
         ),
-        _textFieldReasonRejection(bloc),
+        _textFieldReasonRejection(bloc, order),
       ],
     );
   }
 
-  Widget _textFieldReasonRejection(OrderBlocProvider bloc) {
+  Widget _textFieldReasonRejection(OrderBlocProvider bloc, OrderModel order) {
     return StreamBuilder<String>(
-      stream: bloc.rejectReasonStream,
+      stream: order.inProcess == true
+          ? bloc.cancelReasonStream
+          : bloc.rejectReasonStream,
       builder: (context, snapshot) {
         return TextField(
-          keyboardType: TextInputType.text,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            labelText: 'Escribe el mensaje',
-            contentPadding: EdgeInsets.all(16.0),
-            errorText: snapshot.error,
-          ),
-          onChanged: bloc.changeRejectReason,
-        );
+            keyboardType: TextInputType.text,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'Escribe el mensaje',
+              contentPadding: EdgeInsets.all(16.0),
+              errorText: snapshot.error,
+            ),
+            onChanged: order.inProcess == true
+                ? bloc.changeCancelReason
+                : bloc.changeRejectReason);
       },
     );
   }
@@ -450,7 +463,8 @@ class OrderDetailsPage extends StatelessWidget {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(5.0),
                 side: BorderSide(
-                    color: bloc.rejectReason == null || bloc.rejectReason.length == 0
+                    color: bloc.rejectReason == null ||
+                            bloc.rejectReason.length == 0
                         ? Colors.grey
                         : primaryColor),
               ),
@@ -459,7 +473,8 @@ class OrderDetailsPage extends StatelessWidget {
                   Text(
                     'Aceptar',
                     style: TextStyle(
-                        color:bloc.rejectReason == null ||  bloc.rejectReason.length == 0
+                        color: bloc.rejectReason == null ||
+                                bloc.rejectReason.length == 0
                             ? Colors.grey
                             : primaryColor),
                   ),
@@ -522,60 +537,183 @@ class OrderDetailsPage extends StatelessWidget {
     );
   }
 
-  // Widget _actions(
-  //     {OrderBlocProvider provider, OrderModel model, BuildContext context}) {
-  //   return ButtonBar(
-  //     alignment: MainAxisAlignment.center,
-  //     children: <Widget>[
-  //       RaisedButton(
-  //           padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 8.0),
-  //           shape: RoundedRectangleBorder(
-  //               borderRadius: BorderRadius.all(Radius.circular(10.0))),
-  //           color: primaryColor,
-  //           child: Text('Aceptar', style: textStyleBtnComprar),
-  //           onPressed: () => _acceptOrder(model, provider, context)),
-  //       RaisedButton(
-  //         padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 8.0),
-  //         shape: RoundedRectangleBorder(
-  //             borderRadius: BorderRadius.all(Radius.circular(10.0))),
-  //         onPressed: () => _showRejectDialog(
-  //             bloc: provider, context: context, model: model),
-  //         color: Colors.white,
-  //         elevation: 0.0,
-  //         child: Text(
-  //           'Cancelar',
-  //           style: signinLogin,
-  //         ),
-  //       )
-  //     ],
-  //   );
+  // void _showSnackBar(BuildContext context, String text) {
+  //   final SnackBar snackBar = SnackBar(content: Text(text));
+  //   Scaffold.of(context).showSnackBar(snackBar);
   // }
 
-  // void _acceptOrder(
-  //     OrderModel model, OrderBlocProvider bloc, BuildContext context) async {
-  //   final Map<String, dynamic> response = await bloc.acceptOrder(model);
-  //   if (response['ok']) {
-  //     _showSnackBar(context, 'El pedido ha sido aceptado');
-  //   } else {
-  //     _showSnackBar(context, 'Ocurrió un error al aceptar el pedido');
-  //   }
-  // }
+  //  InProcess
 
-  // Future<void> _showRejectDialog(
-  //     {OrderBlocProvider bloc, OrderModel model, BuildContext context}) async {
-  //   return await showDialog(
-  //       context: context,
-  //       barrierDismissible: false,
-  //       builder: (BuildContext context) {
-  //         return OrderRejectDialog(
-  //           bloc: bloc,
-  //           order: model,
-  //         );
-  //       });
-  // }
+  Widget _actionButtonsInProcess(OrderBlocProvider bloc, BuildContext context,
+      GlobalKey<ScaffoldState> scaffoldKey, OrderModel order) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        Expanded(
+          flex: 10,
+          child: _buttonFinished(bloc, context, scaffoldKey, order),
+        ),
+        Expanded(flex: 1, child: Container()),
+        Expanded(
+          flex: 10,
+          child: _buttonCancelOrder(bloc, context, scaffoldKey, order),
+        )
+      ],
+    );
+  }
 
-  void _showSnackBar(BuildContext context, String text) {
-    final SnackBar snackBar = SnackBar(content: Text(text));
-    Scaffold.of(context).showSnackBar(snackBar);
+  Widget _buttonFinished(OrderBlocProvider bloc, BuildContext context,
+      GlobalKey<ScaffoldState> scaffoldKey, OrderModel order) {
+    return RaisedButton(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(5.0),
+        side: BorderSide(color: secondaryColor),
+      ),
+      color: secondaryColor,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          Text(
+            'Terminado',
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          StreamBuilder<bool>(
+            stream: bloc.loaderFinishedOrderStream,
+            builder: (context, snapshot) {
+              return Visibility(
+                child: SizedBox(
+                  width: 25,
+                  height: 25,
+                  child: CircularProgressIndicator(
+                    backgroundColor: Colors.white,
+                  ),
+                ),
+                visible: snapshot.hasData && bloc.loaderFinishedOrder == true,
+              );
+            },
+          )
+        ],
+      ),
+      onPressed: () =>
+          _onPressedButtonFinished(bloc, context, scaffoldKey, order),
+    );
+  }
+
+  void _onPressedButtonFinished(OrderBlocProvider bloc, BuildContext context,
+      GlobalKey<ScaffoldState> scaffoldKey, OrderModel order) async {
+    Map<String, dynamic> response = await bloc.orderFinshed(order);
+    if (response['ok']) {
+      scaffoldKey.currentState
+          .showSnackBar(_createSnackBar(Colors.green, response['message']))
+          .closed
+          .then((value) {
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (BuildContext context) => HomePage()),
+            ModalRoute.withName('homePage'));
+      });
+    } else {
+      print(response['message']);
+      scaffoldKey.currentState
+          .showSnackBar(_createSnackBar(Colors.red, response['message']));
+    }
+  }
+
+  Widget _buttonCancelOrder(OrderBlocProvider bloc, BuildContext context,
+      GlobalKey<ScaffoldState> scaffoldKey, OrderModel order) {
+    return RaisedButton(
+      child: Text(
+        'Cancelar',
+        style: TextStyle(color: secondaryColor, fontWeight: FontWeight.bold),
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(5.0),
+        side: BorderSide(color: secondaryColor),
+      ),
+      color: Colors.white,
+      onPressed: () => _showAlert(context, bloc, scaffoldKey, order),
+    );
+  }
+
+  Widget _buttonCancelation(OrderBlocProvider bloc, BuildContext context,
+      GlobalKey<ScaffoldState> scaffoldKey, OrderModel order) {
+    return StreamBuilder<String>(
+        stream: bloc.cancelReasonStream,
+        builder: (context, snapshot) {
+          return RaisedButton(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5.0),
+                side: BorderSide(
+                    color: bloc.cancelReason == null ||
+                            bloc.cancelReason.length == 0
+                        ? Colors.grey
+                        : primaryColor),
+              ),
+              child: Row(
+                children: <Widget>[
+                  Text(
+                    'Aceptar',
+                    style: TextStyle(
+                        color: bloc.cancelReason == null ||
+                                bloc.cancelReason.length == 0
+                            ? Colors.grey
+                            : primaryColor),
+                  ),
+                  StreamBuilder<bool>(
+                    stream: bloc.loaderCancelOrderStream,
+                    builder: (context, snapshot) {
+                      return Visibility(
+                        child: SizedBox(
+                          width: 25,
+                          height: 25,
+                          child: CircularProgressIndicator(
+                            backgroundColor: Colors.white,
+                          ),
+                        ),
+                        visible:
+                            snapshot.hasData && bloc.loaderCancelOrder == true,
+                      );
+                    },
+                  )
+                ],
+              ),
+              color: Colors.white,
+              padding: paddingButtons,
+              onPressed: bloc.cancelReason == null ||
+                      bloc.cancelReason.length == 0
+                  ? null
+                  : () =>
+                      _buttonCancelPressed(bloc, context, scaffoldKey, order));
+        });
+  }
+
+  void _buttonCancelPressed(OrderBlocProvider bloc, BuildContext context,
+      GlobalKey<ScaffoldState> scaffoldKey, OrderModel order) async {
+    Map<String, dynamic> response =
+        await bloc.cancelOrder(order, bloc.cancelReason);
+    if (response['ok']) {
+      print(response['message']);
+      
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (BuildContext context) => HomePage()),
+          ModalRoute.withName('homePage'));
+    } else {
+      print(response['message']);
+      Navigator.pop(context);
+      scaffoldKey.currentState
+          .showSnackBar(_createSnackBar(Colors.green, response['message']))
+          .closed
+          .then((value) {
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (BuildContext context) => HomePage()),
+            ModalRoute.withName('homePage'));
+      });
+    }
   }
 }

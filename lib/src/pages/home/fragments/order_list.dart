@@ -85,7 +85,7 @@ class OrderList extends StatelessWidget {
           //   ),
           //   trailing: Icon(Icons.keyboard_arrow_right),
           //   subtitle: Text('Ver pedido completo', style: textStyleLinkTile),
-          //   onTap: () => this._navigateToDetails(context, model),
+          //   onTap: () => this._navigateToDetails(context, xmodel),
           // ),
           // ButtonBar(
           //   alignment: MainAxisAlignment.start,
@@ -119,12 +119,12 @@ class OrderList extends StatelessWidget {
     Navigator.pushNamed(context, 'orderDetails', arguments: model);
   }
 
-  void _acceptOrder(OrderModel model, OrderBlocProvider bloc) async {
-    final Map<String, dynamic> response = await bloc.acceptOrder(model);
-    if (response['ok']) {
-      await bloc.getOrders(status: status['order_ready'], inProcess: true);
-    }
-  }
+  // void _acceptOrder(OrderModel model, OrderBlocProvider bloc) async {
+  //   final Map<String, dynamic> response = await bloc.acceptOrder(model);
+  //   if (response['ok']) {
+  //     await bloc.getOrders(status: status['order_ready'], inProcess: true);
+  //   }
+  // }
 
   // Future<void> _showRejectDialog(
   //     {OrderBlocProvider bloc, OrderModel model, BuildContext context}) async {
