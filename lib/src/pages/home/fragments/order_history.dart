@@ -80,7 +80,7 @@ class OrderHistory extends StatelessWidget {
                 ],
               ),
               StatusChipFactory(
-                statusId: model.orderStatus.id,
+                status: model.orderStatus.name,
               )
             ],
           ),

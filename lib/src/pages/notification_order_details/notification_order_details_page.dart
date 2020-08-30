@@ -191,7 +191,7 @@ class NotificationOrderDetailsPage extends StatelessWidget {
         Expanded(
           flex: 1,
           child: Text(
-            product.quantity.toString(),
+            'x'+product.quantity.toString(),
             style: TextStyle(
               color: Colors.black,
               fontSize: 18,

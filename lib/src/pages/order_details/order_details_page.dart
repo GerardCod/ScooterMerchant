@@ -1,4 +1,3 @@
-import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:scootermerchant/src/blocs/order_bloc_provider.dart';
 import 'package:scootermerchant/src/blocs/provider.dart';
@@ -166,7 +165,7 @@ class OrderDetailsPage extends StatelessWidget {
         Expanded(
           flex: 1,
           child: Text(
-            product.quantity.toString(),
+            'x' + product.quantity.toString(),
             style: TextStyle(
               color: Colors.black,
               fontSize: 18,
@@ -697,7 +696,7 @@ class OrderDetailsPage extends StatelessWidget {
         await bloc.cancelOrder(order, bloc.cancelReason);
     if (response['ok']) {
       print(response['message']);
-      
+
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (BuildContext context) => HomePage()),
