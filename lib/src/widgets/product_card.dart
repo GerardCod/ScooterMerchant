@@ -10,10 +10,15 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       margin: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
-      shape: radiusButtons,
-      shadowColor: Color.fromRGBO(0, 0, 0, 0.25),
-      child: Row(
-        children: <Widget>[_containerImage(product), _containerInfo(product)],
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(5.0),
+      ),
+      shadowColor: Color.fromRGBO(0, 0, 0, 0.5),
+      child: InkWell(
+        child: Row(
+          children: <Widget>[_containerImage(product), _containerInfo(product)],
+        ),
+        onTap: () {},
       ),
     );
   }
@@ -22,9 +27,8 @@ class ProductCard extends StatelessWidget {
     return Container(
       width: 48.0,
       height: 48.0,
-      child: Image(
-        image: NetworkImage(product.picture?.toString()),
-        fit: BoxFit.cover,
+      decoration: BoxDecoration(
+        color: primaryColor,
       ),
     );
   }
@@ -34,10 +38,11 @@ class ProductCard extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
               product.name,
-              style: textStyleNeed,
+              style: textStyleTitleListTile,
             ),
             Text(
               'Precio: ${product.price}',

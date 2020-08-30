@@ -7,7 +7,11 @@ class ProductBlocProvider {
 
   final _productListController = BehaviorSubject<List<Product>>();
 
-  Future<void> getProducts() async {}
+  Future<List<Product>> getProducts() async {
+    final response = await _productProvider.getProducts();
+    changeProductList(response);
+    return response;
+  }
 
   Function(List<Product>) get changeProductList =>
       _productListController.sink.add;

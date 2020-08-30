@@ -2,12 +2,12 @@ class Product {
   int id;
   String name;
   String description;
-  Null descriptionLong;
+  String descriptionLong;
   int stock;
   Category category;
   double price;
   int categoryId;
-  Null picture;
+  String picture;
   int merchant;
   int totalSales;
   Status status;
@@ -85,7 +85,7 @@ class Product {
 class Category {
   int id;
   String name;
-  Null picture;
+  String picture;
   Status status;
 
   Category({this.id, this.name, this.picture, this.status});

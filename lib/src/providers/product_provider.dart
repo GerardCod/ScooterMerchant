@@ -13,35 +13,29 @@ class ProductProvider {
 
   Future<List<Product>> getProducts(
       {int status = 1, bool allProducts = false}) async {
-    try {
-      Uri uri;
+    Uri uri;
+    if (allProducts) {
+      uri = Uri.https(
+        _baseUri,
+        '/api/v1/merchants/${_prefs.merchant.id}/products/',
+      );
+    } else {
+      uri = Uri.https(
+          _baseUri, '/api/v1/merchants/${_prefs.merchant.id}/products/', {
+        'status': status.toString(),
+      });
+    }
 
-      if (allProducts) {
-        uri = Uri.https(
-          _baseUri,
-          '/api/v1/merchants/${_prefs.merchant.id}/products/',
-        );
-      } else {
-        uri = Uri.https(
-            _baseUri, '/api/v1/merchants/${_prefs.merchant.id}/products/', {
-          'status': status.toString(),
-        });
-      }
+    final http.Response response = await http
+        .get(uri, headers: {'Authorization': 'Bearer ' + _prefs.access});
 
-      final http.Response response = await http
-          .get(uri, headers: {'Authorization': 'Bearer ' + _prefs.access});
-
-      if (response.statusCode >= 400) {
-        return [];
-      }
-
-      String source = Utf8Decoder().convert(response.bodyBytes);
-      Map<String, dynamic> decodedData = json.decode(source);
-      List<dynamic> list = decodedData['results'];
-      return list.map((e) => Product.fromJson(e)).toList();
-    } catch (e) {
-      print(e);
+    if (response.statusCode >= 400) {
       return [];
     }
+
+    String source = Utf8Decoder().convert(response.bodyBytes);
+    Map<String, dynamic> decodedData = json.decode(source);
+    List<dynamic> list = decodedData['results'];
+    return list.map((e) => Product.fromJson(e)).toList();
   }
 }
