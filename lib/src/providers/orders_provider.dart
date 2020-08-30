@@ -101,15 +101,9 @@ class OrdersProvider {
       final Uri uri = Uri.https(_baseUri,
           '/api/v1/merchants/${merchant.id}/orders/${model.id}/reject_order/');
 
-<<<<<<< HEAD
     http.Response response = await http.put(uri,
         headers: {'Authorization': 'Bearer ' + _prefs.access},
         body: {'reason_rejection': message.toString()});
-=======
-      http.Response response = await http.put(uri,
-          headers: {'Authorization': 'Bearer ' + _prefs.access},
-          body: {'reason_rejection': message});
->>>>>>> f3122fd13fcf86916f4ddf7812b1e1f9cecc8b2e
 
       String source = Utf8Decoder().convert(response.bodyBytes);
 

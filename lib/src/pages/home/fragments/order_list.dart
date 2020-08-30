@@ -3,13 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:scootermerchant/src/blocs/order_bloc_provider.dart';
 import 'package:scootermerchant/src/blocs/provider.dart';
 import 'package:scootermerchant/src/models/order_model.dart';
-import 'package:scootermerchant/src/widgets/order_reject_dialog.dart';
 import 'package:scootermerchant/utilities/constants.dart';
 import 'package:shimmer/shimmer.dart';
 
 class OrderList extends StatelessWidget {
-  // const OrderList({Key key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     final orderListBloc = Provider.orderBlocProviderOf(context);
@@ -48,20 +45,20 @@ class OrderList extends StatelessWidget {
     );
   }
 
-  Widget _listBuilder(  
+  Widget _listBuilder(
       BuildContext context, AsyncSnapshot<List<OrderModel>> snapshot,
       {OrderBlocProvider bloc}) {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
-        (context, index) =>
-            _listItem(snapshot.data[index], context, bloc: bloc),
+        (context, index) => _listItem(snapshot.data[index], context,
+            bloc: bloc, index: snapshot.data.length),
         childCount: snapshot.hasData ? snapshot.data.length : 0,
       ),
     );
   }
 
   Widget _listItem(OrderModel model, BuildContext context,
-      {OrderBlocProvider bloc}) {
+      {OrderBlocProvider bloc, int index}) {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
       color: Colors.white,
@@ -69,45 +66,48 @@ class OrderList extends StatelessWidget {
       child: Column(
         children: <Widget>[
           ListTile(
-            leading: Icon(
-              Icons.person,
-              size: 48.0,
-            ),
+            onTap: () => this._navigateToDetails(context, model),
+            // leading: Icon(
+            //   Icons.person,
+            //   size: 48.0,
+            // ),
             title: Text(model.customer.name, style: textStyleTitleListTile),
             subtitle: Text(
                 formatDate(DateTime.parse(model.orderDate),
                     [dd, '/', mm, '/', yyyy, '  ', hh, ':', nn, ' ', am]),
                 style: textStyleSubtitleListTile),
+            trailing: Icon(Icons.arrow_forward_ios, color: Colors.grey,),
           ),
-          ListTile(
-            title: Text(
-              model.details[0].productName,
-              style: textStyleWordDescListTile,
-            ),
-            trailing: Icon(Icons.keyboard_arrow_right),
-            subtitle: Text('Ver pedido completo', style: textStyleLinkTile),
-            onTap: () => this._navigateToDetails(context, model),
-          ),
-          ButtonBar(
-            alignment: MainAxisAlignment.start,
-            children: <Widget>[
-              RaisedButton(
-                  child: Text('Aceptar', style: textStyleBtnComprar),
-                  shape: radiusButtons,
-                  color: primaryColor,
-                  padding: paddingButtons,
-                  onPressed: () => this._acceptOrder(model, bloc)),
-              RaisedButton(
-                  color: Colors.white,
-                  shape: radiusButtons,
-                  elevation: 0.0,
-                  padding: paddingButtons,
-                  child: Text('Rechazar', style: signinLogin),
-                  // onPressed: () => this._showRejectDialog(
-                  //     model: model, context: context, bloc: bloc)
-                  )
-            ],
-          )
+          // ListTile(
+          //   title: Text(
+          //     model.details[0].productName,
+          //     style: textStyleWordDescListTile,
+          //   ),
+          //   trailing: Icon(Icons.keyboard_arrow_right),
+          //   subtitle: Text('Ver pedido completo', style: textStyleLinkTile),
+          //   onTap: () => this._navigateToDetails(context, model),
+          // ),
+          // ButtonBar(
+          //   alignment: MainAxisAlignment.start,
+          //   children: <Widget>[
+          //     RaisedButton(
+          //       child: Text('Aceptar', style: textStyleBtnComprar),
+          //       shape: radiusButtons,
+          //       color: primaryColor,
+          //       padding: paddingButtons,
+          //       onPressed: () => this._acceptOrder(model, bloc),
+          //     ),
+          //     RaisedButton(
+          //         color: Colors.white,
+          //         shape: radiusButtons,
+          //         elevation: 0.0,
+          //         padding: paddingButtons,
+          //         child: Text('Rechazar', style: signinLogin),
+          //         // onPressed: () => this._showRejectDialog(
+          //         //     model: model, context: context, bloc: bloc)
+          //         )
+          //   ],
+          // )
         ],
       ),
       shadowColor: Color.fromRGBO(0, 0, 0, 0.75),

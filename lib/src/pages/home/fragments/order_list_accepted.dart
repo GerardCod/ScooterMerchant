@@ -83,7 +83,7 @@ class OrderListAccepted extends StatelessWidget {
               style: textStyleWordDescListTile,
             ),
             trailing: Icon(Icons.keyboard_arrow_right),
-            onTap: () => this._navigateToDetails(model, context),
+            onTap: () => this._navigateToDetails(context, model),
           ),
           _actions(model, bloc, context: context)
         ],
@@ -121,8 +121,8 @@ class OrderListAccepted extends StatelessWidget {
     );
   }
 
-  void _navigateToDetails(OrderModel model, BuildContext context) {
-    Navigator.of(context).pushNamed('acceptedOrderDetails', arguments: model);
+ void _navigateToDetails(BuildContext context, OrderModel model) {
+    Navigator.pushNamed(context, 'orderDetails', arguments: model);
   }
 
   Future<void> _showCancelDialog(

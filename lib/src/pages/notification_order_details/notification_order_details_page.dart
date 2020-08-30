@@ -102,6 +102,7 @@ class NotificationOrderDetailsPage extends StatelessWidget {
             color: Colors.grey,
           ),
           _productList(bloc),
+          
           SizedBox(height: 20),
           Align(
             alignment: Alignment.centerRight,
@@ -516,25 +517,13 @@ class NotificationOrderDetailsPage extends StatelessWidget {
 
   void _buttonRejectPressed(NotificationOrderDetailsPageBloc bloc,
       BuildContext context, GlobalKey<ScaffoldState> scaffoldKey) async {
-    // print('Reason Rejeciton============================================');
-    // print(bloc.reasonRejection);
     Map<String, dynamic> response =
         await bloc.rejectOrder(bloc.reasonRejection);
-    // print(bloc.responseReject);
-    // print(scaffoldKey);
     if (response['ok']) {
-      // print(response);
-      // Navigator.pop(context);
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (BuildContext context) => HomePage()),
           ModalRoute.withName('homePage'));
-      // scaffoldKey.currentState
-      //     .showSnackBar(_createSnackBar(Colors.green, response['message']))
-      //     .closed
-      //     .then((value) {
-      // });
-      // bloc?.drainStream();
     } else {
       Navigator.pop(context);
       scaffoldKey.currentState
@@ -546,20 +535,7 @@ class NotificationOrderDetailsPage extends StatelessWidget {
             MaterialPageRoute(builder: (BuildContext context) => HomePage()),
             ModalRoute.withName('homePage'));
       });
-      // Remove value from reasonRejeciton
-      // bloc?.drainStream();
     }
-
-    // if (bloc.responseAccept['ok']) {
-    // Navigator.pushAndRemoveUntil(
-    //     context,
-    //     MaterialPageRoute(builder: (BuildContext context) => HomePage()),
-    //     ModalRoute.withName('homePage'));
-  }
-
-  void _showSnackBar(BuildContext context, String text) {
-    final SnackBar snackBar = SnackBar(content: Text(text));
-    Scaffold.of(context).showSnackBar(snackBar);
   }
 
   _createSnackBar(Color color, String message) {
