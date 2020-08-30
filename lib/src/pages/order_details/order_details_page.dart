@@ -1,4 +1,3 @@
-import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:scootermerchant/src/blocs/order_bloc_provider.dart';
 import 'package:scootermerchant/src/blocs/provider.dart';
@@ -82,11 +81,9 @@ class OrderDetailsPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           _nameCustomer(model),
-
           Divider(
             color: Colors.grey,
           ),
-
           _productList(model),
           SizedBox(height: 20),
           Align(
@@ -97,7 +94,6 @@ class OrderDetailsPage extends StatelessWidget {
             ),
           ),
           SizedBox(height: 40),
-          // _actions(context: context, model: model, provider: bloc),
           model.inProcess == true
               ? _actionButtonsInProcess(bloc, context, scaffoldKey, model)
               : _actionButtons(bloc, context, scaffoldKey, model),
@@ -697,7 +693,7 @@ class OrderDetailsPage extends StatelessWidget {
         await bloc.cancelOrder(order, bloc.cancelReason);
     if (response['ok']) {
       print(response['message']);
-      
+
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (BuildContext context) => HomePage()),

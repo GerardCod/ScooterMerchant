@@ -1,9 +1,8 @@
-import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:scootermerchant/src/blocs/order_bloc_provider.dart';
 import 'package:scootermerchant/src/blocs/provider.dart';
 import 'package:scootermerchant/src/models/order_model.dart';
-import 'package:scootermerchant/utilities/constants.dart';
+import 'package:scootermerchant/src/widgets/order_card.dart';
 import 'package:shimmer/shimmer.dart';
 
 class OrderList extends StatelessWidget {
@@ -50,94 +49,18 @@ class OrderList extends StatelessWidget {
       {OrderBlocProvider bloc}) {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
-        (context, index) => _listItem(snapshot.data[index], context,
-            bloc: bloc, index: snapshot.data.length),
+        (context, index) => _listItem(snapshot.data[index], bloc),
         childCount: snapshot.hasData ? snapshot.data.length : 0,
       ),
     );
   }
 
-  Widget _listItem(OrderModel model, BuildContext context,
-      {OrderBlocProvider bloc, int index}) {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-      color: Colors.white,
-      borderOnForeground: true,
-      child: Column(
-        children: <Widget>[
-          ListTile(
-            onTap: () => this._navigateToDetails(context, model),
-            // leading: Icon(
-            //   Icons.person,
-            //   size: 48.0,
-            // ),
-            title: Text(model.customer.name, style: textStyleTitleListTile),
-            subtitle: Text(
-                formatDate(DateTime.parse(model.orderDate),
-                    [dd, '/', mm, '/', yyyy, '  ', hh, ':', nn, ' ', am]),
-                style: textStyleSubtitleListTile),
-            trailing: Icon(Icons.arrow_forward_ios, color: Colors.grey,),
-          ),
-          // ListTile(
-          //   title: Text(
-          //     model.details[0].productName,
-          //     style: textStyleWordDescListTile,
-          //   ),
-          //   trailing: Icon(Icons.keyboard_arrow_right),
-          //   subtitle: Text('Ver pedido completo', style: textStyleLinkTile),
-          //   onTap: () => this._navigateToDetails(context, xmodel),
-          // ),
-          // ButtonBar(
-          //   alignment: MainAxisAlignment.start,
-          //   children: <Widget>[
-          //     RaisedButton(
-          //       child: Text('Aceptar', style: textStyleBtnComprar),
-          //       shape: radiusButtons,
-          //       color: primaryColor,
-          //       padding: paddingButtons,
-          //       onPressed: () => this._acceptOrder(model, bloc),
-          //     ),
-          //     RaisedButton(
-          //         color: Colors.white,
-          //         shape: radiusButtons,
-          //         elevation: 0.0,
-          //         padding: paddingButtons,
-          //         child: Text('Rechazar', style: signinLogin),
-          //         // onPressed: () => this._showRejectDialog(
-          //         //     model: model, context: context, bloc: bloc)
-          //         )
-          //   ],
-          // )
-        ],
-      ),
-      shadowColor: Color.fromRGBO(0, 0, 0, 0.75),
-      elevation: 2.0,
+  Widget _listItem(OrderModel model, OrderBlocProvider bloc) {
+    return OrderCard(
+      model: model,
+      bloc: bloc,
     );
   }
-
-  void _navigateToDetails(BuildContext context, OrderModel model) {
-    Navigator.pushNamed(context, 'orderDetails', arguments: model);
-  }
-
-  // void _acceptOrder(OrderModel model, OrderBlocProvider bloc) async {
-  //   final Map<String, dynamic> response = await bloc.acceptOrder(model);
-  //   if (response['ok']) {
-  //     await bloc.getOrders(status: status['order_ready'], inProcess: true);
-  //   }
-  // }
-
-  // Future<void> _showRejectDialog(
-  //     {OrderBlocProvider bloc, OrderModel model, BuildContext context}) async {
-  //   return await showDialog(
-  //       context: context,
-  //       barrierDismissible: false,
-  //       builder: (BuildContext context) {
-  //         return OrderRejectDialog(
-  //           bloc: bloc,
-  //           order: model,
-  //         );
-  //       });
-  // }
 
   Widget _itemSkeleton(Size size) {
     return Padding(

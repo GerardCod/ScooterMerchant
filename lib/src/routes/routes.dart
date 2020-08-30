@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:scootermerchant/src/pages/accepted_order_details/accepted_order_details_page.dart';
 import 'package:scootermerchant/src/pages/forgot_password/forgot_password_page.dart';
 import 'package:scootermerchant/src/pages/home/home_page.dart';
 import 'package:scootermerchant/src/pages/login_page/login_page.dart';
@@ -13,7 +12,6 @@ final Map<String, Widget Function(BuildContext)> routes = {
   'login': (BuildContext context) => LoginPage(),
   'home': (BuildContext context) => HomePage(),
   'orderDetails': (BuildContext context) => OrderDetailsPage(),
-  'acceptedOrderDetails': (BuildContext context) => AcceptedOrderDetailsPage(),
   'notificationOrderDetails': (BuildContext context) =>
       NotificationOrderDetailsPage(),
   'settings': (BuildContext context) => SettingsPage(),
