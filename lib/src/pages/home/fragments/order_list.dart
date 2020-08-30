@@ -47,7 +47,7 @@ class OrderList extends StatelessWidget {
     );
   }
 
-  Widget _listBuilder(
+  Widget _listBuilder(  
       BuildContext context, AsyncSnapshot<List<OrderModel>> snapshot,
       {OrderBlocProvider bloc}) {
     return SliverList(
@@ -99,8 +99,9 @@ class OrderList extends StatelessWidget {
                   elevation: 0.0,
                   padding: paddingButtons,
                   child: Text('Rechazar', style: signinLogin),
-                  onPressed: () => this._showRejectDialog(
-                      model: model, context: context, bloc: bloc))
+                  // onPressed: () => this._showRejectDialog(
+                  //     model: model, context: context, bloc: bloc)
+                  )
             ],
           )
         ],
@@ -121,18 +122,18 @@ class OrderList extends StatelessWidget {
     }
   }
 
-  Future<void> _showRejectDialog(
-      {OrderBlocProvider bloc, OrderModel model, BuildContext context}) async {
-    return await showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return OrderRejectDialog(
-            bloc: bloc,
-            order: model,
-          );
-        });
-  }
+  // Future<void> _showRejectDialog(
+  //     {OrderBlocProvider bloc, OrderModel model, BuildContext context}) async {
+  //   return await showDialog(
+  //       context: context,
+  //       barrierDismissible: false,
+  //       builder: (BuildContext context) {
+  //         return OrderRejectDialog(
+  //           bloc: bloc,
+  //           order: model,
+  //         );
+  //       });
+  // }
 
   Widget _itemSkeleton(Size size) {
     return Padding(

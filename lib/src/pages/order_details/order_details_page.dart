@@ -142,8 +142,8 @@ class OrderDetailsPage extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 8.0),
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(10.0))),
-          onPressed: () => this._showRejectDialog(
-              bloc: provider, context: context, model: model),
+          // onPressed: () => this._showRejectDialog(
+          //     bloc: provider, context: context, model: model),
           color: Colors.white,
           elevation: 0.0,
           child: Text(
@@ -165,18 +165,18 @@ class OrderDetailsPage extends StatelessWidget {
     }
   }
 
-  Future<void> _showRejectDialog(
-      {OrderBlocProvider bloc, OrderModel model, BuildContext context}) async {
-    return await showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return OrderRejectDialog(
-            bloc: bloc,
-            order: model,
-          );
-        });
-  }
+  // Future<void> _showRejectDialog(
+  //     {OrderBlocProvider bloc, OrderModel model, BuildContext context}) async {
+  //   return await showDialog(
+  //       context: context,
+  //       barrierDismissible: false,
+  //       builder: (BuildContext context) {
+  //         return OrderRejectDialog(
+  //           bloc: bloc,
+  //           order: model,
+  //         );
+  //       });
+  // }
 
   void _showSnackBar(BuildContext context, String text) {
     final SnackBar snackBar = SnackBar(content: Text(text));
