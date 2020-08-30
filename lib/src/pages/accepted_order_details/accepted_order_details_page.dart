@@ -166,7 +166,7 @@ class AcceptedOrderDetailsPage extends StatelessWidget {
 
   void _orderReady(
       OrderModel model, OrderBlocProvider bloc, BuildContext context) async {
-    final response = await bloc.orderReady(model);
+    final response = await bloc.orderFinshed(model);
     if (response['ok']) {
       Navigator.of(context).pop();
     }

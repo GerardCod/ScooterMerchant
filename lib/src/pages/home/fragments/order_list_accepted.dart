@@ -84,7 +84,7 @@ class OrderListAccepted extends StatelessWidget {
             ),
             subtitle: Text('Ver pedido completo', style: textStyleLinkTile),
             trailing: Icon(Icons.keyboard_arrow_right),
-            onTap: () => this._navigateToDetails(model, context),
+            onTap: () => this._navigateToDetails(context, model),
           ),
           _actions(model, bloc, context: context)
         ],
@@ -122,8 +122,8 @@ class OrderListAccepted extends StatelessWidget {
     );
   }
 
-  void _navigateToDetails(OrderModel model, BuildContext context) {
-    Navigator.of(context).pushNamed('acceptedOrderDetails', arguments: model);
+ void _navigateToDetails(BuildContext context, OrderModel model) {
+    Navigator.pushNamed(context, 'orderDetails', arguments: model);
   }
 
   Future<void> _showCancelDialog(
@@ -138,7 +138,7 @@ class OrderListAccepted extends StatelessWidget {
   }
 
   void _orderReady(OrderModel model, OrderBlocProvider bloc) async {
-    final response = await bloc.orderReady(model);
+    final response = await bloc.orderFinshed(model);
     if (response['ok']) {
       bloc.getOrders(status: status['in_process'], inProcess: true);
     }

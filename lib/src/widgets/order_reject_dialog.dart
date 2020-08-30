@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:scootermerchant/src/blocs/order_bloc_provider.dart';
-import 'package:scootermerchant/src/models/order_model.dart';
+import 'package:scootermerchant/src/blocs/pages/notification_order_details_page_bloc.dart';
+import 'package:scootermerchant/src/pages/home/home_page.dart';
 import 'package:scootermerchant/utilities/constants.dart';
 
 class OrderRejectDialog extends StatelessWidget {
-  final OrderModel order;
-  final OrderBlocProvider bloc;
-  const OrderRejectDialog({Key key, this.order, this.bloc}) : super(key: key);
+  final NotificationOrderDetailsPageBloc bloc;
+  // final OrderModel order;
+  // final OrderBlocProvider bloc;
+  const OrderRejectDialog({this.bloc});
 
   @override
   Widget build(BuildContext context) {
@@ -17,19 +18,21 @@ class OrderRejectDialog extends StatelessWidget {
           style: textStyleOrderDetailsSectionTitle,
         ),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+          borderRadius: BorderRadius.all(
+            Radius.circular(20.0),
+          ),
         ),
         elevation: 10.0,
-        content: _dialogContent(),
+        content: _dialogContent(bloc),
         actions: <Widget>[
-          _cancelRejectButton(context),
-          _streamBuilderRejectButton(bloc, order)
+          _buttonCancelRejection(context),
+          _buttonRejection(bloc, context)
         ],
       ),
     );
   }
 
-  Widget _dialogContent() {
+  Widget _dialogContent(NotificationOrderDetailsPageBloc bloc) {
     return Column(
       children: <Widget>[
         Text(
@@ -40,47 +43,42 @@ class OrderRejectDialog extends StatelessWidget {
           height: 12.0,
         ),
         Text(
-          'Escribe un mensaje para que ${this.order.customer.name} sepa por qué rechazaste su pedido',
+          'Escribe un mensaje para que ${bloc.order.customer.name} sepa por qué rechazaste su pedido',
           style: textStyleSubtitleListTile,
         ),
         SizedBox(
           height: 8.0,
         ),
-        _reasonStreamBuilder(bloc),
+        _textFieldReasonRejection(bloc),
       ],
     );
   }
 
-  Widget _reasonStreamBuilder(OrderBlocProvider bloc) {
-    return StreamBuilder(
-      stream: bloc.rejectReasonStream,
-      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-        return _rejectReasonTextField(bloc, snapshot);
+  Widget _textFieldReasonRejection(NotificationOrderDetailsPageBloc bloc) {
+    return StreamBuilder<String>(
+      stream: bloc.reasonRejectionStream,
+      builder: (context, snapshot) {
+        return TextField(
+          keyboardType: TextInputType.text,
+          decoration: InputDecoration(
+            border: OutlineInputBorder(),
+            labelText: 'Mensaje',
+            contentPadding: EdgeInsets.all(16.0),
+            errorText: snapshot.error,
+          ),
+          onChanged: bloc.changeReasonRejection,
+        );
       },
     );
   }
 
-  Widget _rejectReasonTextField(
-      OrderBlocProvider bloc, AsyncSnapshot<String> snapshot) {
-    return TextField(
-      keyboardType: TextInputType.text,
-      decoration: InputDecoration(
-        border: OutlineInputBorder(),
-        labelText: 'Mensaje',
-        contentPadding: EdgeInsets.all(16.0),
-        errorText: snapshot.error,
-      ),
-      onChanged: bloc.changeRejectReason,
-    );
-  }
-
-  Widget _cancelRejectButton(BuildContext context) {
+  Widget _buttonCancelRejection(BuildContext context) {
     return RaisedButton(
       onPressed: () {
         Navigator.of(context).pop();
       },
       child: Text(
-        'No',
+        'Cancelar',
         style: textStyleBtnComprar,
       ),
       shape: radiusButtons,
@@ -89,34 +87,36 @@ class OrderRejectDialog extends StatelessWidget {
     );
   }
 
-  Widget _streamBuilderRejectButton(OrderBlocProvider bloc, OrderModel model) {
-    return StreamBuilder(
-      stream: bloc.rejectReasonStream,
-      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-        return FlatButton(
-          child: Text(
-            'Si',
-            style: signinLogin,
-          ),
-          color: Colors.white,
-          padding: paddingButtons,
-          onPressed: snapshot.hasData
-              ? () => this._rejectOrder(model, snapshot.data, context: context)
-              : null,
-        );
-      },
-    );
+  Widget _buttonRejection(
+      NotificationOrderDetailsPageBloc bloc, BuildContext context) {
+    return FlatButton(
+        child: Text(
+          'Aceptar',
+          style: signinLogin,
+        ),
+        color: Colors.white,
+        padding: paddingButtons,
+        onPressed: () => _onPreesedButtonReject(bloc, context));
   }
 
-  void _rejectOrder(OrderModel model, String message,
-      {BuildContext context}) async {
-    final response = await bloc.rejectOrder(model, message);
-    if (response['ok']) {
-      Navigator.of(context)
-          .pop({'ok': true, 'message': 'El pedido fue rechazado'});
-    } else {
-      Navigator.of(context)
-          .pop({'ok': false, 'message': 'Error al rechazar el pedido'});
-    }
+  void _onPreesedButtonReject(
+      NotificationOrderDetailsPageBloc bloc, BuildContext context) {
+    print('Reason Rejeciton============================================');
+    print(bloc.reasonRejection);
+    bloc.rejectOrder(bloc.reasonRejection);
+    // if (bloc.responseAccept['ok']) {
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (BuildContext context) => HomePage()),
+        ModalRoute.withName('homePage'));
+    //  print("bloc.responseAccept['ok']========================");
+    //  print(bloc.responseAccept['ok']);
+    // _showSnackBar(context, bloc.responseAccept['message']);
+    // } else {
+    //  print("bloc.responseAccept['false']========================");
+    //  print(bloc.responseAccept);
+    //  print(bloc.responseAccept['ok']);
+    // _showSnackBar(context, bloc.responseAccept['message']);
+    // }
   }
 }

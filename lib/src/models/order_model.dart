@@ -185,14 +185,26 @@ class Details {
   Null picture;
   int productId;
   int quantity;
+  List<MenuOptions> menuOptions;
 
-  Details({this.productName, this.picture, this.productId, this.quantity});
+  Details(
+      {this.productName,
+      this.picture,
+      this.productId,
+      this.quantity,
+      this.menuOptions});
 
   Details.fromJson(Map<String, dynamic> json) {
     productName = json['product_name'];
     picture = json['picture'];
     productId = json['product_id'];
     quantity = json['quantity'];
+    if (json['menu_options'] != null) {
+      menuOptions = new List<MenuOptions>();
+      json['menu_options'].forEach((v) {
+        menuOptions.add(new MenuOptions.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -201,6 +213,9 @@ class Details {
     data['picture'] = this.picture;
     data['product_id'] = this.productId;
     data['quantity'] = this.quantity;
+    if (this.menuOptions != null) {
+      data['details'] = this.menuOptions.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }
@@ -346,6 +361,63 @@ class Point {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['type'] = this.type;
     data['coordinates'] = this.coordinates;
+    return data;
+  }
+}
+
+class MenuOptions {
+  int id;
+  int menu;
+  String menuName;
+  List<Options> options;
+
+  MenuOptions({this.id, this.menu, this.menuName, this.options});
+
+  MenuOptions.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    menu = json['menu'];
+    menuName = json['menu_name'];
+    if (json['options'] != null) {
+      options = new List<Options>();
+      json['options'].forEach((v) {
+        options.add(new Options.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['menu'] = this.menu;
+    data['menu_name'] = this.menuName;
+    if (this.options != null) {
+      data['options'] = this.options.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class Options {
+  int id;
+  int option;
+  String optionName;
+  double priceOption;
+
+  Options({this.id, this.option, this.optionName, this.priceOption});
+
+  Options.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    option = json['option'];
+    optionName = json['option_name'];
+    priceOption = json['price_option'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['option'] = this.option;
+    data['option_name'] = this.optionName;
+    data['price_option'] = this.priceOption;
     return data;
   }
 }
