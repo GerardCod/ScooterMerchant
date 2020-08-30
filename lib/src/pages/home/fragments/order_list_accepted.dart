@@ -4,6 +4,7 @@ import 'package:scootermerchant/src/blocs/order_bloc_provider.dart';
 import 'package:scootermerchant/src/blocs/provider.dart';
 import 'package:scootermerchant/src/models/order_model.dart';
 import 'package:scootermerchant/src/widgets/cancel_order_dialog.dart';
+import 'package:scootermerchant/src/widgets/order_card.dart';
 import 'package:scootermerchant/utilities/constants.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -52,95 +53,13 @@ class OrderListAccepted extends StatelessWidget {
       {OrderBlocProvider orderBloc}) {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
-        (context, index) => _listItem(snapshot.data[index], context, orderBloc),
+        (context, index) => OrderCard(
+          model: snapshot.data[index],
+          bloc: orderBloc,
+        ),
         childCount: snapshot.hasData ? snapshot.data.length : 0,
       ),
     );
-  }
-
-  Widget _listItem(
-      OrderModel model, BuildContext context, OrderBlocProvider bloc) {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-      color: Colors.white,
-      borderOnForeground: true,
-      child: Column(
-        children: <Widget>[
-          ListTile(
-            leading: Icon(
-              Icons.person,
-              size: 48.0,
-            ),
-            title: Text(model.customer.name, style: textStyleTitleListTile),
-            subtitle: Text(
-                formatDate(DateTime.parse(model.orderDate),
-                    [dd, '/', mm, '/', yyyy, '  ', hh, ':', nn, ' ', am]),
-                style: textStyleSubtitleListTile),
-          ),
-          ListTile(
-            title: Text(
-              model.details[0].productName,
-              style: textStyleWordDescListTile,
-            ),
-            trailing: Icon(Icons.keyboard_arrow_right),
-            onTap: () => this._navigateToDetails(context, model),
-          ),
-          _actions(model, bloc, context: context)
-        ],
-      ),
-    );
-  }
-
-  Widget _actions(OrderModel model, OrderBlocProvider bloc,
-      {BuildContext context}) {
-    return ButtonBar(
-      alignment: MainAxisAlignment.start,
-      children: <Widget>[
-        RaisedButton(
-          child: Text(
-            'Terminado',
-            style: textStyleBtnComprar,
-          ),
-          padding: paddingButtons,
-          shape: radiusButtons,
-          color: primaryColor,
-          onPressed: () => this._orderReady(model, bloc),
-        ),
-        FlatButton(
-          child: Text(
-            'Cancelar',
-            style: signinLogin,
-          ),
-          padding: paddingButtons,
-          shape: radiusButtons,
-          color: Colors.white,
-          onPressed: () => this
-              ._showCancelDialog(bloc: bloc, model: model, context: context),
-        ),
-      ],
-    );
-  }
-
- void _navigateToDetails(BuildContext context, OrderModel model) {
-    Navigator.pushNamed(context, 'orderDetails', arguments: model);
-  }
-
-  Future<void> _showCancelDialog(
-      {OrderModel model, OrderBlocProvider bloc, BuildContext context}) async {
-    return await showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) => CancelOrderDialog(
-              bloc: bloc,
-              model: model,
-            ));
-  }
-
-  void _orderReady(OrderModel model, OrderBlocProvider bloc) async {
-    final response = await bloc.orderFinshed(model);
-    if (response['ok']) {
-      bloc.getOrders(status: status['in_process'], inProcess: true);
-    }
   }
 
   Widget _itemSkeleton(Size size) {

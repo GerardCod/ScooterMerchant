@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:scootermerchant/src/blocs/order_bloc_provider.dart';
 import 'package:scootermerchant/src/blocs/provider.dart';
 import 'package:scootermerchant/src/models/order_model.dart';
+import 'package:scootermerchant/src/widgets/order_card.dart';
 import 'package:scootermerchant/src/widgets/status_chip.dart';
 import 'package:scootermerchant/utilities/constants.dart';
 import 'package:shimmer/shimmer.dart';
@@ -51,49 +52,11 @@ class OrderHistory extends StatelessWidget {
       AsyncSnapshot<List<OrderModel>> snapshot, OrderBlocProvider bloc) {
     return SliverList(
         delegate: SliverChildBuilderDelegate(
-            (BuildContext context, int index) =>
-                _listItem(snapshot.data[index]),
+            (BuildContext context, int index) => OrderCard(
+                  model: snapshot.data[index],
+                  bloc: bloc,
+                ),
             childCount: snapshot.hasData ? snapshot.data.length : 0));
-  }
-
-  Widget _listItem(OrderModel model) {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-      color: Colors.white,
-      borderOnForeground: true,
-      child: Column(
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Icon(
-                Icons.person,
-                size: 48.0,
-              ),
-              Column(
-                children: <Widget>[
-                  Text(model.customer.name, style: textStyleTitleListTile),
-                  Text(
-                      formatDate(DateTime.parse(model.orderDate),
-                          [dd, '/', mm, '/', yyyy, '  ', hh, ':', nn, ' ', am]),
-                      style: textStyleSubtitleListTile),
-                ],
-              ),
-              StatusChipFactory(
-                statusId: model.orderStatus.id,
-              )
-            ],
-          ),
-          ListTile(
-            title: Text(
-              model.details[0].productName,
-              style: textStyleWordDescListTile,
-            ),
-            trailing: Icon(Icons.keyboard_arrow_right),
-          ),
-        ],
-      ),
-    );
   }
 
   Widget _itemSkeleton(Size size) {

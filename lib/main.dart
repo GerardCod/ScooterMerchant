@@ -4,14 +4,10 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:scootermerchant/src/blocs/provider.dart';
-import 'package:scootermerchant/src/pages/accepted_order_details/accepted_order_details_page.dart';
-import 'package:scootermerchant/src/pages/home/home_page.dart';
-import 'package:scootermerchant/src/pages/login_page.dart';
-import 'package:scootermerchant/src/pages/notification_order_details/notification_order_details_page.dart';
 import 'package:scootermerchant/src/preferences/merchant_preferences.dart';
 import 'package:scootermerchant/src/providers/notification_provider.dart';
+import 'package:scootermerchant/src/routes/routes.dart';
 import 'package:scootermerchant/utilities/constants.dart';
-import 'package:scootermerchant/src/pages/order_details/order_details_page.dart';
 import 'package:scootermerchant/utilities/functions.dart';
 
 FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
@@ -65,23 +61,10 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         theme:
             ThemeData(primaryColor: primaryColor, accentColor: secondaryColor),
-        routes: {
-          'login': (BuildContext context) => LoginPage(),
-          'home': (BuildContext context) => HomePage(),
-          'orderDetails': (BuildContext context) => OrderDetailsPage(),
-          'acceptedOrderDetails': (BuildContext context) => AcceptedOrderDetailsPage(),
-          'notificationOrderDetails': (BuildContext context) => NotificationOrderDetailsPage(),
-        },
+        routes: routes,
       ),
     );
   }
-}
-
-String getInitialRoute(MerchantPreferences prefs) {
-  if (prefs.access == null) {
-    return 'login';
-  }
-  return 'home';
 }
 
 Future<void> refreshToken(token, MerchantPreferences _prefs) async {
