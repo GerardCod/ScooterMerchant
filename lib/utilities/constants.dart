@@ -34,6 +34,12 @@ final radiusButtons = RoundedRectangleBorder(
 final paddingChips = EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0);
 final radiusChips = BorderRadius.circular(20.0);
 
+final textStyleSnackBar = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: 14.0,
+    color: Colors.white,
+    fontWeight: FontWeight.bold);
+
 final textStyleStatusChip = TextStyle(
     fontFamily: fontFamily,
     fontSize: 10.0,

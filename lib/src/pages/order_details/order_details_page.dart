@@ -81,11 +81,9 @@ class OrderDetailsPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           _nameCustomer(model),
-
           Divider(
             color: Colors.grey,
           ),
-
           _productList(model),
           SizedBox(height: 20),
           Align(
@@ -96,7 +94,6 @@ class OrderDetailsPage extends StatelessWidget {
             ),
           ),
           SizedBox(height: 40),
-          // _actions(context: context, model: model, provider: bloc),
           model.inProcess == true
               ? _actionButtonsInProcess(bloc, context, scaffoldKey, model)
               : _actionButtons(bloc, context, scaffoldKey, model),

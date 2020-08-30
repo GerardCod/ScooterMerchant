@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:scootermerchant/src/blocs/login_bloc.dart';
 import 'package:scootermerchant/src/blocs/provider.dart';
+import 'package:scootermerchant/src/models/merchant_model.dart';
+import 'package:scootermerchant/src/preferences/merchant_preferences.dart';
 
 class NavDrawer extends StatelessWidget {
   // const NavDrawer({Key key}) : super(key: key);
@@ -8,6 +10,8 @@ class NavDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final LoginBloc bloc = Provider.of(context);
+    final MerchantPreferences prefs = new MerchantPreferences();
+    final MerchantModel merchant = prefs.merchant;
     return Container(
       width: 250,
       child: Drawer(
@@ -17,7 +21,7 @@ class NavDrawer extends StatelessWidget {
               height: 100,
               child: DrawerHeader(
                 child: Text(
-                  'Nombre Comercio',
+                  merchant.merchantName,
                   style: TextStyle(fontSize: 25),
                 ),
                 // decoration: BoxDecoration(
@@ -31,7 +35,7 @@ class NavDrawer extends StatelessWidget {
             ListTile(
               leading: Icon(Icons.settings),
               title: Text('Configuración'),
-              onTap: () => {},
+              onTap: () => {Navigator.pushNamed(context, 'settings')},
             ),
             ListTile(
               leading: Icon(Icons.verified_user),

@@ -1,5 +1,8 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:scootermerchant/utilities/constants.dart';
+
 Map<String, dynamic> parseJwtPayLoad(String token) {
   final parts = token.split('.');
   if (parts.length != 3) {
@@ -32,4 +35,16 @@ String _decodeBase64(String str) {
   }
 
   return utf8.decode(base64Url.decode(output));
+}
+
+void showSnackBar(BuildContext context, String message, Color colorBackground) {
+  final snackBar = SnackBar(
+    content: Text(
+      message,
+      style: textStyleSnackBar,
+    ),
+    backgroundColor: colorBackground,
+  );
+
+  Scaffold.of(context).showSnackBar(snackBar);
 }

@@ -102,7 +102,6 @@ class NotificationOrderDetailsPage extends StatelessWidget {
             color: Colors.grey,
           ),
           _productList(bloc),
-          
           SizedBox(height: 20),
           Align(
             alignment: Alignment.centerRight,
@@ -361,8 +360,7 @@ class NotificationOrderDetailsPage extends StatelessWidget {
     Map<String, dynamic> response = await bloc.acceptOrder();
     if (response['ok']) {
       scaffoldKey.currentState
-          .showSnackBar(
-              _createSnackBar(Colors.green, response['message']))
+          .showSnackBar(_createSnackBar(Colors.green, response['message']))
           .closed
           .then((value) {
         Navigator.pushAndRemoveUntil(
@@ -371,8 +369,8 @@ class NotificationOrderDetailsPage extends StatelessWidget {
             ModalRoute.withName('homePage'));
       });
     } else {
-      scaffoldKey.currentState.showSnackBar(
-          _createSnackBar(Colors.red, response['message']));  
+      scaffoldKey.currentState
+          .showSnackBar(_createSnackBar(Colors.red, response['message']));
     }
   }
 

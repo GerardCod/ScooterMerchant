@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:scootermerchant/src/blocs/validators.dart';
 import 'package:scootermerchant/src/models/auth_model.dart';
@@ -14,6 +15,15 @@ class LoginBloc with Validators {
 
   Future<bool> logout() async {
     return await _provider.logout();
+  }
+
+  Future<Map<String, dynamic>> forgotPassword({@required String email}) async {
+    return await _provider.forgotPassword(email: email);
+  }
+
+  Future<Map<String, dynamic>> updatePassword(
+      {@required String password, @required String token}) async {
+    return await _provider.changePassword(password: password, token: token);
   }
 
   Stream<String> get emailStream =>
