@@ -80,8 +80,6 @@ class LoginProvider {
       if (response.statusCode >= 400) {
         return {'ok': false, 'message': 'Error al cambiar la contraseña.'};
       } else {
-        String source = Utf8Decoder().convert(response.bodyBytes);
-        Map<String, dynamic> decodedData = json.decode(source);
         return {'ok': true, 'message': 'Contraseña cambiada con éxito.'};
       }
     } catch (e) {

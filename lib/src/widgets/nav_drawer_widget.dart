@@ -38,6 +38,11 @@ class NavDrawer extends StatelessWidget {
               onTap: () => {Navigator.pushNamed(context, 'settings')},
             ),
             ListTile(
+              leading: Icon(Icons.mode_edit),
+              title: Text('Editar productos'),
+              onTap: () => {Navigator.of(context).pop()},
+            ),
+            ListTile(
               leading: Icon(Icons.verified_user),
               title: Text('Ayuda'),
               onTap: () => {Navigator.of(context).pop()},

@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:scootermerchant/src/models/merchant_model.dart';
 import 'package:scootermerchant/src/models/product_model.dart';
 import 'package:scootermerchant/src/preferences/merchant_preferences.dart';
 import 'package:scootermerchant/utilities/constants.dart';
@@ -37,6 +36,9 @@ class ProductProvider {
       }
 
       String source = Utf8Decoder().convert(response.bodyBytes);
+      Map<String, dynamic> decodedData = json.decode(source);
+      List<dynamic> list = decodedData['results'];
+      return list.map((e) => Product.fromJson(e)).toList();
     } catch (e) {
       print(e);
       return [];

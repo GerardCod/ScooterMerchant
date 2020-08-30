@@ -33,7 +33,6 @@ class OrderCard extends StatelessWidget {
       shadowColor: Color.fromRGBO(0, 0, 0, 0.75),
       elevation: 2.0,
     );
-    ;
   }
 
   void _navigateToDetails(BuildContext context, OrderModel model) {

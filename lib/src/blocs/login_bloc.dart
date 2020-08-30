@@ -8,6 +8,7 @@ class LoginBloc with Validators {
   final _provider = LoginProvider();
   final _emailController = BehaviorSubject<String>();
   final _passwordController = BehaviorSubject<String>();
+  final _confirmPasswordController = BehaviorSubject<String>();
 
   Future<Map<String, dynamic>> login(AuthModel model) async {
     return await _provider.login(model);
@@ -32,17 +33,27 @@ class LoginBloc with Validators {
   Stream<String> get passwordStream =>
       _passwordController.stream.transform(validatePassword);
 
+  Stream<String> get confirmPasswordStream =>
+      _confirmPasswordController.stream.transform(validatePassword);
+
+  Stream<bool> get comparePasswordsStream => Rx.combineLatest2(
+      passwordStream, confirmPasswordStream, (String a, String b) => a == b);
+
   Stream<bool> get validationStream =>
       Rx.combineLatest2(emailStream, passwordStream, (a, b) => true);
 
   String get email => _emailController.value;
   String get password => _passwordController.value;
+  String get confirmPassword => _confirmPasswordController.value;
 
   Function(String) get changeEmail => _emailController.sink.add;
   Function(String) get changePassword => _passwordController.sink.add;
+  Function(String) get changeConfirmPassword =>
+      _confirmPasswordController.sink.add;
 
   dispose() {
     _emailController.close();
     _passwordController.close();
+    _confirmPasswordController.close();
   }
 }
