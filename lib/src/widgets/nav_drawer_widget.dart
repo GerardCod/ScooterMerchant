@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:scootermerchant/src/blocs/login_bloc.dart';
+import 'package:scootermerchant/src/blocs/provider.dart';
 
 class NavDrawer extends StatelessWidget {
   // const NavDrawer({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final LoginBloc bloc = Provider.of(context);
     return Container(
       width: 250,
       child: Drawer(
@@ -15,7 +18,7 @@ class NavDrawer extends StatelessWidget {
               child: DrawerHeader(
                 child: Text(
                   'Nombre Comercio',
-                  style: TextStyle( fontSize: 25),
+                  style: TextStyle(fontSize: 25),
                 ),
                 // decoration: BoxDecoration(
                 //     color: Colors.green,
@@ -26,7 +29,7 @@ class NavDrawer extends StatelessWidget {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.input),
+              leading: Icon(Icons.settings),
               title: Text('Configuración'),
               onTap: () => {},
             ),
@@ -35,9 +38,20 @@ class NavDrawer extends StatelessWidget {
               title: Text('Ayuda'),
               onTap: () => {Navigator.of(context).pop()},
             ),
+            ListTile(
+              leading: Icon(Icons.exit_to_app),
+              title: Text('Cerrar sesión'),
+              onTap: () => this._logOut(bloc, context),
+            ),
           ],
         ),
       ),
     );
+  }
+
+  Future<void> _logOut(LoginBloc bloc, BuildContext context) async {
+    if (await bloc.logout()) {
+      Navigator.of(context).pushNamedAndRemoveUntil('login', (route) => false);
+    }
   }
 }

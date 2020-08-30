@@ -14,105 +14,137 @@ class OrdersProvider {
   OrdersProvider();
 
   Future<List<OrderModel>> getOrders(
-      {int status = 14, bool inProcess = false}) async {
-    final merchant = _prefs.merchant;
-    var uri = Uri.https(_baseUri, '/api/v1/merchants/${merchant.id}/orders/', {
-      'order_status': status.toString(),
-      'in_process': inProcess.toString()
-    });
+      {int status = 14, bool inProcess = false, bool allOrders = false}) async {
+    try {
+      final merchant = _prefs.merchant;
+      Uri uri;
+      if (allOrders) {
+        uri = Uri.https(_baseUri, '/api/v1/merchants/${merchant.id}/orders/');
+      } else {
+        uri = Uri.https(_baseUri, '/api/v1/merchants/${merchant.id}/orders/', {
+          'order_status': status.toString(),
+          'in_process': inProcess.toString()
+        });
+      }
+      print(uri);
 
-    http.Response response = await http.get(uri, headers: {
-      'Authorization': 'Bearer ' + _prefs.access,
-    });
+      http.Response response = await http.get(uri, headers: {
+        'Authorization': 'Bearer ' + _prefs.access,
+      });
 
-    String source = Utf8Decoder().convert(response.bodyBytes);
-    final Map<String, dynamic> decodedData = json.decode(source);
+      String source = Utf8Decoder().convert(response.bodyBytes);
+      final Map<String, dynamic> decodedData = json.decode(source);
 
-    if (decodedData == null || decodedData.containsKey('error')) {
+      if (decodedData == null || decodedData.containsKey('errors')) {
+        return [];
+      }
+
+      List<dynamic> results = decodedData['results'];
+      return results.map((e) => OrderModel.fromJson(e)).toList();
+    } catch (e) {
+      print(e);
       return [];
     }
-
-    List<dynamic> results = decodedData['results'];
-
-    return results.map((e) => OrderModel.fromJson(e)).toList();
   }
 
   Future<Map<String, dynamic>> acceptOrder(OrderModel model) async {
-    final MerchantModel merchant = _prefs.merchant;
-    final Uri uri = Uri.https(
-      _baseUri,
-      '/api/v1/merchants/${merchant.id}/orders/${model.id}/accept_order/',
-    );
+    try {
+      final MerchantModel merchant = _prefs.merchant;
+      final Uri uri = Uri.https(
+        _baseUri,
+        '/api/v1/merchants/${merchant.id}/orders/${model.id}/accept_order/',
+      );
 
-    http.Response response = await http.put(uri, headers: {
-      'Authorization': 'Bearer ' + _prefs.access,
-    }, body: {});
+      http.Response response = await http.put(uri, headers: {
+        'Authorization': 'Bearer ' + _prefs.access,
+      }, body: {});
 
-    String source = Utf8Decoder().convert(response.bodyBytes);
+      String source = Utf8Decoder().convert(response.bodyBytes);
 
-    final Map<String, dynamic> decodedData = json.decode(source);
+      final Map<String, dynamic> decodedData = json.decode(source);
 
-    if (response.statusCode >= 400) {
-      return {'ok': false, 'message': decodedData['errors']['message']};
+      if (response.statusCode >= 400) {
+        return {'ok': false, 'message': decodedData['errors']['message']};
+      }
+      return {'ok': true, 'message': decodedData['message']};
+    } catch (e) {
+      return {'ok': false, 'message': e.toString()};
     }
-    return {'ok': true, 'message': decodedData['message']};
   }
 
   Future<Map<String, dynamic>> orderReady(OrderModel model) async {
-    final MerchantModel merchant = _prefs.merchant;
-    final Uri uri = Uri.https(_baseUri,
-        '/api/v1/merchants/${merchant.id}/orders/${model.id}/order_ready/');
+    try {
+      final MerchantModel merchant = _prefs.merchant;
+      final Uri uri = Uri.https(_baseUri,
+          '/api/v1/merchants/${merchant.id}/orders/${model.id}/order_ready/');
 
-    http.Response response = await http.put(uri,
-        headers: {'Authorization': 'Bearer ' + _prefs.access}, body: {});
+      http.Response response = await http.put(uri,
+          headers: {'Authorization': 'Bearer ' + _prefs.access}, body: {});
 
-    String source = Utf8Decoder().convert(response.bodyBytes);
+      String source = Utf8Decoder().convert(response.bodyBytes);
 
-    final Map<String, dynamic> decodedData = json.decode(source);
+      final Map<String, dynamic> decodedData = json.decode(source);
 
-    if (response.statusCode >= 400) {
-      return {'ok': false, 'message': decodedData['errors']['message']};
+      if (response.statusCode >= 400) {
+        return {'ok': false, 'message': decodedData['errors']['message']};
+      }
+      return {'ok': true, 'message': decodedData['message']};
+    } catch (e) {
+      return {'ok': false, 'message': e.toString()};
     }
-    return {'ok': true, 'message': decodedData['message']};
   }
 
   Future<Map<String, dynamic>> rejectOrder(
       OrderModel model, String message) async {
-    final MerchantModel merchant = _prefs.merchant;
-    final Uri uri = Uri.https(_baseUri,
-        '/api/v1/merchants/${merchant.id}/orders/${model.id}/reject_order/');
+    try {
+      final MerchantModel merchant = _prefs.merchant;
+      final Uri uri = Uri.https(_baseUri,
+          '/api/v1/merchants/${merchant.id}/orders/${model.id}/reject_order/');
 
+<<<<<<< HEAD
     http.Response response = await http.put(uri,
         headers: {'Authorization': 'Bearer ' + _prefs.access},
         body: {'reason_rejection': message.toString()});
+=======
+      http.Response response = await http.put(uri,
+          headers: {'Authorization': 'Bearer ' + _prefs.access},
+          body: {'reason_rejection': message});
+>>>>>>> f3122fd13fcf86916f4ddf7812b1e1f9cecc8b2e
 
-    String source = Utf8Decoder().convert(response.bodyBytes);
+      String source = Utf8Decoder().convert(response.bodyBytes);
 
-    final Map<String, dynamic> decodedData = json.decode(source);
+      final Map<String, dynamic> decodedData = json.decode(source);
 
-    if (response.statusCode >= 400) {
-      return {'ok': false, 'message': decodedData['errors']['message']};
+      if (response.statusCode >= 400) {
+        return {'ok': false, 'message': decodedData['errors']['message']};
+      }
+      return {'ok': true, 'message': decodedData['message']};
+    } catch (e) {
+      return {'ok': false, 'message': e.toString()};
     }
-    return {'ok': true, 'message': decodedData['message']};
   }
 
   Future<Map<String, dynamic>> cancelOrder(
       OrderModel model, String reason) async {
-    final MerchantModel merchant = _prefs.merchant;
-    final Uri uri = Uri.https(_baseUri,
-        '/api/v1/merchants/${merchant.id}/orders/${model.id}/cancel_order/');
+    try {
+      final MerchantModel merchant = _prefs.merchant;
+      final Uri uri = Uri.https(_baseUri,
+          '/api/v1/merchants/${merchant.id}/orders/${model.id}/cancel_order/');
 
-    http.Response response = await http.put(uri,
-        headers: {'Authorization': 'Bearer ' + _prefs.access},
-        body: {'reason_rejection': reason});
+      http.Response response = await http.put(uri,
+          headers: {'Authorization': 'Bearer ' + _prefs.access},
+          body: {'reason_rejection': reason});
 
-    String source = Utf8Decoder().convert(response.bodyBytes);
-    Map<String, dynamic> decodedData = json.decode(source);
+      String source = Utf8Decoder().convert(response.bodyBytes);
+      Map<String, dynamic> decodedData = json.decode(source);
 
-    if (response.statusCode >= 400) {
-      return {'ok': false, 'message': decodedData['errors']['message']};
+      if (response.statusCode >= 400) {
+        return {'ok': false, 'message': decodedData['errors']['message']};
+      }
+      return {'ok': true, 'message': decodedData['message']};
+    } catch (e) {
+      return {'ok': false, 'message': e.toString()};
     }
-    return {'ok': true, 'message': decodedData['message']};
   }
 
   Future<Map<String, dynamic>> getOrder(String orderId) async {

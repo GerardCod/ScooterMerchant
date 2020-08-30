@@ -12,7 +12,7 @@ class Header extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      height: size.height * 0.25,
+      height: size.height * 0.15,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.only(
             bottomLeft: Radius.circular(40.0),

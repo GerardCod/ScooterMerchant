@@ -40,4 +40,8 @@ class LoginProvider {
       return {'ok': false, 'message': e.toString()};
     }
   }
+
+  Future<bool> logout() async {
+    return await this._prefs.clearPreferences();
+  }
 }

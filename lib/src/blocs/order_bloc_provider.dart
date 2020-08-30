@@ -13,9 +13,9 @@ class OrderBlocProvider with Validators {
 
   ///Retrieve a list of orders given the status and inProcess arguments.
   Future<List<OrderModel>> getOrders(
-      {int status = 14, bool inProcess = false}) async {
-    final orders =
-        await _orderProvider.getOrders(status: status, inProcess: inProcess);
+      {int status = 14, bool inProcess = false, bool allOrders = false}) async {
+    final orders = await _orderProvider.getOrders(
+        status: status, inProcess: inProcess, allOrders: allOrders);
     changeOrderList(orders);
     return orders;
   }
