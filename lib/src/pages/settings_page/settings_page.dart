@@ -22,13 +22,11 @@ class SettingsPage extends StatelessWidget {
         ),
         iconTheme: IconThemeData(color: Colors.white),
       ),
-      body: Center(
-        child: Stack(
-          children: <Widget>[
-            _header(size),
-            _formChangePassword(bloc, token, context)
-          ],
-        ),
+      body: Stack(
+        children: <Widget>[
+          _header(size),
+          _formChangePassword(bloc, token, context)
+        ],
       ),
     );
   }
@@ -57,6 +55,7 @@ class SettingsPage extends StatelessWidget {
         margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
         shape: radiusButtons,
         child: Container(
+          padding: EdgeInsets.all(16.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -64,10 +63,16 @@ class SettingsPage extends StatelessWidget {
               Text('Cambio de contraseña',
                   textAlign: TextAlign.center, style: textStyleTitleListTile),
               SizedBox(
-                height: 15.0,
+                height: 42.0,
               ),
               _passwordStreamBuilder(bloc),
+              SizedBox(
+                height: 24.0,
+              ),
               _confirmPasswordStreamBuilder(bloc),
+              SizedBox(
+                height: 32.0,
+              ),
               _buttonStreamBuilder(bloc, token, context),
             ],
           ),

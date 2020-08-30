@@ -77,7 +77,11 @@ class LoginProvider {
         'password': password,
       });
 
+      String source = Utf8Decoder().convert(response.bodyBytes);
+      Map<String, dynamic> decodedData = json.decode(source);
+
       if (response.statusCode >= 400) {
+        print(decodedData);
         return {'ok': false, 'message': 'Error al cambiar la contraseña.'};
       } else {
         return {'ok': true, 'message': 'Contraseña cambiada con éxito.'};
