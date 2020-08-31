@@ -7,8 +7,8 @@ class ProductBlocProvider {
 
   final _productListController = BehaviorSubject<List<Product>>();
 
-  Future<List<Product>> getProducts() async {
-    final response = await _productProvider.getProducts();
+  Future<List<Product>> getProducts({int status = 1}) async {
+    final response = await _productProvider.getProducts(status: status);
     changeProductList(response);
     return response;
   }
