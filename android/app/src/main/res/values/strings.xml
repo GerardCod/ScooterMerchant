@@ -1,0 +1,5 @@
+<resources>
+    <string name="notification_merchant_channel">message</string>
+    <string name="notification_merchant_channel_name">Message</string>
+    <string name="notification_title">%1$s</string>
+</resources>
