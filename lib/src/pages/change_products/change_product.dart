@@ -65,6 +65,7 @@ class ChangeProductPage extends StatelessWidget {
       itemBuilder: (BuildContext contex, int index) {
         return ProductCard(
           product: snapshot.data[index],
+          index: index,
         );
       },
       itemCount: snapshot.hasData ? snapshot.data.length : 0,

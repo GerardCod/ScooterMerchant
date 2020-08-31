@@ -4,12 +4,15 @@ import 'package:scootermerchant/utilities/constants.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;
-  const ProductCard({Key key, this.product}) : super(key: key);
+  final int index;
+  const ProductCard({Key key, this.product, this.index}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+      margin: index == 0
+          ? EdgeInsets.all(16.0)
+          : EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(5.0),
       ),
@@ -25,11 +28,17 @@ class ProductCard extends StatelessWidget {
 
   Widget _containerImage(Product product) {
     return Container(
-      width: 48.0,
-      height: 48.0,
-      decoration: BoxDecoration(
-        color: primaryColor,
-      ),
+      width: 60.0,
+      height: 60.0,
+      child: product.picture == null
+          ? Image(
+              image: AssetImage('assets/images/no_image.png'),
+              fit: BoxFit.cover,
+            )
+          : Image(
+              image: NetworkImage(product.picture),
+              fit: BoxFit.cover,
+            ),
     );
   }
 
