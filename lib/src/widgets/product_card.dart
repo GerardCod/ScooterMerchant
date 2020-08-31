@@ -18,7 +18,7 @@ class ProductCard extends StatelessWidget {
         child: Row(
           children: <Widget>[_containerImage(product), _containerInfo(product)],
         ),
-        onTap: () {},
+        onTap: () => this._navigateToDetails(context, product),
       ),
     );
   }
@@ -52,5 +52,9 @@ class ProductCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _navigateToDetails(BuildContext context, Product model) {
+    Navigator.of(context).pushNamed('productDetails', arguments: model);
   }
 }
