@@ -128,6 +128,13 @@ final textHypervincule = TextStyle(
   fontWeight: FontWeight.bold,
 );
 
+final textHypervinculeWhite = TextStyle(
+  color: Colors.white,
+  fontSize: 14,
+  decoration: TextDecoration.underline,
+  fontWeight: FontWeight.bold,
+);
+
 final kLabelStyle =
     TextStyle(color: Colors.black, fontSize: 17, fontFamily: fontFamily);
 

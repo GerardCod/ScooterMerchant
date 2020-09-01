@@ -12,18 +12,14 @@ class ForgotPasswordPage extends StatelessWidget {
     final Size size = MediaQuery.of(context).size;
     final LoginBloc bloc = Provider.of(context);
     return Scaffold(
+      backgroundColor: primaryColor,
       appBar: AppBar(
         title: Text('Ovlidé mi contraseña', style: textStyleBtnComprar),
         iconTheme: IconThemeData(
           color: Colors.white,
         ),
       ),
-      body: Stack(
-        children: <Widget>[
-          _header(size),
-          _formForgotPassword(bloc, size, context)
-        ],
-      ),
+      body: Center(child: _formForgotPassword(bloc, size, context)),
     );
   }
 
@@ -57,7 +53,7 @@ class ForgotPasswordPage extends StatelessWidget {
           SizedBox(
             height: 20.0,
           ),
-          _formContainer(size.width * 0.85, size.height * 0.7, bloc),
+          _formContainer(bloc),
           SizedBox(
             height: 15.0,
             width: size.width,
@@ -66,16 +62,15 @@ class ForgotPasswordPage extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Regresar', style: textHypervincule)),
+              child: Text('Regresar', style: textHypervinculeWhite)),
         ],
       ),
     );
   }
 
-  Widget _formContainer(double width, double height, LoginBloc bloc) {
+  Widget _formContainer(LoginBloc bloc) {
     return Container(
-      width: width,
-      height: height,
+      margin: EdgeInsets.all(16.0),
       padding: EdgeInsets.all(24.0),
       decoration: BoxDecoration(
           color: Colors.white,
@@ -94,8 +89,8 @@ class ForgotPasswordPage extends StatelessWidget {
             style: textStyleTitleListTile,
             textAlign: TextAlign.center,
           ),
-          Expanded(
-            child: Container(),
+          SizedBox(
+            height: 48.0,
           ),
           _emailStreamBuilder(bloc),
           SizedBox(height: 16.0),

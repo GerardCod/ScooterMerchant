@@ -11,8 +11,9 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: <Widget>[_header(context), _formLogin(context)],
+      backgroundColor: primaryColor,
+      body: SafeArea(
+        child: Center(child: _formLogin(context)),
       ),
     );
   }
@@ -51,7 +52,7 @@ class LoginPage extends StatelessWidget {
           SizedBox(
             height: 20.0,
           ),
-          _formContainer(size.width * 0.85, size.height * 0.7, bloc),
+          _formContainer(bloc),
           SizedBox(
             height: 15.0,
             width: size.width,
@@ -60,17 +61,17 @@ class LoginPage extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).pushNamed('forgotPassword');
               },
-              child: Text('Olvidé mi contraseña', style: textHypervincule)),
+              child:
+                  Text('Olvidé mi contraseña', style: textHypervinculeWhite)),
         ],
       ),
     );
   }
 
-  Widget _formContainer(double width, double height, LoginBloc bloc) {
+  Widget _formContainer(LoginBloc bloc) {
     return Container(
-      width: width,
-      height: height,
       padding: EdgeInsets.all(24.0),
+      margin: EdgeInsets.all(16.0),
       decoration: BoxDecoration(
           color: Colors.white,
           boxShadow: [
@@ -88,8 +89,8 @@ class LoginPage extends StatelessWidget {
             style: textStyleTitleListTile,
             textAlign: TextAlign.center,
           ),
-          Expanded(
-            child: Container(),
+          SizedBox(
+            height: 48.0,
           ),
           _emailStreamBuilder(bloc),
           SizedBox(height: 16.0),
