@@ -52,6 +52,7 @@ class OrderHistory extends StatelessWidget {
             (BuildContext context, int index) => OrderCard(
                   model: snapshot.data[index],
                   bloc: bloc,
+                  typeList: 'history',
                 ),
             childCount: snapshot.hasData ? snapshot.data.length : 0));
   }

@@ -7,7 +7,9 @@ import 'package:scootermerchant/utilities/constants.dart';
 class OrderCard extends StatelessWidget {
   final OrderModel model;
   final OrderBlocProvider bloc;
-  const OrderCard({Key key, this.bloc, this.model}) : super(key: key);
+  final String typeList;
+  const OrderCard({Key key, this.bloc, this.model, this.typeList})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +38,8 @@ class OrderCard extends StatelessWidget {
   }
 
   void _navigateToDetails(BuildContext context, OrderModel model) {
-    Navigator.of(context).pushNamed('orderDetails', arguments: model);
+    print(typeList);
+    Navigator.of(context).pushNamed('orderDetails',
+        arguments: {'model': model, 'type': typeList});
   }
 }

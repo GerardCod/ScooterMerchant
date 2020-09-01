@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:scootermerchant/src/blocs/login_bloc.dart';
+import 'package:scootermerchant/src/blocs/provider.dart';
 import 'package:scootermerchant/src/pages/home/fragments/order_history.dart';
 import 'package:scootermerchant/src/pages/home/fragments/order_list.dart';
 import 'package:scootermerchant/src/pages/home/fragments/order_list_accepted.dart';
 import 'package:scootermerchant/src/widgets/nav_drawer_widget.dart';
 import 'package:scootermerchant/utilities/constants.dart';
-
 import '../../preferences/merchant_preferences.dart';
 
 class HomePage extends StatefulWidget {
@@ -26,13 +27,15 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    LoginBloc bloc = Provider.of(context);
     return Scaffold(
       endDrawer: NavDrawer(),
       body: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar(
+            actions: <Widget>[_switchDisponibility(context, bloc)],
             title: Text(
-              'Scooter',
+              'SCOOTER',
               style: textStyleForAppBar,
             ),
             floating: false,
@@ -45,14 +48,10 @@ class _HomePageState extends State<HomePage> {
                 color: Colors.white,
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.grey,
+                    color: primaryColor,
                     borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(40.0),
                         bottomRight: Radius.circular(40.0)),
-                    image: DecorationImage(
-                      image: NetworkImage(_prefs.merchant.picture),
-                      fit: BoxFit.cover,
-                    ),
                   ),
                   child: Center(
                     child: Text(
@@ -83,19 +82,6 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: _bottomNavigationBar(),
       extendBody: true,
     );
-    //  Scaffold(
-    //   endDrawer: NavDrawer(),
-    //   appBar:CustomAppBar(),
-    //   body: Column(
-    //     // shrinkWrap: true,
-    //     children: <Widget>[
-    // Header(),
-    //       Expanded(child: _pages.elementAt(_currentPage),),
-    //     ],
-    //   ),
-    //   bottomNavigationBar: _bottomNavigationBar(),
-    //   extendBody: true,
-    // );
   }
 
   Widget _bottomNavigationBar() {
@@ -128,9 +114,40 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  // Widget _customAppBar(){
-  //   return AppBar(
-  //     title: Text('Title'),
-  //   );
-  // }
+  Widget _switchDisponibility(BuildContext context, LoginBloc bloc) {
+    return Row(
+      children: <Widget>[
+        Text(
+          'Abierto',
+          style: textStyleStatusChip,
+        ),
+        SizedBox(
+          width: 8.0,
+        ),
+        _switchStreamBuilder(bloc),
+      ],
+    );
+  }
+
+  Widget _switchStreamBuilder(LoginBloc bloc) {
+    return StreamBuilder(
+      stream: bloc.availabilityStream,
+      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+        print(MerchantPreferences().isOpen);
+        return Switch(
+          value: snapshot.hasData && MerchantPreferences().isOpen != null
+              ? snapshot.data
+              : MerchantPreferences().isOpen,
+          activeColor: colorSuccess,
+          onChanged: (bool value) => _updateAvailability(value, bloc, context),
+        );
+      },
+    );
+  }
+
+  Future<void> _updateAvailability(
+      bool value, LoginBloc bloc, BuildContext context) async {
+    final response = await bloc.updateAvailability(isOpen: value);
+    print(response);
+  }
 }

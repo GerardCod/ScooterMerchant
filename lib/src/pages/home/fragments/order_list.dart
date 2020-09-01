@@ -59,6 +59,7 @@ class OrderList extends StatelessWidget {
     return OrderCard(
       model: model,
       bloc: bloc,
+      typeList: 'incoming',
     );
   }
 

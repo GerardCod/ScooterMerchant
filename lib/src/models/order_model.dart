@@ -9,11 +9,11 @@ class OrderModel {
   String approximatePriceOrder;
   String reasonRejection;
   String orderDate;
-  DateTime dateDeliveredOrder;
+  String dateDeliveredOrder;
   String qrCode;
   OrderStatus orderStatus;
   Customer customer;
-  Null deliveryMan;
+  Map<String, dynamic> deliveryMan;
   String station;
   List<Details> details;
   String maximumResponseTime;

@@ -15,36 +15,31 @@ class OrdersProvider {
 
   Future<List<OrderModel>> getOrders(
       {int status = 14, bool inProcess = false, bool allOrders = false}) async {
-    try {
-      final merchant = _prefs.merchant;
-      Uri uri;
-      if (allOrders) {
-        uri = Uri.https(_baseUri, '/api/v1/merchants/${merchant.id}/orders/');
-      } else {
-        uri = Uri.https(_baseUri, '/api/v1/merchants/${merchant.id}/orders/', {
-          'order_status': status.toString(),
-          'in_process': inProcess.toString()
-        });
-      }
-      print(uri);
-
-      http.Response response = await http.get(uri, headers: {
-        'Authorization': 'Bearer ' + _prefs.access,
+    final merchant = _prefs.merchant;
+    Uri uri;
+    if (allOrders) {
+      uri = Uri.https(_baseUri, '/api/v1/merchants/${merchant.id}/orders/');
+    } else {
+      uri = Uri.https(_baseUri, '/api/v1/merchants/${merchant.id}/orders/', {
+        'order_status': status.toString(),
+        'in_process': inProcess.toString()
       });
+    }
+    print(uri);
 
-      String source = Utf8Decoder().convert(response.bodyBytes);
-      final Map<String, dynamic> decodedData = json.decode(source);
+    http.Response response = await http.get(uri, headers: {
+      'Authorization': 'Bearer ' + _prefs.access,
+    });
 
-      if (decodedData == null || decodedData.containsKey('errors')) {
-        return [];
-      }
+    String source = Utf8Decoder().convert(response.bodyBytes);
+    final Map<String, dynamic> decodedData = json.decode(source);
 
-      List<dynamic> results = decodedData['results'];
-      return results.map((e) => OrderModel.fromJson(e)).toList();
-    } catch (e) {
-      print(e);
+    if (decodedData == null || decodedData.containsKey('errors')) {
       return [];
     }
+
+    List<dynamic> results = decodedData['results'];
+    return results.map((e) => OrderModel.fromJson(e)).toList();
   }
 
   Future<Map<String, dynamic>> acceptOrder(OrderModel model) async {
@@ -101,9 +96,9 @@ class OrdersProvider {
       final Uri uri = Uri.https(_baseUri,
           '/api/v1/merchants/${merchant.id}/orders/${model.id}/reject_order/');
 
-    http.Response response = await http.put(uri,
-        headers: {'Authorization': 'Bearer ' + _prefs.access},
-        body: {'reason_rejection': message.toString()});
+      http.Response response = await http.put(uri,
+          headers: {'Authorization': 'Bearer ' + _prefs.access},
+          body: {'reason_rejection': message.toString()});
 
       String source = Utf8Decoder().convert(response.bodyBytes);
 

@@ -11,7 +11,9 @@ class OrderDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    final OrderModel args = ModalRoute.of(context).settings.arguments;
+    final Map<String, dynamic> args = ModalRoute.of(context).settings.arguments;
+    final OrderModel model = args['model'];
+    final String typeList = args['type'];
     final OrderBlocProvider bloc = Provider.orderBlocProviderOf(context);
     final _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -33,8 +35,9 @@ class OrderDetailsPage extends StatelessWidget {
                 size: size,
                 bloc: bloc,
                 context: context,
-                model: args,
-                scaffoldKey: _scaffoldKey),
+                model: model,
+                scaffoldKey: _scaffoldKey,
+                typeList: typeList),
           ),
         ],
       ),
@@ -59,7 +62,8 @@ class OrderDetailsPage extends StatelessWidget {
       OrderModel model,
       OrderBlocProvider bloc,
       BuildContext context,
-      GlobalKey<ScaffoldState> scaffoldKey}) {
+      GlobalKey<ScaffoldState> scaffoldKey,
+      String typeList}) {
     return SingleChildScrollView(
       child: Card(
         margin: EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
@@ -68,13 +72,13 @@ class OrderDetailsPage extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20.0),
         ),
-        child: _bodyCardInfo(model, scaffoldKey, bloc, context),
+        child: _bodyCardInfo(model, scaffoldKey, bloc, context, typeList),
       ),
     );
   }
 
   Widget _bodyCardInfo(OrderModel model, GlobalKey<ScaffoldState> scaffoldKey,
-      OrderBlocProvider bloc, BuildContext context) {
+      OrderBlocProvider bloc, BuildContext context, String typeList) {
     return Container(
       padding: EdgeInsets.all(16.0),
       child: Column(
@@ -94,12 +98,30 @@ class OrderDetailsPage extends StatelessWidget {
             ),
           ),
           SizedBox(height: 40),
-          model.inProcess == true
-              ? _actionButtonsInProcess(bloc, context, scaffoldKey, model)
-              : _actionButtons(bloc, context, scaffoldKey, model),
+          _showActions(
+              bloc: bloc,
+              context: context,
+              scaffoldKey: scaffoldKey,
+              model: model,
+              typeList: typeList)
         ],
       ),
     );
+  }
+
+  Widget _showActions(
+      {OrderBlocProvider bloc,
+      BuildContext context,
+      GlobalKey<ScaffoldState> scaffoldKey,
+      OrderModel model,
+      String typeList}) {
+    print(typeList);
+    if (typeList == 'incoming') {
+      return _actionButtons(bloc, context, scaffoldKey, model);
+    } else if (typeList == 'inProcess') {
+      return _actionButtonsInProcess(bloc, context, scaffoldKey, model);
+    }
+    return Container();
   }
 
   Widget _nameCustomer(OrderModel model) {
