@@ -27,6 +27,7 @@ class LoginProvider {
         _prefs.access = decodedResp['access'];
         _prefs.refresh = decodedResp['refresh'];
         _prefs.merchant = MerchantModel.fromJson(decodedResp['merchant']);
+        _prefs.isOpen = _prefs.merchant.isOpen;
 
         _firebaseMessaging.getToken().then((value) async {
           await pushProvider.registrarToken(value);
@@ -89,5 +90,38 @@ class LoginProvider {
     } catch (e) {
       return {'ok': false, 'message': e.toString()};
     }
+  }
+
+  Future<Map<String, dynamic>> updateAvailability(
+      {@required bool isOpen}) async {
+    final body = {
+      'is_open': isOpen,
+    };
+    final response = await http.put(
+        _baseUrl + 'merchants/${_prefs.merchant.id}/update_availability/',
+        body: json.encode(body),
+        headers: {
+          'Authorization': 'Bearer ' + _prefs.access,
+          'Content-Type': 'application/json'
+        });
+
+    String source = Utf8Decoder().convert(response.bodyBytes);
+    print(source);
+    Map<String, dynamic> decodedData = json.decode(source);
+    if (response.statusCode >= 400) {
+      print(decodedData);
+      return {
+        'ok': false,
+        'message': 'Error al actualizar la disponibilidad del comercio.'
+      };
+    }
+
+    _prefs.isOpen = decodedData['data']['status'];
+
+    return {
+      'ok': true,
+      'message': 'Disponibilidad actualizada.',
+      'data': decodedData['data']['status']
+    };
   }
 }

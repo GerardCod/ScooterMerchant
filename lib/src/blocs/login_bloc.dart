@@ -9,6 +9,7 @@ class LoginBloc with Validators {
   final _emailController = BehaviorSubject<String>();
   final _passwordController = BehaviorSubject<String>();
   final _confirmPasswordController = BehaviorSubject<String>();
+  final _availabilityController = BehaviorSubject<bool>();
 
   Future<Map<String, dynamic>> login(AuthModel model) async {
     return await _provider.login(model);
@@ -27,6 +28,13 @@ class LoginBloc with Validators {
     return await _provider.changePassword(password: password, token: token);
   }
 
+  Future<Map<String, dynamic>> updateAvailability(
+      {@required bool isOpen}) async {
+    final response = await _provider.updateAvailability(isOpen: isOpen);
+    changeAvailability(response['data']);
+    return response;
+  }
+
   Stream<String> get emailStream =>
       _emailController.stream.transform(validateEmail);
 
@@ -42,6 +50,8 @@ class LoginBloc with Validators {
   Stream<bool> get validationStream =>
       Rx.combineLatest2(emailStream, passwordStream, (a, b) => true);
 
+  Stream<bool> get availabilityStream => _availabilityController.stream;
+
   String get email => _emailController.value;
   String get password => _passwordController.value;
   String get confirmPassword => _confirmPasswordController.value;
@@ -51,9 +61,12 @@ class LoginBloc with Validators {
   Function(String) get changeConfirmPassword =>
       _confirmPasswordController.sink.add;
 
+  Function(bool) get changeAvailability => _availabilityController.sink.add;
+
   dispose() {
     _emailController.close();
     _passwordController.close();
     _confirmPasswordController.close();
+    _availabilityController.close();
   }
 }

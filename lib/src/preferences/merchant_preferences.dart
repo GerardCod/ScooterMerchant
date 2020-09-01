@@ -48,6 +48,14 @@ class MerchantPreferences {
     this._prefs.setString('merchant', json.encode(merchant));
   }
 
+  bool get isOpen {
+    return _prefs.getBool('isOpen');
+  }
+
+  set isOpen(bool value) {
+    this._prefs.setBool('isOpen', value);
+  }
+
   Future<bool> clearPreferences() async {
     return await this._prefs.clear();
   }
