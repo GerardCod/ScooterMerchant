@@ -55,7 +55,6 @@ class _HomePageState extends State<HomePage> {
                   ),
                   child: Align(
                     alignment: FractionalOffset.bottomCenter,
-
                     child: Padding(
                       padding: EdgeInsets.only(bottom: 20.0),
                       child: Text(
@@ -117,46 +116,5 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       this._currentPage = index;
     });
-  }
-
-  Widget _switchDisponibility(BuildContext context, LoginBloc bloc) {
-    return Row(
-      children: <Widget>[
-        Text(
-          'Abierto',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 17,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        SizedBox(
-          width: 8.0,
-        ),
-        _switchStreamBuilder(bloc),
-      ],
-    );
-  }
-
-  Widget _switchStreamBuilder(LoginBloc bloc) {
-    return StreamBuilder(
-      stream: bloc.availabilityStream,
-      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-        print(MerchantPreferences().isOpen);
-        return Switch(
-          value: snapshot.hasData && MerchantPreferences().isOpen != null
-              ? snapshot.data
-              : MerchantPreferences().isOpen,
-          activeColor: colorSuccess,
-          onChanged: (bool value) => _updateAvailability(value, bloc, context),
-        );
-      },
-    );
-  }
-
-  Future<void> _updateAvailability(
-      bool value, LoginBloc bloc, BuildContext context) async {
-    final response = await bloc.updateAvailability(isOpen: value);
-    print(response);
   }
 }

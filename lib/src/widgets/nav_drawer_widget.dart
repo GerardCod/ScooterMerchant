@@ -3,6 +3,7 @@ import 'package:scootermerchant/src/blocs/login_bloc.dart';
 import 'package:scootermerchant/src/blocs/provider.dart';
 import 'package:scootermerchant/src/models/merchant_model.dart';
 import 'package:scootermerchant/src/preferences/merchant_preferences.dart';
+import 'package:scootermerchant/utilities/constants.dart';
 
 class NavDrawer extends StatelessWidget {
   // const NavDrawer({Key key}) : super(key: key);
@@ -31,6 +32,10 @@ class NavDrawer extends StatelessWidget {
                 //         image: AssetImage('assets/images/cover.jpg'))
                 //         ),
               ),
+            ),
+            Container(
+              padding: EdgeInsets.all(16.0),
+              child: _switchDisponibility(context, bloc),
             ),
             ListTile(
               leading: Icon(Icons.settings),
@@ -66,5 +71,46 @@ class NavDrawer extends StatelessWidget {
 
   void _navigateToProductListChange(BuildContext context) {
     Navigator.of(context).popAndPushNamed('editProducts');
+  }
+
+  Widget _switchDisponibility(BuildContext context, LoginBloc bloc) {
+    return Row(
+      children: <Widget>[
+        Text(
+          'Abierto',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 17,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        SizedBox(
+          width: 8.0,
+        ),
+        _switchStreamBuilder(bloc),
+      ],
+    );
+  }
+
+  Widget _switchStreamBuilder(LoginBloc bloc) {
+    return StreamBuilder(
+      stream: bloc.availabilityStream,
+      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+        print(MerchantPreferences().isOpen);
+        return Switch(
+          value: snapshot.hasData && MerchantPreferences().isOpen != null
+              ? snapshot.data
+              : MerchantPreferences().isOpen,
+          activeColor: colorSuccess,
+          onChanged: (bool value) => _updateAvailability(value, bloc, context),
+        );
+      },
+    );
+  }
+
+  Future<void> _updateAvailability(
+      bool value, LoginBloc bloc, BuildContext context) async {
+    final response = await bloc.updateAvailability(isOpen: value);
+    print(response);
   }
 }
