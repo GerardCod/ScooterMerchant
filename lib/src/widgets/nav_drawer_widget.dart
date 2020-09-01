@@ -40,7 +40,7 @@ class NavDrawer extends StatelessWidget {
             ListTile(
               leading: Icon(Icons.mode_edit),
               title: Text('Editar productos'),
-              onTap: () => {Navigator.of(context).pop()},
+              onTap: () => this._navigateToProductListChange(context),
             ),
             ListTile(
               leading: Icon(Icons.verified_user),
@@ -62,5 +62,9 @@ class NavDrawer extends StatelessWidget {
     if (await bloc.logout()) {
       Navigator.of(context).pushNamedAndRemoveUntil('login', (route) => false);
     }
+  }
+
+  void _navigateToProductListChange(BuildContext context) {
+    Navigator.of(context).popAndPushNamed('editProducts');
   }
 }

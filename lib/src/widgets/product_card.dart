@@ -4,28 +4,41 @@ import 'package:scootermerchant/utilities/constants.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;
-  const ProductCard({Key key, this.product}) : super(key: key);
+  final int index;
+  const ProductCard({Key key, this.product, this.index}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
-      shape: radiusButtons,
-      shadowColor: Color.fromRGBO(0, 0, 0, 0.25),
-      child: Row(
-        children: <Widget>[_containerImage(product), _containerInfo(product)],
+      margin: index == 0
+          ? EdgeInsets.all(16.0)
+          : EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(5.0),
+      ),
+      shadowColor: Color.fromRGBO(0, 0, 0, 0.5),
+      child: InkWell(
+        child: Row(
+          children: <Widget>[_containerImage(product), _containerInfo(product)],
+        ),
+        onTap: () => this._navigateToDetails(context, product),
       ),
     );
   }
 
   Widget _containerImage(Product product) {
     return Container(
-      width: 48.0,
-      height: 48.0,
-      child: Image(
-        image: NetworkImage(product.picture?.toString()),
-        fit: BoxFit.cover,
-      ),
+      width: 60.0,
+      height: 60.0,
+      child: product.picture == null
+          ? Image(
+              image: AssetImage('assets/images/no_image.png'),
+              fit: BoxFit.cover,
+            )
+          : Image(
+              image: NetworkImage(product.picture),
+              fit: BoxFit.cover,
+            ),
     );
   }
 
@@ -34,10 +47,11 @@ class ProductCard extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
               product.name,
-              style: textStyleNeed,
+              style: textStyleTitleListTile,
             ),
             Text(
               'Precio: ${product.price}',
@@ -47,5 +61,10 @@ class ProductCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _navigateToDetails(BuildContext context, Product model) async {
+    await Navigator.of(context)
+        .pushReplacementNamed('productDetails', arguments: model);
   }
 }

@@ -30,4 +30,31 @@ class Validators {
       sink.addError('Escriba por qué rechaza o cancela este pedido.');
     }
   });
+
+  final validateProductName = StreamTransformer<String, String>.fromHandlers(
+      handleData: (String data, EventSink<String> sink) {
+    if (data.isEmpty) {
+      sink.addError('Ingrese el nombre del producto');
+    } else {
+      sink.add(data);
+    }
+  });
+
+  final validateProductPrice = StreamTransformer<double, double>.fromHandlers(
+      handleData: (double data, EventSink<double> sink) {
+    if (data.isNaN || data.isNegative || data == 0) {
+      sink.addError('Ingrese un precio válido.');
+    } else {
+      sink.add(data);
+    }
+  });
+
+  final validateProductStock = StreamTransformer<int, int>.fromHandlers(
+      handleData: (int data, EventSink<int> sink) {
+    if (data.isNaN || data.isNegative || data == 0) {
+      sink.addError('Ingrese un stock válido');
+    } else {
+      sink.add(data);
+    }
+  });
 }
