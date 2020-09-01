@@ -15,6 +15,11 @@ class ProductDetailsPage extends StatelessWidget {
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () =>
+              Navigator.of(context).popAndPushNamed('editProducts'),
+        ),
         title: Text('Detalles del producto', style: textStyleBtnComprar),
         iconTheme: IconThemeData(
           color: Colors.white,
@@ -157,6 +162,9 @@ class ProductDetailsPage extends StatelessWidget {
 
   void _updateProduct(
       Product product, ProductBlocProvider bloc, BuildContext context) async {
+    product.name = bloc.productName;
+    product.price = bloc.productPrice;
+    product.stock = bloc.productStock;
     final response = await bloc.updateProduct(product: product);
     if (response['ok']) {
       showSnackBar(context, response['message'], colorSuccess);

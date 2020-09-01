@@ -44,15 +44,17 @@ class ProductProvider {
       {@required Product product}) async {
     final Uri uri = Uri.https(_baseUri,
         '/api/v1/merchants/${_prefs.merchant.id}/products/${product.id}/');
-    if (product.picture.contains('https')) {
-      product.picture = '';
-    }
-    final http.Response response = await http.patch(uri,
-        body: json.encode(product.toJson()),
-        headers: {
-          'Authorization': 'Bearer ' + _prefs.access,
-          'Content-Type': 'application/json'
-        });
+    Map<String, dynamic> body = {
+      'name': product.name,
+      'price': product.price,
+      'stock': product.stock
+    };
+    print(body);
+    final http.Response response =
+        await http.patch(uri, body: json.encode(body), headers: {
+      'Authorization': 'Bearer ' + _prefs.access,
+      'Content-Type': 'application/json',
+    });
 
     String source = Utf8Decoder().convert(response.bodyBytes);
     Map<String, dynamic> decodedData = json.decode(source);
