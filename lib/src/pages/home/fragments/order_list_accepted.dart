@@ -54,6 +54,7 @@ class OrderListAccepted extends StatelessWidget {
         (context, index) => OrderCard(
           model: snapshot.data[index],
           bloc: orderBloc,
+          typeList: 'inProcess',
         ),
         childCount: snapshot.hasData ? snapshot.data.length : 0,
       ),
