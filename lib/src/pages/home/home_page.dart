@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage> {
       body: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar(
-            actions: <Widget>[_switchDisponibility(context, bloc)],
+            // actions: <Widget>[_switchDisponibility(context, bloc)],
             title: Text(
               'SCOOTER',
               style: textStyleForAppBar,
@@ -53,22 +53,27 @@ class _HomePageState extends State<HomePage> {
                         bottomLeft: Radius.circular(40.0),
                         bottomRight: Radius.circular(40.0)),
                   ),
-                  child: Center(
-                    child: Text(
-                      _prefs.merchant.merchantName,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 30,
-                        fontFamily: 'Arial',
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 1.5,
-                        shadows: <Shadow>[
-                          Shadow(
-                            offset: Offset(1.0, 1.0),
-                            blurRadius: 2.0,
-                            color: Color(0xff808080),
-                          ),
-                        ],
+                  child: Align(
+                    alignment: FractionalOffset.bottomCenter,
+
+                    child: Padding(
+                      padding: EdgeInsets.only(bottom: 20.0),
+                      child: Text(
+                        _prefs.merchant.merchantName,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 30,
+                          fontFamily: 'Arial',
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1.5,
+                          shadows: <Shadow>[
+                            Shadow(
+                              offset: Offset(1.0, 1.0),
+                              blurRadius: 2.0,
+                              color: Color(0xff808080),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -119,7 +124,11 @@ class _HomePageState extends State<HomePage> {
       children: <Widget>[
         Text(
           'Abierto',
-          style: textStyleStatusChip,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 17,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         SizedBox(
           width: 8.0,
