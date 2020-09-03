@@ -163,8 +163,6 @@ class NotificationsProvider {
       'Messages',
       'channel for messages',
       importance: Importance.Max,
-      playSound: true,
-      sound: RawResourceAndroidNotificationSound('ringtone'),
       priority: Priority.High,
       ticker: 'ticker',
       visibility: NotificationVisibility.Public,

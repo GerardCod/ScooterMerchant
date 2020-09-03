@@ -48,6 +48,7 @@ class OrderCard extends StatelessWidget {
                         ])),
                       ],
                     ),
+                    
                     Icon(
                       Icons.keyboard_arrow_right,
                       size: 36.0,

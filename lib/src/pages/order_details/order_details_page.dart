@@ -264,7 +264,7 @@ class OrderDetailsPage extends StatelessWidget {
           ),
           Divider(),
           ListView.builder(
-            shrinkWrap: true,
+            // shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
             scrollDirection: Axis.vertical,
             itemCount: product.menuOptions[indexMenuO].options.length,
@@ -282,13 +282,18 @@ class OrderDetailsPage extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Text(product.menuOptions[indexMenuO].options[indexOption].optionName),
-        Text(
-          '\u0024' +
-              product.menuOptions[indexMenuO].options[indexOption].priceOption
-                  .toStringAsFixed(2),
-        )
+        Text(_showPriceOption(product, indexMenuO, indexOption))
       ],
     );
+  }
+
+  String _showPriceOption(Details product, int indexMenuO, indexOption) {
+    if (product.menuOptions[indexMenuO].options[indexOption].priceOption == 0) {
+      return '';
+    }
+    return '\u0024' +
+        product.menuOptions[indexMenuO].options[indexOption].priceOption
+            .toStringAsFixed(2);
   }
 
   Widget _actionButtons(OrderBlocProvider bloc, BuildContext context,
@@ -610,7 +615,7 @@ class OrderDetailsPage extends StatelessWidget {
                     backgroundColor: Colors.white,
                   ),
                 ),
-                visible: snapshot.hasData && bloc.loaderFinishedOrder == true,
+                visible: snapshot.hasData && snapshot.data == true,
               );
             },
           )

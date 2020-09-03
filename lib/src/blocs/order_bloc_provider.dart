@@ -18,8 +18,8 @@ class OrderBlocProvider with Validators {
 
   // Streams
   Stream<bool> get loaderAcceptOrderStream => _loaderAcceptOrderController.stream;
-  Stream<bool> get loaderFinishedOrderStream => _loaderAcceptOrderController.stream;
-  Stream<bool> get loaderCancelOrderStream => _loaderAcceptOrderController.stream;
+  Stream<bool> get loaderFinishedOrderStream => _loaderFinishedOrderController.stream;
+  Stream<bool> get loaderCancelOrderStream => _loaderCancelOrderController.stream;
   Stream<bool> get loaderRejectOrderStream => _loaderRejectOrderController.stream;
   Stream<String> get rejectReasonStream => _rejectReasonController.stream;
   Stream<String> get cancelReasonStream => _cancelReasonController.stream;
@@ -27,16 +27,16 @@ class OrderBlocProvider with Validators {
   // Insert
   Function(bool) get changeLoaderAcceptOrder => _loaderAcceptOrderController.sink.add;
   Function(bool) get changeLoaderRejectOrder => _loaderRejectOrderController.sink.add;
-  Function(bool) get changeLoaderFinishedOrder => _loaderRejectOrderController.sink.add;
-  Function(bool) get changeLoaderCancelOrder => _loaderRejectOrderController.sink.add;
+  Function(bool) get changeLoaderFinishedOrder => _loaderFinishedOrderController.sink.add;
+  Function(bool) get changeLoaderCancelOrder => _loaderCancelOrderController.sink.add;
   Function(String) get changeRejectReason => _rejectReasonController.sink.add;
   Function(String) get changeCancelReason => _cancelReasonController.sink.add;
 
   // Ultimos valores
   bool get loaderAcceptOrder => _loaderAcceptOrderController.value;
   bool get loaderRejectOrder => _loaderRejectOrderController.value;
-  bool get loaderFinishedOrder => _loaderRejectOrderController.value;
-  bool get loaderCancelOrder => _loaderRejectOrderController.value;
+  bool get loaderFinishedOrder => _loaderFinishedOrderController.value;
+  bool get loaderCancelOrder => _loaderCancelOrderController.value;
   String get rejectReason => _rejectReasonController.value;
   String get cancelReason => _cancelReasonController.value;
 

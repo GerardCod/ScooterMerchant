@@ -84,7 +84,7 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       bottomNavigationBar: _bottomNavigationBar(),
-      extendBody: true,
+      // extendBody: true,
     );
   }
 

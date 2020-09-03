@@ -18,7 +18,7 @@ class OrderModel {
   List<Details> details;
   String maximumResponseTime;
   bool validateQr;
-  double ratedOrder;
+  RatedOrder ratedOrder;
   bool inProcess;
   int serviceId;
   bool isSafeOrder;
@@ -93,7 +93,9 @@ class OrderModel {
     }
     maximumResponseTime = json['maximum_response_time'];
     validateQr = json['validate_qr'];
-    ratedOrder = json['rated_order'];
+    ratedOrder = json['rated_order'] != null
+        ? RatedOrder.fromJson(json['rated_order'])
+        : null;
     inProcess = json['in_process'];
     serviceId = json['service_id'];
     isSafeOrder = json['is_safe_order'];
@@ -154,6 +156,43 @@ class OrderModel {
     data['total_order'] = this.totalOrder;
     data['is_delivery_by_store'] = this.isDeliveryByStore;
     data['is_order_to_merchant'] = this.isOrderToMerchant;
+    return data;
+  }
+}
+
+class RatedOrder {
+  int order;
+  int station;
+  int deliveryMan;
+  int ratingCustomer;
+  String comments;
+  int rating;
+
+  RatedOrder(
+      {this.order,
+      this.station,
+      this.deliveryMan,
+      this.ratingCustomer,
+      this.comments,
+      this.rating});
+
+  RatedOrder.fromJson(Map<String, dynamic> json) {
+    order = json['order'];
+    station = json['station'];
+    deliveryMan = json['delivery_man'];
+    ratingCustomer = json['rating_customer'];
+    comments = json['comments'];
+    rating = json['rating'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['order'] = this.order;
+    data['delivery_man'] = this.deliveryMan;
+    data['station'] = this.station;
+    data['rating_customer'] = this.ratingCustomer;
+    data['comments'] = this.comments;
+    data['rating'] = this.rating;
     return data;
   }
 }

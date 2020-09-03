@@ -7,8 +7,8 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name=".Application"
-        android:label="scootermerchant"
-        android:icon="@mipmap/ic_launcher">
+        android:label="Scooter Comercios"
+        android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
