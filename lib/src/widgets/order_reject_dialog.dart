@@ -101,21 +101,14 @@ class OrderRejectDialog extends StatelessWidget {
 
   void _onPreesedButtonReject(
       NotificationOrderDetailsPageBloc bloc, BuildContext context) {
-    print('Reason Rejeciton============================================');
-    print(bloc.reasonRejection);
     bloc.rejectOrder(bloc.reasonRejection);
     // if (bloc.responseAccept['ok']) {
     Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (BuildContext context) => HomePage()),
         ModalRoute.withName('homePage'));
-    //  print("bloc.responseAccept['ok']========================");
-    //  print(bloc.responseAccept['ok']);
     // _showSnackBar(context, bloc.responseAccept['message']);
     // } else {
-    //  print("bloc.responseAccept['false']========================");
-    //  print(bloc.responseAccept);
-    //  print(bloc.responseAccept['ok']);
     // _showSnackBar(context, bloc.responseAccept['message']);
     // }
   }

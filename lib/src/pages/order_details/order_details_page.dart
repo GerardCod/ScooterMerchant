@@ -115,7 +115,6 @@ class OrderDetailsPage extends StatelessWidget {
       GlobalKey<ScaffoldState> scaffoldKey,
       OrderModel model,
       String typeList}) {
-    print(typeList);
     if (typeList == 'incoming') {
       return _actionButtons(bloc, context, scaffoldKey, model);
     } else if (typeList == 'inProcess') {
@@ -264,7 +263,7 @@ class OrderDetailsPage extends StatelessWidget {
           ),
           Divider(),
           ListView.builder(
-            // shrinkWrap: true,
+            shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
             scrollDirection: Axis.vertical,
             itemCount: product.menuOptions[indexMenuO].options.length,
@@ -640,7 +639,6 @@ class OrderDetailsPage extends StatelessWidget {
             ModalRoute.withName('homePage'));
       });
     } else {
-      print(response['message']);
       scaffoldKey.currentState
           .showSnackBar(_createSnackBar(Colors.red, response['message']));
     }
@@ -719,14 +717,12 @@ class OrderDetailsPage extends StatelessWidget {
     Map<String, dynamic> response =
         await bloc.cancelOrder(order, bloc.cancelReason);
     if (response['ok']) {
-      print(response['message']);
 
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (BuildContext context) => HomePage()),
           ModalRoute.withName('homePage'));
     } else {
-      print(response['message']);
       Navigator.pop(context);
       scaffoldKey.currentState
           .showSnackBar(_createSnackBar(Colors.green, response['message']))

@@ -51,8 +51,6 @@ class NotificationOrderDetailsPageBloc {
   }
 
   Future<Map<String, dynamic>> acceptOrder() async{
-    // print('OrderModel Id ==================================');
-    // print(order.id);
     changeLoaderAcceptOrder(true);
     Map<String, dynamic> response = await ordersProvider.acceptOrder(order);
     // changeResponseAccept(response);
@@ -61,8 +59,7 @@ class NotificationOrderDetailsPageBloc {
   }
 
   Future<Map<String, dynamic>> rejectOrder(String messageReject) async{
-    // print('OrderModel Id ==================================');
-    // print(order.id);
+
     changeLoaderRejectOrder(true);
     Map<String, dynamic> response = await ordersProvider.rejectOrder(order, messageReject);
     // changeResponseReject(response);

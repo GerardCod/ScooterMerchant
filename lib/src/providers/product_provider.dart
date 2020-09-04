@@ -49,7 +49,6 @@ class ProductProvider {
       'price': product.price,
       'stock': product.stock
     };
-    print(body);
     final http.Response response =
         await http.patch(uri, body: json.encode(body), headers: {
       'Authorization': 'Bearer ' + _prefs.access,

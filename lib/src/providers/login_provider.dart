@@ -22,7 +22,6 @@ class LoginProvider {
           await http.post(_baseUrl + 'merchants/login/', body: model.toMap());
       String source = Utf8Decoder().convert(response.bodyBytes);
       Map<String, dynamic> decodedResp = json.decode(source);
-      print(decodedResp);
       if (decodedResp.containsKey('access')) {
         _prefs.access = decodedResp['access'];
         _prefs.refresh = decodedResp['refresh'];
@@ -53,7 +52,6 @@ class LoginProvider {
           .post(_baseUrl + 'users/forgot-password/', body: {'username': email});
 
       if (response.statusCode >= 400) {
-        print(response.body);
         return {
           'ok': false,
           'message': 'Error al enviar el email de recuperación'
@@ -61,7 +59,6 @@ class LoginProvider {
       } else {
         String source = Utf8Decoder().convert(response.bodyBytes);
         Map<String, dynamic> decodedData = json.decode(source);
-        print(decodedData);
         return {'ok': true, 'message': 'Email enviado. Revisa tu email'};
       }
     } catch (e) {
@@ -82,7 +79,6 @@ class LoginProvider {
       Map<String, dynamic> decodedData = json.decode(source);
 
       if (response.statusCode >= 400) {
-        print(decodedData);
         return {'ok': false, 'message': 'Error al cambiar la contraseña.'};
       } else {
         return {'ok': true, 'message': 'Contraseña cambiada con éxito.'};
@@ -109,7 +105,6 @@ class LoginProvider {
     print(source);
     Map<String, dynamic> decodedData = json.decode(source);
     if (response.statusCode >= 400) {
-      print(decodedData);
       return {
         'ok': false,
         'message': 'Error al actualizar la disponibilidad del comercio.'

@@ -67,7 +67,6 @@ class OrderCard extends StatelessWidget {
   }
 
   void _navigateToDetails(BuildContext context, OrderModel model) {
-    print(typeList);
     Navigator.of(context).pushNamed('orderDetails',
         arguments: {'model': model, 'type': typeList});
   }

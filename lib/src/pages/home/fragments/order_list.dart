@@ -75,12 +75,12 @@ class OrderList extends StatelessWidget {
 
   List<Widget> _listItemSkeleton(Size size) {
     List listings = List<Widget>();
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 10; i++) {
       listings.add(
         Container(
           margin: EdgeInsets.only(bottom: 10),
           width: double.infinity,
-          height: 150.0,
+          height: 70.0,
           color: Colors.white,
         ),
       );

@@ -25,7 +25,6 @@ class OrdersProvider {
         'in_process': inProcess.toString()
       });
     }
-    print(uri);
 
     http.Response response = await http.get(uri, headers: {
       'Authorization': 'Bearer ' + _prefs.access,

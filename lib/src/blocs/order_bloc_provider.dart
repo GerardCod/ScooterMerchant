@@ -53,8 +53,6 @@ class OrderBlocProvider with Validators {
   }
 
   Future<Map<String, dynamic>> acceptOrder(OrderModel model) async{
-    // print('OrderModel Id ==================================');
-    // print(order.id);
     changeLoaderAcceptOrder(true);
     Map<String, dynamic> response = await _orderProvider.acceptOrder(model);
     // changeResponseAccept(response);
@@ -63,8 +61,6 @@ class OrderBlocProvider with Validators {
   }
 
   Future<Map<String, dynamic>> rejectOrder(String messageReject, OrderModel model) async{
-    // print('OrderModel Id ==================================');
-    // print(order.id);
     changeLoaderRejectOrder(true);
     Map<String, dynamic> response = await _orderProvider.rejectOrder(model, messageReject);
     // changeResponseReject(response);
