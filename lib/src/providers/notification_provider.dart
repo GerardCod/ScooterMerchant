@@ -72,7 +72,10 @@ class NotificationsProvider {
 
   Future<Map<String, StringConversionSink>> registrarToken(String token) async {
     final url = _baseUrl + '/devices/';
-    final authData = {"registration_id": token, "type": 'android'};
+    final authData = {
+      "registration_id": token,
+      "type": Platform.isAndroid ? 'android' : 'ios'
+    };
 
     // print('AQUIIII');
     print(authData);
