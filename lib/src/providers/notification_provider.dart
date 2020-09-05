@@ -107,14 +107,18 @@ class NotificationsProvider {
 
     Map<String, dynamic> argument = {'data': 'no-data', 'type': 'no-type'};
 
+    String dataMessage = '';
+    String typeMessage = '';
     if (Platform.isAndroid) {
-      String dataMessage = message['data']['order_id'] ?? 'no-data';
-      argument['data'] = dataMessage;
-      String typeMessage = message['data']['type'] ?? 'no-type';
-      argument['type'] = typeMessage;
-      // print(dataMessage);
-      // print('DataMessage');
+      dataMessage = message['data']['order_id'] ?? 'no-data';
+      typeMessage = message['data']['type'] ?? 'no-type';
+    } else {
+      dataMessage = message['order_id'] ?? 'no-data';
+      typeMessage = message['type'] ?? 'no-type';
     }
+    argument['data'] = dataMessage;
+    argument['type'] = typeMessage;
+
     _messageStreamController.sink.add(argument);
     return Future<void>.value();
   }
@@ -129,14 +133,18 @@ class NotificationsProvider {
 
     Map<String, dynamic> argument = {'data': 'no-data', 'type': 'no-type'};
 
+    String dataMessage = '';
+    String typeMessage = '';
     if (Platform.isAndroid) {
-      String dataMessage = message['data']['order_id'] ?? 'no-data';
-      argument['data'] = dataMessage;
-      String typeMessage = message['data']['type'] ?? 'no-type';
-      argument['type'] = typeMessage;
-      // print(dataMessage);
-      // print('DataMessage');
+      dataMessage = message['data']['order_id'] ?? 'no-data';
+      typeMessage = message['data']['type'] ?? 'no-type';
+    } else {
+      dataMessage = message['order_id'] ?? 'no-data';
+      typeMessage = message['type'] ?? 'no-type';
     }
+    argument['data'] = dataMessage;
+    argument['type'] = typeMessage;
+
     _messageStreamController.sink.add(argument);
     return Future<void>.value();
   }
@@ -148,14 +156,18 @@ class NotificationsProvider {
 
     Map<String, dynamic> argument = {'data': 'no-data', 'type': 'no-type'};
 
+    String dataMessage = '';
+    String typeMessage = '';
     if (Platform.isAndroid) {
-      String dataMessage = message['data']['order_id'] ?? 'no-data';
-      argument['data'] = dataMessage;
-      String typeMessage = message['data']['type'] ?? 'no-type';
-      argument['type'] = typeMessage;
-      // print(dataMessage);
-      // print('DataMessage');
+      dataMessage = message['data']['order_id'] ?? 'no-data';
+      typeMessage = message['data']['type'] ?? 'no-type';
+    } else {
+      dataMessage = message['order_id'] ?? 'no-data';
+      typeMessage = message['type'] ?? 'no-type';
     }
+    argument['data'] = dataMessage;
+    argument['type'] = typeMessage;
+
     _messageStreamController.sink.add(argument);
     return Future<void>.value();
   }

@@ -89,7 +89,7 @@ class ChangeProductPage extends StatelessWidget {
         Container(
           margin: EdgeInsets.only(bottom: 10),
           width: double.infinity,
-          height: 150.0,
+          height: 50.0,
           color: Colors.white,
         ),
       );
