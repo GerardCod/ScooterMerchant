@@ -18,8 +18,10 @@ class LoginProvider {
 
   Future<Map<String, dynamic>> login(AuthModel model) async {
     try {
+      
       final response =
           await http.post(_baseUrl + 'merchants/login/', body: model.toMap());
+          print(_baseUrl + 'merchants/login/');
       String source = Utf8Decoder().convert(response.bodyBytes);
       Map<String, dynamic> decodedResp = json.decode(source);
       if (decodedResp.containsKey('access')) {
@@ -27,7 +29,6 @@ class LoginProvider {
         _prefs.refresh = decodedResp['refresh'];
         _prefs.merchant = MerchantModel.fromJson(decodedResp['merchant']);
         _prefs.isOpen = _prefs.merchant.isOpen;
-
         _firebaseMessaging.getToken().then((value) async {
           await pushProvider.registrarToken(value);
         });

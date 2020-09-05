@@ -18,11 +18,11 @@ class ProductProvider {
     if (allProducts) {
       uri = Uri.https(
         _baseUri,
-        '/api/v1/merchants/${_prefs.merchant.id}/products/',
+        '/appback/api/v1/merchants/${_prefs.merchant.id}/products/',
       );
     } else {
       uri = Uri.https(
-          _baseUri, '/api/v1/merchants/${_prefs.merchant.id}/products/', {
+          _baseUri, '/appback/api/v1/merchants/${_prefs.merchant.id}/products/', {
         'status': status.toString(),
       });
     }
