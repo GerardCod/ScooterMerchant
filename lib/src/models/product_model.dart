@@ -13,6 +13,7 @@ class Product {
   Status status;
   bool haveMenu;
   List<MenuCategories> menuCategories;
+  bool isAvailable;
 
   Product(
       {this.id,
@@ -28,7 +29,7 @@ class Product {
       this.totalSales,
       this.status,
       this.haveMenu,
-      this.menuCategories});
+      this.menuCategories, this.isAvailable});
 
   Product.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -53,6 +54,7 @@ class Product {
         menuCategories.add(new MenuCategories.fromJson(v));
       });
     }
+    isAvailable = json['is_available'];
   }
 
   Map<String, dynamic> toJson() {
@@ -78,6 +80,7 @@ class Product {
       data['menu_categories'] =
           this.menuCategories.map((v) => v.toJson()).toList();
     }
+    data['is_available'] = this.isAvailable;
     return data;
   }
 }

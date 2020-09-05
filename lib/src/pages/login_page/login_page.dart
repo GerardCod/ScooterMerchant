@@ -116,8 +116,37 @@ class LoginPage extends StatelessWidget {
             textColor: Colors.white,
             padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 40.0),
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(15.0))),
-            child: Text('Ingresar', style: textStyleBtnComprar),
+              borderRadius: BorderRadius.all(
+                Radius.circular(15.0),
+              ),
+            ),
+            child: StreamBuilder<bool>(
+              stream: bloc.showLoaderStream,
+              // initialData: initialData ,
+              builder: (context, snapshotLoader) {
+                return Container(
+                  width: 200,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text('Ingresar', style: textStyleBtnComprar),
+                      Visibility(
+                        visible: snapshotLoader.hasData &&
+                            snapshotLoader.data == true,
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 10),
+                          child: SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
           );
         });
   }

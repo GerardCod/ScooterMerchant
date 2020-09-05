@@ -36,7 +36,7 @@ class NavDrawer extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(16.0),
               child: _switchDisponibility(context, bloc),
-            ),
+            ), 
             ListTile(
               leading: Icon(Icons.settings),
               title: Text('Configuración'),
@@ -96,7 +96,7 @@ class NavDrawer extends StatelessWidget {
     return StreamBuilder(
       stream: bloc.availabilityStream,
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-        print(MerchantPreferences().isOpen);
+        // print(MerchantPreferences().isOpen);
         return Switch(
           value: snapshot.hasData && MerchantPreferences().isOpen != null
               ? snapshot.data

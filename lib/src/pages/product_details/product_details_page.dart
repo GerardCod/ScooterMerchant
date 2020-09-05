@@ -76,10 +76,10 @@ class ProductDetailsPage extends StatelessWidget {
             SizedBox(
               height: 24.0,
             ),
-            _productStockStreamBuilder(bloc, product),
-            SizedBox(
-              height: 24.0,
-            ),
+            _switchDisponibility(bloc, product),
+            // SizedBox(
+            //   height: 24.0,
+            // ),
             _buttonStreamBuilder(bloc, product, context)
           ],
         ),
@@ -125,37 +125,77 @@ class ProductDetailsPage extends StatelessWidget {
         });
   }
 
-  Widget _productStockStreamBuilder(ProductBlocProvider bloc, Product product) {
+  Widget _switchDisponibility(ProductBlocProvider bloc, Product product) {
+    // print('product.isAvailable============================');
+    // print(product.isAvailable);
+    return Row(
+      children: <Widget>[
+        Text(
+          'Disponible',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 17,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        SizedBox(
+          width: 8.0,
+        ),
+        _switchStreamBuilder(bloc),
+      ],
+    );
+  }
+
+  Widget _switchStreamBuilder(ProductBlocProvider bloc) {
     return StreamBuilder(
-        stream: bloc.productStockStream,
-        builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
-          return TextFormField(
-            initialValue: product.stock.toString(),
-            keyboardType: TextInputType.number,
-            decoration: InputDecoration(
-                contentPadding: EdgeInsets.all(16.0),
-                border: OutlineInputBorder(),
-                labelText: 'Stock',
-                errorText: snapshot.error),
-            onChanged: (String value) {
-              bloc.changeProductStock(int.parse(value));
-            },
-          );
-        });
+      stream: bloc.productAvailableStream,
+      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+        // print(MerchantPreferences().isOpen);
+        return Switch(
+            value: snapshot.hasData ? snapshot.data : false,
+            activeColor: colorSuccess,
+            onChanged: (bool value) {
+              bloc.changeProductAvailable(value);
+              // print(bloc.productAvailable);
+            });
+      },
+    );
   }
 
   Widget _buttonStreamBuilder(
       ProductBlocProvider bloc, Product product, BuildContext context) {
     return StreamBuilder(
-        stream: bloc.validateProductInformation,
+        stream: bloc.showLoaderStream,
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-          return RaisedButton(
-            child: Text('Guardar datos', style: textStyleBtnComprar),
-            shape: radiusButtons,
-            color: primaryColor,
-            onPressed: snapshot.hasData
-                ? () => this._updateProduct(product, bloc, context)
-                : null,
+          return Container(
+            width: 200,
+            child: RaisedButton(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Align(
+                      alignment: Alignment.center,
+                      child: Text('Guardar datos', style: textStyleBtnComprar)),
+                  Visibility(
+                    visible: snapshot.hasData && snapshot.data == true,
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 10),
+                      child: SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              shape: radiusButtons,
+              color: primaryColor,
+              onPressed:
+                  bloc.productName.length != 0 && bloc.productPrice != null
+                      ? () => this._updateProduct(product, bloc, context)
+                      : null,
+            ),
           );
         });
   }
@@ -164,11 +204,13 @@ class ProductDetailsPage extends StatelessWidget {
       Product product, ProductBlocProvider bloc, BuildContext context) async {
     product.name = bloc.productName;
     product.price = bloc.productPrice;
-    product.stock = bloc.productStock;
+    product.isAvailable = bloc.productAvailable;
     final response = await bloc.updateProduct(product: product);
     if (response['ok']) {
+      // print(response['message']);
       showSnackBar(context, response['message'], colorSuccess);
     } else {
+      // print(response['message']);
       showSnackBar(context, response['message'], colorDanger);
     }
   }

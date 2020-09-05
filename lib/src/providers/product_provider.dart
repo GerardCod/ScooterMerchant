@@ -43,11 +43,14 @@ class ProductProvider {
   Future<Map<String, dynamic>> updateProduct(
       {@required Product product}) async {
     final Uri uri = Uri.https(_baseUri,
-        '/api/v1/merchants/${_prefs.merchant.id}/products/${product.id}/');
+        'appback/api/v1/merchants/${_prefs.merchant.id}/products/${product.id}/');
+        // print('Product Available Provider');
+        // print(product.isAvailable);
     Map<String, dynamic> body = {
       'name': product.name,
       'price': product.price,
-      'stock': product.stock
+      // 'stock': product.stock
+      'is_available': product.isAvailable
     };
     final http.Response response =
         await http.patch(uri, body: json.encode(body), headers: {

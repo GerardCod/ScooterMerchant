@@ -10,9 +10,13 @@ class LoginBloc with Validators {
   final _passwordController = BehaviorSubject<String>();
   final _confirmPasswordController = BehaviorSubject<String>();
   final _availabilityController = BehaviorSubject<bool>();
+  final _showLoaderController = BehaviorSubject<bool>();
 
   Future<Map<String, dynamic>> login(AuthModel model) async {
-    return await _provider.login(model);
+    changeShowLoader(true);
+    Map<String, dynamic> response = await _provider.login(model);
+    changeShowLoader(false);
+    return response; 
   }
 
   Future<bool> logout() async {
@@ -51,10 +55,12 @@ class LoginBloc with Validators {
       Rx.combineLatest2(emailStream, passwordStream, (a, b) => true);
 
   Stream<bool> get availabilityStream => _availabilityController.stream;
+  Stream<bool> get showLoaderStream => _showLoaderController.stream;
 
   String get email => _emailController.value;
   String get password => _passwordController.value;
   String get confirmPassword => _confirmPasswordController.value;
+  bool get showLoader => _showLoaderController.value;
 
   Function(String) get changeEmail => _emailController.sink.add;
   Function(String) get changePassword => _passwordController.sink.add;
@@ -62,11 +68,13 @@ class LoginBloc with Validators {
       _confirmPasswordController.sink.add;
 
   Function(bool) get changeAvailability => _availabilityController.sink.add;
+  Function(bool) get changeShowLoader => _showLoaderController.sink.add;
 
   dispose() {
     _emailController.close();
     _passwordController.close();
     _confirmPasswordController.close();
     _availabilityController.close();
+    _showLoaderController.close();
   }
 }
