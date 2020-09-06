@@ -16,7 +16,7 @@ class LoginBloc with Validators {
     changeShowLoader(true);
     Map<String, dynamic> response = await _provider.login(model);
     changeShowLoader(false);
-    return response; 
+    return response;
   }
 
   Future<bool> logout() async {
@@ -28,8 +28,9 @@ class LoginBloc with Validators {
   }
 
   Future<Map<String, dynamic>> updatePassword(
-      {@required String password, @required String token}) async {
-    return await _provider.changePassword(password: password, token: token);
+      {@required String currentPassword, @required String newPassword}) async {
+    return await _provider.changePassword(
+        currentPassword: currentPassword, newPassword: newPassword);
   }
 
   Future<Map<String, dynamic>> updateAvailability(

@@ -14,15 +14,17 @@ class ProductDetailsPage extends StatelessWidget {
     final Product model = ModalRoute.of(context).settings.arguments;
     final Size size = MediaQuery.of(context).size;
     // bloc.changeProductName(model.name);
-    print('model.isAvailable======================');
-    print(model.isAvailable);
+    if (bloc.productName == null && bloc.productPrice == null) {
+      bloc.changeProductName(model.name);
+      bloc.changeProductPrice(model.price);
+      bloc.changeProductAvailable(model.isAvailable);
+    }
     // bloc.changeProductPrice(model.price);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
-          onPressed: () =>
-              Navigator.of(context).popAndPushNamed('editProducts'),
+          onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text('Detalles del producto', style: textStyleBtnComprar),
         iconTheme: IconThemeData(
@@ -104,7 +106,9 @@ class ProductDetailsPage extends StatelessWidget {
               labelText: 'Nombre',
               errorText: snapshot.error,
             ),
-            onChanged: bloc.changeProductName);
+            onChanged: (value) {
+              bloc.changeProductName(value);
+            });
       },
     );
   }
@@ -156,7 +160,7 @@ class ProductDetailsPage extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
         // print(MerchantPreferences().isOpen);
         return Switch(
-            value: !snapshot.hasData  && snapshot.data == null
+            value: !snapshot.hasData && snapshot.data == null
                 ? product.isAvailable
                 : snapshot.data,
             activeColor: colorSuccess,
@@ -181,7 +185,7 @@ class ProductDetailsPage extends StatelessWidget {
                   children: <Widget>[
                     Text('Guardar datos', style: textStyleBtnComprar),
                     Visibility(
-                      visible: snapshot.hasData && snapshot.data == true,
+                      visible: snapshot.hasData && snapshot.data,
                       child: Padding(
                         padding: EdgeInsets.only(left: 10),
                         child: SizedBox(
@@ -205,10 +209,16 @@ class ProductDetailsPage extends StatelessWidget {
     product.name = bloc.productName;
     product.price = bloc.productPrice;
     product.isAvailable = bloc.productAvailable;
+    print(product.price);
+    if (product.name.isEmpty || product.price == null) {
+      showSnackBar(context, 'Todos los campos son obligatorios', colorDanger);
+      return;
+    }
     final response = await bloc.updateProduct(product: product);
     if (response['ok']) {
       // print(response['message']);
       showSnackBar(context, response['message'], colorSuccess);
+      Navigator.pop(context);
     } else {
       // print(response['message']);
       showSnackBar(context, response['message'], colorDanger);

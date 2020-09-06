@@ -18,10 +18,9 @@ class LoginProvider {
 
   Future<Map<String, dynamic>> login(AuthModel model) async {
     try {
-      
       final response =
           await http.post(_baseUrl + 'merchants/login/', body: model.toMap());
-          // print(_baseUrl + 'merchants/login/');
+      // print(_baseUrl + 'merchants/login/');
       String source = Utf8Decoder().convert(response.bodyBytes);
       Map<String, dynamic> decodedResp = json.decode(source);
       if (decodedResp.containsKey('access')) {
@@ -68,13 +67,14 @@ class LoginProvider {
   }
 
   Future<Map<String, dynamic>> changePassword(
-      {@required String password, @required String token}) async {
+      {@required String currentPassword, @required String newPassword}) async {
     try {
-      final response =
-          await http.post(_baseUrl + 'users/recover-password/', body: {
-        'token': token,
-        'password': password,
-      });
+      final response = await http.post(
+          _baseUrl + 'merchants/${_prefs.merchant.id}/change_password/',
+          body: {
+            'current_password': currentPassword,
+            'new_password': newPassword,
+          });
 
       String source = Utf8Decoder().convert(response.bodyBytes);
       Map<String, dynamic> decodedData = json.decode(source);
@@ -103,7 +103,6 @@ class LoginProvider {
         });
 
     String source = Utf8Decoder().convert(response.bodyBytes);
-    print(source);
     Map<String, dynamic> decodedData = json.decode(source);
     if (response.statusCode >= 400) {
       return {

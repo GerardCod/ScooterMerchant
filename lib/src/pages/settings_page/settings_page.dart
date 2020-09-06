@@ -131,9 +131,9 @@ class SettingsPage extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 10.0),
             onPressed: snapshot.hasData
                 ? () => this._changePassword(
-                    password: bloc.confirmPassword,
+                    currentPassword: token,
                     bloc: bloc,
-                    token: token,
+                    newPassword: bloc.confirmPassword,
                     context: context)
                 : null);
       },
@@ -141,12 +141,12 @@ class SettingsPage extends StatelessWidget {
   }
 
   Future<void> _changePassword(
-      {String password,
-      String token,
+      {String currentPassword,
+      String newPassword,
       LoginBloc bloc,
       BuildContext context}) async {
-    final response =
-        await bloc.updatePassword(password: password, token: token);
+    final response = await bloc.updatePassword(
+        currentPassword: currentPassword, newPassword: newPassword);
     if (response['ok']) {
       showSnackBar(context, 'Contraseña cambiada con éxito.', colorSuccess);
     } else {

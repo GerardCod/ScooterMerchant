@@ -36,7 +36,8 @@ class ProductBlocProvider with Validators {
   Function(String) get changeProductName => _productNameController.sink.add;
   Function(double) get changeProductPrice => _productPriceController.sink.add;
   // Function(int) get changeProductStock => _productStockController.sink.add;
-  Function(bool) get changeProductAvailable => _productAvailableController.sink.add;
+  Function(bool) get changeProductAvailable =>
+      _productAvailableController.sink.add;
   Function(bool) get changeShowLoader => _showLoaderController.sink.add;
 
   //Getters
@@ -46,7 +47,7 @@ class ProductBlocProvider with Validators {
   bool get productAvailable => _productAvailableController.value;
   bool get showLoader => _showLoaderController.value;
 
-   Future<List<Product>> getProducts({int status = 1}) async {
+  Future<List<Product>> getProducts({int status = 1}) async {
     final response = await _productProvider.getProducts(status: status);
     changeProductList(response);
     return response;
@@ -54,10 +55,11 @@ class ProductBlocProvider with Validators {
 
   Future<Map<String, dynamic>> updateProduct(
       {@required Product product}) async {
-        changeShowLoader(true);
-        Map<String, dynamic> response = await _productProvider.updateProduct(product: product);
-        changeShowLoader(false);
-        return response;
+    changeShowLoader(true);
+    Map<String, dynamic> response =
+        await _productProvider.updateProduct(product: product);
+    changeShowLoader(false);
+    return response;
   }
 
   dispose() {

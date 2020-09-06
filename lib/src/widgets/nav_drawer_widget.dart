@@ -36,12 +36,12 @@ class NavDrawer extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(16.0),
               child: _switchDisponibility(context, bloc),
-            ), 
-            ListTile(
+            ),
+            /*   ListTile(
               leading: Icon(Icons.settings),
               title: Text('Configuración'),
               onTap: () => {Navigator.pushNamed(context, 'settings')},
-            ),
+            ), */
             ListTile(
               leading: Icon(Icons.mode_edit),
               title: Text('Editar productos'),
@@ -70,7 +70,7 @@ class NavDrawer extends StatelessWidget {
   }
 
   void _navigateToProductListChange(BuildContext context) {
-    Navigator.of(context).popAndPushNamed('editProducts');
+    Navigator.of(context).pushNamed('editProducts');
   }
 
   Widget _switchDisponibility(BuildContext context, LoginBloc bloc) {
