@@ -2,14 +2,13 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
-// String baseUrl = 'https://www.scooterdev.tech/api/v1/';
+String baseUrl = 'https://www.scooterdev.tech/api/v1/';
 String fontFamily = 'Aspira';
 String fontFamilySecondary = 'Slant';
-// String baseUri = "www.scooterdev.tech";
-
-String baseUrl = "https://www.scooter-app.team/appback/api/v1/";
-String baseUri = "www.scooter-app.team";
-
+String baseUri = "www.scooterdev.tech";
+String urlComplement = '/api/v1/';
+//String baseUrl = "https://www.scooter-app.team/appback/api/v1/";
+//String baseUri = "www.scooter-app.team";
 
 final Map<String, int> status = {
   'incoming': 14,

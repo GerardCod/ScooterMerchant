@@ -49,6 +49,7 @@ class ProductBlocProvider with Validators {
 
   Future<List<Product>> getProducts({int status = 1}) async {
     final response = await _productProvider.getProducts(status: status);
+    print(response);
     changeProductList(response);
     return response;
   }
