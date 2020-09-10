@@ -63,6 +63,12 @@ class ProductBlocProvider with Validators {
     return response;
   }
 
+  cleanProductState() {
+    this._productNameController.value = null;
+    this._productPriceController.value = null;
+    this._productAvailableController.value = null;
+  }
+
   dispose() {
     _productListController.close();
     _productNameController.close();
