@@ -69,17 +69,21 @@ class LoginProvider {
   Future<Map<String, dynamic>> changePassword(
       {@required String currentPassword, @required String newPassword}) async {
     try {
-      final response = await http.post(
+      final response = await http.patch(
           _baseUrl + 'merchants/${_prefs.merchant.id}/change_password/',
           body: {
             'current_password': currentPassword,
             'new_password': newPassword,
+          },
+          headers: {
+            'Authorization': 'Bearer ' + _prefs.access,
           });
 
       String source = Utf8Decoder().convert(response.bodyBytes);
       Map<String, dynamic> decodedData = json.decode(source);
-
+      print('before condition.');
       if (response.statusCode >= 400) {
+        print(decodedData);
         return {'ok': false, 'message': 'Error al cambiar la contraseña.'};
       } else {
         return {'ok': true, 'message': 'Contraseña cambiada con éxito.'};

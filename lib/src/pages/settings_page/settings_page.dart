@@ -131,7 +131,7 @@ class SettingsPage extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 10.0),
             onPressed: snapshot.hasData
                 ? () => this._changePassword(
-                    currentPassword: token,
+                    currentPassword: bloc.password,
                     bloc: bloc,
                     newPassword: bloc.confirmPassword,
                     context: context)
@@ -148,9 +148,9 @@ class SettingsPage extends StatelessWidget {
     final response = await bloc.updatePassword(
         currentPassword: currentPassword, newPassword: newPassword);
     if (response['ok']) {
-      showSnackBar(context, 'Contraseña cambiada con éxito.', colorSuccess);
+      showSnackBar(context, response['message'], colorSuccess);
     } else {
-      showSnackBar(context, 'Error al cambiar la contraseña.', colorDanger);
+      showSnackBar(context, response['message'], colorDanger);
     }
   }
 }
