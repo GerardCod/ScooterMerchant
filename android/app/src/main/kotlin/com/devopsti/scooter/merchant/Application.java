@@ -44,6 +44,22 @@ public class Application extends FlutterApplication implements PluginRegistrantC
       NotificationManager manager = getSystemService(NotificationManager.class);
       manager.createNotificationChannel(channel2);
     }
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      NotificationChannel channel3 = new NotificationChannel("delivered", "Delivered", NotificationManager.IMPORTANCE_HIGH);
+      Uri uri = Uri.parse("android.resource://" + this.getPackageName() + "/" + R.raw.carhorn);
+
+      AudioAttributes att = new AudioAttributes.Builder()
+              .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+              .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+              .build();
+      channel3.setSound(uri, att);
+      channel3.enableVibration(true);
+      channel3.enableLights(true);
+
+      NotificationManager manager = getSystemService(NotificationManager.class);
+      manager.createNotificationChannel(channel3);
+    }
   }
 
   @Override
