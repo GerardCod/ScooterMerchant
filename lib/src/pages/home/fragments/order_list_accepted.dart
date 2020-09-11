@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scootermerchant/src/blocs/order_bloc_provider.dart';
 import 'package:scootermerchant/src/blocs/provider.dart';
 import 'package:scootermerchant/src/models/order_model.dart';
+import 'package:scootermerchant/src/widgets/card_item.dart';
 import 'package:scootermerchant/src/widgets/order_card.dart';
 import 'package:scootermerchant/utilities/constants.dart';
 import 'package:shimmer/shimmer.dart';
@@ -14,7 +15,8 @@ class OrderListAccepted extends StatelessWidget {
     final OrderBlocProvider bloc = Provider.orderBlocProviderOf(context);
     final size = MediaQuery.of(context).size;
     bloc.changeOrderList(null);
-    bloc.getOrders(status: status['in_process'], inProcess: true);
+    // bloc.getOrders(status: status['in_process'], inProcess: true);
+    bloc.getOrders('15');
     return _listStreamBuilder(bloc, size);
   }
 
@@ -36,7 +38,7 @@ class OrderListAccepted extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  'No hay ningun pedido.',
+                  'No hay ningun pedido en preparación.',
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -51,11 +53,7 @@ class OrderListAccepted extends StatelessWidget {
       {OrderBlocProvider orderBloc}) {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
-        (context, index) => OrderCard(
-          model: snapshot.data[index],
-          bloc: orderBloc,
-          typeList: 'inProcess',
-        ),
+        (context, index) => CardItem(snapshot.data[index]),
         childCount: snapshot.hasData ? snapshot.data.length : 0,
       ),
     );

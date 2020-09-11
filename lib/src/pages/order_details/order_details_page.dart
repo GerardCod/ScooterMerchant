@@ -6,14 +6,16 @@ import 'package:scootermerchant/src/pages/home/home_page.dart';
 import 'package:scootermerchant/utilities/constants.dart';
 
 class OrderDetailsPage extends StatelessWidget {
-  const OrderDetailsPage({Key key}) : super(key: key);
+  // const OrderDetailsPage({Key key}) : super(key: key);
+  final OrderModel orderModel;
+  OrderDetailsPage(this.orderModel);
 
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    final Map<String, dynamic> args = ModalRoute.of(context).settings.arguments;
-    final OrderModel model = args['model'];
-    final String typeList = args['type'];
+    // final Map<String, dynamic> args = ModalRoute.of(context).settings.arguments;
+    // final OrderModel model = args['model'];
+    // final String typeList = args['type'];
     final OrderBlocProvider bloc = Provider.orderBlocProviderOf(context);
     final _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -35,9 +37,8 @@ class OrderDetailsPage extends StatelessWidget {
                 size: size,
                 bloc: bloc,
                 context: context,
-                model: model,
-                scaffoldKey: _scaffoldKey,
-                typeList: typeList),
+                model: orderModel,
+                scaffoldKey: _scaffoldKey),
           ),
         ],
       ),
@@ -115,9 +116,9 @@ class OrderDetailsPage extends StatelessWidget {
       GlobalKey<ScaffoldState> scaffoldKey,
       OrderModel model,
       String typeList}) {
-    if (typeList == 'incoming') {
+    if (model.orderStatus.id ==14) {
       return _actionButtons(bloc, context, scaffoldKey, model);
-    } else if (typeList == 'inProcess') {
+    } else if (model.orderStatus.id ==15) {
       return _actionButtonsInProcess(bloc, context, scaffoldKey, model);
     }
     return Container();
@@ -717,7 +718,6 @@ class OrderDetailsPage extends StatelessWidget {
     Map<String, dynamic> response =
         await bloc.cancelOrder(order, bloc.cancelReason);
     if (response['ok']) {
-
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (BuildContext context) => HomePage()),

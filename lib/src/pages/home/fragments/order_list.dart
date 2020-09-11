@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scootermerchant/src/blocs/order_bloc_provider.dart';
 import 'package:scootermerchant/src/blocs/provider.dart';
 import 'package:scootermerchant/src/models/order_model.dart';
+import 'package:scootermerchant/src/widgets/card_item.dart';
 import 'package:scootermerchant/src/widgets/order_card.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -11,7 +12,8 @@ class OrderList extends StatelessWidget {
     final orderListBloc = Provider.orderBlocProviderOf(context);
     final size = MediaQuery.of(context).size;
     orderListBloc.changeOrderList(null);
-    orderListBloc.getOrders();
+    // orderListBloc.getOrders();
+    orderListBloc.getOrders('14');
     return _listStreamBuilder(orderListBloc, size);
   }
 
@@ -56,11 +58,7 @@ class OrderList extends StatelessWidget {
   }
 
   Widget _listItem(OrderModel model, OrderBlocProvider bloc) {
-    return OrderCard(
-      model: model,
-      bloc: bloc,
-      typeList: 'incoming',
-    );
+    return CardItem(model);
   }
 
   Widget _itemSkeleton(Size size) {

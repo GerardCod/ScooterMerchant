@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:scootermerchant/src/blocs/order_bloc_provider.dart';
 import 'package:scootermerchant/src/blocs/provider.dart';
 import 'package:scootermerchant/src/models/order_model.dart';
-import 'package:scootermerchant/src/widgets/order_card.dart';
+import 'package:scootermerchant/src/widgets/card_item.dart';
 import 'package:shimmer/shimmer.dart';
 
-class OrderHistory extends StatelessWidget {
-  const OrderHistory({Key key}) : super(key: key);
+class OrderListReady extends StatelessWidget {
+  // const OrderHistory({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final OrderBlocProvider bloc = Provider.orderBlocProviderOf(context);
     bloc.changeOrderList(null);
-    bloc.getOrders(allOrders: true);
+    bloc.getOrders('3,4,13,16');
+    // bloc.getOrdersPickUp(status: 8);
     final Size size = MediaQuery.of(context).size;
     return _listStreamBuilder(bloc, size);
   }
@@ -49,11 +50,13 @@ class OrderHistory extends StatelessWidget {
       AsyncSnapshot<List<OrderModel>> snapshot, OrderBlocProvider bloc) {
     return SliverList(
         delegate: SliverChildBuilderDelegate(
-            (BuildContext context, int index) => OrderCard(
-                  model: snapshot.data[index],
-                  bloc: bloc,
-                  typeList: 'history',
-                ),
+            (BuildContext context, int index) =>
+                // OrderCard(
+                //       model: snapshot.data[index],
+                //       bloc: bloc,
+                //       typeList: 'history',
+                //     ),
+                CardItem(snapshot.data[index]),
             childCount: snapshot.hasData ? snapshot.data.length : 0));
   }
 

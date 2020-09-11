@@ -46,7 +46,8 @@ class _MyAppState extends State<MyApp> {
     notificationProvider.messages.listen((data) {
       if (data['type'] == 'NEW_ORDER') {
         navigatorKey.currentState
-            .pushNamed('notificationOrderDetails', arguments: data['data']);
+            // .pushNamed('notificationOrderDetails', arguments: data['data']);
+            .pushNamed('notificationColorPage');
       }
     });
   }

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:scootermerchant/src/blocs/login_bloc.dart';
-import 'package:scootermerchant/src/blocs/provider.dart';
-import 'package:scootermerchant/src/pages/home/fragments/order_history.dart';
+import 'package:scootermerchant/src/pages/home/fragments/order_list_ready.dart';
 import 'package:scootermerchant/src/pages/home/fragments/order_list.dart';
 import 'package:scootermerchant/src/pages/home/fragments/order_list_accepted.dart';
 import 'package:scootermerchant/src/widgets/nav_drawer_widget.dart';
@@ -21,13 +19,13 @@ class _HomePageState extends State<HomePage> {
   List<Widget> _pages = [
     OrderList(),
     OrderListAccepted(),
-    OrderHistory(),
+    OrderListReady(),
+    // OrderHistory(),
   ];
   final MerchantPreferences _prefs = MerchantPreferences();
 
   @override
   Widget build(BuildContext context) {
-    LoginBloc bloc = Provider.of(context);
     return Scaffold(
       endDrawer: NavDrawer(),
       body: CustomScrollView(
@@ -89,21 +87,19 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _bottomNavigationBar() {
-    return ClipRRect(
-      borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
-      child: BottomNavigationBar(
-        elevation: 10.0,
-        backgroundColor: Color.fromRGBO(240, 240, 240, 1.0),
-        items: [
-          _bottomNavigationBarItem(Icons.add_to_home_screen, 'Entrantes'),
-          _bottomNavigationBarItem(Icons.fastfood, 'Aceptados'),
-          _bottomNavigationBarItem(Icons.history, 'Historial')
-        ],
-        onTap: _onTap,
-        selectedItemColor: primaryColor,
-        currentIndex: _currentPage,
-      ),
+    return BottomNavigationBar(
+      // elevation: 10.0,
+      // backgroundColor: Color.fromRGBO(240, 240, 240, 1.0),
+      items: [
+        _bottomNavigationBarItem(Icons.add_to_home_screen, 'Entrantes'),
+        _bottomNavigationBarItem(Icons.fastfood, 'En preparación'),
+        _bottomNavigationBarItem(Icons.motorcycle, 'Listos'),
+        // _bottomNavigationBarItem(Icons.history, 'Historial'),
+      ], type: BottomNavigationBarType.fixed,
+      unselectedItemColor: Colors.grey,
+      onTap: _onTap,
+      selectedItemColor: primaryColor,
+      currentIndex: _currentPage,
     );
   }
 

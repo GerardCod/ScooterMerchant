@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scootermerchant/src/blocs/login_bloc.dart';
 import 'package:scootermerchant/src/blocs/provider.dart';
 import 'package:scootermerchant/src/models/merchant_model.dart';
+import 'package:scootermerchant/src/pages/notification_order_details/notification_color_page.dart';
 import 'package:scootermerchant/src/preferences/merchant_preferences.dart';
 import 'package:scootermerchant/utilities/constants.dart';
 
@@ -50,7 +51,12 @@ class NavDrawer extends StatelessWidget {
             ListTile(
               leading: Icon(Icons.verified_user),
               title: Text('Ayuda'),
-              onTap: () => {Navigator.of(context).pop()},
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => NotificationColorPage(),
+                ),
+              ),
             ),
             ListTile(
               leading: Icon(Icons.exit_to_app),
@@ -71,6 +77,10 @@ class NavDrawer extends StatelessWidget {
 
   void _navigateToProductListChange(BuildContext context) {
     Navigator.of(context).pushNamed('editProducts');
+  }
+
+  void _navigateToExample(BuildContext context) {
+    Navigator.pushNamed(context, 'notificationColorPage');
   }
 
   Widget _switchDisponibility(BuildContext context, LoginBloc bloc) {

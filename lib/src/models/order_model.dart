@@ -13,7 +13,7 @@ class OrderModel {
   String qrCode;
   OrderStatus orderStatus;
   Customer customer;
-  Map<String, dynamic> deliveryMan;
+  DeliveryMan deliveryMan;
   String station;
   List<Details> details;
   String maximumResponseTime;
@@ -83,7 +83,7 @@ class OrderModel {
     customer = json['customer'] != null
         ? new Customer.fromJson(json['customer'])
         : null;
-    deliveryMan = json['delivery_man'];
+    deliveryMan = json['delivery_man'] != null ? DeliveryMan.fromJson(json['delivery_man']) : null;
     station = json['station'];
     if (json['details'] != null) {
       details = new List<Details>();
@@ -135,7 +135,10 @@ class OrderModel {
     if (this.customer != null) {
       data['customer'] = this.customer.toJson();
     }
-    data['delivery_man'] = this.deliveryMan;
+    if(this.deliveryMan != null){
+    data['delivery_man'] = this.deliveryMan.toJson();
+      
+    }
     data['station'] = this.station;
     if (this.details != null) {
       data['details'] = this.details.map((v) => v.toJson()).toList();
@@ -284,6 +287,36 @@ class Customer {
     data['phone_number'] = this.phoneNumber;
     data['reputation'] = this.reputation;
     data['is_safe_user'] = this.isSafeUser;
+    return data;
+  }
+}
+
+class DeliveryMan {
+  int id;
+  String name;
+  String picture;
+  String phoneNumber;
+  double reputation;
+  // bool isSafeUser;
+
+  DeliveryMan(
+      {this.id, this.name,this.picture, this.phoneNumber, this.reputation});
+
+  DeliveryMan.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    picture = json['picture'];
+    phoneNumber = json['phone_number'];
+    reputation = json['reputation'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['picture'] = this.picture;
+    data['phone_number'] = this.phoneNumber;
+    data['reputation'] = this.reputation;
     return data;
   }
 }

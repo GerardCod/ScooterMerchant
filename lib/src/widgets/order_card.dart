@@ -1,5 +1,7 @@
-import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
+
 import 'package:scootermerchant/src/blocs/order_bloc_provider.dart';
 import 'package:scootermerchant/src/models/order_model.dart';
 import 'package:scootermerchant/src/widgets/status_chip.dart';
@@ -14,6 +16,8 @@ class OrderCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    initializeDateFormatting();
+
     return Card(
       color: Colors.white,
       borderOnForeground: true,
@@ -33,22 +37,9 @@ class OrderCard extends StatelessWidget {
                       children: <Widget>[
                         Text(model.customer.name,
                             style: textStyleTitleListTile),
-                        Text(formatDate(DateTime.parse(model.orderDate), [
-                          dd,
-                          '/',
-                          mm,
-                          '/',
-                          yyyy,
-                          ' ',
-                          hh,
-                          ':',
-                          nn,
-                          ' ',
-                          am
-                        ])),
+                        Text(_dateConvert(model.orderDate.toString())),
                       ],
                     ),
-                    
                     Icon(
                       Icons.keyboard_arrow_right,
                       size: 36.0,
@@ -64,6 +55,12 @@ class OrderCard extends StatelessWidget {
       shadowColor: Color.fromRGBO(0, 0, 0, 0.75),
       elevation: 3.0,
     );
+  }
+
+  _dateConvert(String date) {
+    String f;
+    var now = DateTime.parse(date);
+    return f = DateFormat.yMEd('es').add_jms().format(now).toString();
   }
 
   void _navigateToDetails(BuildContext context, OrderModel model) {
