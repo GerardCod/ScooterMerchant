@@ -66,6 +66,7 @@ class ChangeProductPage extends StatelessWidget {
         return ProductCard(
           product: snapshot.data[index],
           index: index,
+          bloc: bloc,
         );
       },
       itemCount: snapshot.hasData ? snapshot.data.length : 0,

@@ -1,11 +1,8 @@
-import 'package:http/http.dart' as http;
-import 'package:scootermerchant/src/models/merchant_model.dart';
-import 'dart:convert';
-import 'package:scootermerchant/src/preferences/merchant_preferences.dart';
-import 'package:scootermerchant/utilities/constants.dart';
-import 'package:scootermerchant/src/models/order_model.dart';
+import 'dart:core';
 
-import '../models/merchant_model.dart';
+import 'package:http/http.dart' as http;
+import 'package:scootermerchant/src/preferences/merchant_preferences.dart';
+
 
 class OrdersProvider {
   String _baseUri = baseUri;

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:scootermerchant/src/blocs/product_bloc_provider.dart';
 import 'package:scootermerchant/src/models/product_model.dart';
 import 'package:scootermerchant/utilities/constants.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;
   final int index;
-  const ProductCard({Key key, this.product, this.index}) : super(key: key);
+  final ProductBlocProvider bloc;
+  const ProductCard({Key key, this.product, this.index, this.bloc})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +24,7 @@ class ProductCard extends StatelessWidget {
         child: Row(
           children: <Widget>[_containerImage(product), _containerInfo(product)],
         ),
-        onTap: () => this._navigateToDetails(context, product),
+        onTap: () => this._navigateToDetails(context, product, bloc),
       ),
     );
   }
@@ -63,7 +66,9 @@ class ProductCard extends StatelessWidget {
     );
   }
 
-  void _navigateToDetails(BuildContext context, Product model) async {
+  void _navigateToDetails(
+      BuildContext context, Product model, ProductBlocProvider bloc) async {
+    bloc.cleanProductState();
     await Navigator.of(context)
         .pushReplacementNamed('productDetails', arguments: model);
   }

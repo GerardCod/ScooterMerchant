@@ -49,6 +49,7 @@ class ProductBlocProvider with Validators {
 
   Future<List<Product>> getProducts({int status = 1}) async {
     final response = await _productProvider.getProducts(status: status);
+    print(response);
     changeProductList(response);
     return response;
   }
@@ -60,6 +61,12 @@ class ProductBlocProvider with Validators {
         await _productProvider.updateProduct(product: product);
     changeShowLoader(false);
     return response;
+  }
+
+  cleanProductState() {
+    this._productNameController.value = null;
+    this._productPriceController.value = null;
+    this._productAvailableController.value = null;
   }
 
   dispose() {
