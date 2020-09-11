@@ -53,6 +53,11 @@ class NavDrawer extends StatelessWidget {
               onTap: () => {Navigator.of(context).pop()},
             ),
             ListTile(
+              leading: Icon(Icons.lock_open),
+              title: Text('Cambiar contraseña'),
+              onTap: () => {Navigator.of(context).pushNamed('settings')},
+            ),
+            ListTile(
               leading: Icon(Icons.exit_to_app),
               title: Text('Cerrar sesión'),
               onTap: () => this._logOut(bloc, context),
