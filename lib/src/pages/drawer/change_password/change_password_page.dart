@@ -5,8 +5,8 @@ import 'package:scootermerchant/src/preferences/merchant_preferences.dart';
 import 'package:scootermerchant/utilities/constants.dart';
 import 'package:scootermerchant/utilities/functions.dart';
 
-class SettingsPage extends StatelessWidget {
-  const SettingsPage({Key key}) : super(key: key);
+class ChangePasswordPage extends StatelessWidget {
+  // const SettingsPage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class SettingsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Configuración',
+          'Contraseña',
           style: textStyleBtnComprar,
         ),
         iconTheme: IconThemeData(color: Colors.white),
@@ -83,21 +83,22 @@ class SettingsPage extends StatelessWidget {
 
   Widget _passwordStreamBuilder(LoginBloc bloc) {
     return StreamBuilder(
-        stream: bloc.passwordStream,
-        builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-          return TextField(
-            keyboardType: TextInputType.text,
-            decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Contraseña',
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
-                prefixIcon: Icon(Icons.lock),
-                errorText: snapshot.error),
-            onChanged: bloc.changePassword,
-            obscureText: true,
-          );
-        });
+      stream: bloc.passwordStream,
+      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+        return TextField(
+          keyboardType: TextInputType.text,
+          decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'Contraseña',
+              contentPadding:
+                  EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
+              prefixIcon: Icon(Icons.lock),
+              errorText: snapshot.error),
+          onChanged: bloc.changePassword,
+          obscureText: true,
+        );
+      },
+    );
   }
 
   Widget _confirmPasswordStreamBuilder(LoginBloc bloc) {

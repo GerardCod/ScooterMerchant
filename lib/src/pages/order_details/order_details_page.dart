@@ -50,11 +50,11 @@ class OrderDetailsPage extends StatelessWidget {
       width: double.infinity,
       height: size.height * 0.25,
       decoration: BoxDecoration(
-          gradient: LinearGradient(
-              colors: <Color>[primaryColor, primaryColorSecondary]),
           borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(40.0),
-              bottomRight: Radius.circular(40.0))),
+            bottomLeft: Radius.circular(40.0),
+            bottomRight: Radius.circular(40.0),
+          ),
+          color: primaryColor),
     );
   }
 
@@ -104,7 +104,9 @@ class OrderDetailsPage extends StatelessWidget {
               context: context,
               scaffoldKey: scaffoldKey,
               model: model,
-              typeList: typeList)
+              typeList: typeList),
+          Divider(),
+          _showReasonRejection(model),
         ],
       ),
     );
@@ -116,10 +118,30 @@ class OrderDetailsPage extends StatelessWidget {
       GlobalKey<ScaffoldState> scaffoldKey,
       OrderModel model,
       String typeList}) {
-    if (model.orderStatus.id ==14) {
+    if (model.orderStatus.id == 14) {
       return _actionButtons(bloc, context, scaffoldKey, model);
-    } else if (model.orderStatus.id ==15) {
+    } else if (model.orderStatus.id == 15) {
       return _actionButtonsInProcess(bloc, context, scaffoldKey, model);
+    }
+    return Container();
+  }
+
+  Widget _showReasonRejection(OrderModel orderModel) {
+    if (orderModel.id == 7 && orderModel.reasonRejection != null) {
+      return Column(
+        children: <Widget>[
+          Text('Razon de rechazo o cancelacion'),
+          Text(orderModel.reasonRejection)
+        ],
+      );
+    }
+    if (orderModel.id == 7 && orderModel.reasonRejection != null) {
+      return Column(
+        children: <Widget>[
+          Text('Razon de rechazo'),
+          Text(orderModel.reasonRejection)
+        ],
+      );
     }
     return Container();
   }
@@ -630,6 +652,7 @@ class OrderDetailsPage extends StatelessWidget {
       GlobalKey<ScaffoldState> scaffoldKey, OrderModel order) async {
     Map<String, dynamic> response = await bloc.orderFinshed(order);
     if (response['ok']) {
+      print(response);
       scaffoldKey.currentState
           .showSnackBar(_createSnackBar(Colors.green, response['message']))
           .closed
@@ -640,6 +663,7 @@ class OrderDetailsPage extends StatelessWidget {
             ModalRoute.withName('homePage'));
       });
     } else {
+      print(response);
       scaffoldKey.currentState
           .showSnackBar(_createSnackBar(Colors.red, response['message']));
     }

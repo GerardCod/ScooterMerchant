@@ -3,19 +3,42 @@ import 'package:scootermerchant/src/blocs/order_bloc_provider.dart';
 import 'package:scootermerchant/src/blocs/provider.dart';
 import 'package:scootermerchant/src/models/order_model.dart';
 import 'package:scootermerchant/src/widgets/card_item.dart';
+import 'package:scootermerchant/utilities/constants.dart';
 import 'package:shimmer/shimmer.dart';
 
-class OrderListReady extends StatelessWidget {
+class HistoryPage extends StatelessWidget {
   // const OrderHistory({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final OrderBlocProvider bloc = Provider.orderBlocProviderOf(context);
     bloc.changeOrderList(null);
-    bloc.getOrders('3,4,13,16', 'created');
+    bloc.getOrders('6,7,8,17','created');
     // bloc.getOrdersPickUp(status: 8);
     final Size size = MediaQuery.of(context).size;
-    return _listStreamBuilder(bloc, size);
+    return Scaffold(
+      appBar: _customAppBar(),
+      body: _customBody(size, bloc),
+    );
+  }
+
+  Widget _customAppBar() {
+    return AppBar(
+      title: Text(
+        'Historial',
+        style: TextStyle(color: Colors.white),
+      ),
+      iconTheme: IconThemeData(color: Colors.white),
+      backgroundColor: primaryColor,
+    );
+  }
+
+  Widget _customBody(Size size, OrderBlocProvider bloc) {
+    return Container(
+      width: size.width,
+      height: size.height,
+      child: _listStreamBuilder(bloc, size),
+    );
   }
 
   Widget _listStreamBuilder(OrderBlocProvider bloc, Size size) {
@@ -24,21 +47,17 @@ class OrderListReady extends StatelessWidget {
         builder:
             (BuildContext context, AsyncSnapshot<List<OrderModel>> snapshot) {
           if (!snapshot.hasData) {
-            return SliverToBoxAdapter(
-              child: Shimmer.fromColors(
-                  child: _itemSkeleton(size),
-                  baseColor: Colors.grey[300],
-                  highlightColor: Colors.grey[100]),
-            );
+            return Shimmer.fromColors(
+                child: _itemSkeleton(size),
+                baseColor: Colors.grey[300],
+                highlightColor: Colors.grey[100]);
           }
           if (snapshot.data.length == 0) {
-            return SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  'No hay ningun pedido.',
-                  textAlign: TextAlign.center,
-                ),
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'No hay ningun pedido.',
+                textAlign: TextAlign.center,
               ),
             );
           }
@@ -47,24 +66,22 @@ class OrderListReady extends StatelessWidget {
   }
 
   Widget _listBuilder(
-      AsyncSnapshot<List<OrderModel>> snapshot, OrderBlocProvider bloc) {
-    return SliverList(
-        delegate: SliverChildBuilderDelegate(
-            (BuildContext context, int index) =>
-                // OrderCard(
-                //       model: snapshot.data[index],
-                //       bloc: bloc,
-                //       typeList: 'history',
-                //     ),
-                CardItem(snapshot.data[index]),
-            childCount: snapshot.hasData ? snapshot.data.length : 0));
+    AsyncSnapshot<List<OrderModel>> snapshot,
+    OrderBlocProvider bloc,
+  ) {
+    return ListView.builder(
+      itemBuilder: (BuildContext contex, int index) {
+        return CardItem(snapshot.data[index]);
+      },
+      itemCount: snapshot.hasData ? snapshot.data.length : 0,
+    );
   }
 
   Widget _itemSkeleton(Size size) {
     return Padding(
       padding: const EdgeInsets.all(10),
-      child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+      child: ListView(
+          // crossAxisAlignment: CrossAxisAlignment.start,
           children: _listItemSkeleton()),
     );
   }

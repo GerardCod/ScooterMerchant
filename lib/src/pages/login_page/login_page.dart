@@ -156,7 +156,7 @@ class LoginPage extends StatelessWidget {
     final user = AuthModel(username: email, password: password);
     final response = await bloc.login(user);
     if (response['ok']) {
-      Navigator.pushReplacementNamed(context, 'home');
+      Navigator.pushReplacementNamed(context, 'homePage');
     } else {
       showSnackBar(context, 'Usuario o contraseña incorrectos.', colorDanger);
     }

@@ -41,6 +41,8 @@ class CardItem extends StatelessWidget {
                 ),
               );
             } else {
+              print('orderModel.id=======================');
+              print(orderModel.id);
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -78,10 +80,13 @@ class CardItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(50.0),
           color: Colors.orange,
         ),
-        child: Text(
-          orderModel.orderStatus.name,
-          style: TextStyle(color: Colors.white, fontSize: 12),
-          textAlign: TextAlign.center,
+        child: Align(
+          alignment: Alignment.center,
+                  child: Text(
+            orderModel.orderStatus.name,
+            style: TextStyle(color: Colors.white, fontSize: 12),
+            textAlign: TextAlign.center,
+          ),
         ),
       );
     }

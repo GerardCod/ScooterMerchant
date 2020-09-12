@@ -3,8 +3,6 @@ import 'package:scootermerchant/src/blocs/order_bloc_provider.dart';
 import 'package:scootermerchant/src/blocs/provider.dart';
 import 'package:scootermerchant/src/models/order_model.dart';
 import 'package:scootermerchant/src/widgets/card_item.dart';
-import 'package:scootermerchant/src/widgets/order_card.dart';
-import 'package:scootermerchant/utilities/constants.dart';
 import 'package:shimmer/shimmer.dart';
 
 class OrderListAccepted extends StatelessWidget {
@@ -16,7 +14,7 @@ class OrderListAccepted extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     bloc.changeOrderList(null);
     // bloc.getOrders(status: status['in_process'], inProcess: true);
-    bloc.getOrders('15');
+    bloc.getOrders('15', 'created');
     return _listStreamBuilder(bloc, size);
   }
 

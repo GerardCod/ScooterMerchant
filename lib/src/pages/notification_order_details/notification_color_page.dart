@@ -52,12 +52,16 @@ class _NotificationColorPageState extends State<NotificationColorPage> {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       body: InkWell(
-        onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => HomePage(),
-          ),
-        ),
+        onTap: () {
+          audioPlugin.stop();
+          // audioPlugin.dispose();
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HomePage(),
+            ),
+          );
+        },
         child: Container(
           width: size.width,
           height: size.height,

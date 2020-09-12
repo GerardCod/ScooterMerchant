@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scootermerchant/src/blocs/login_bloc.dart';
 import 'package:scootermerchant/src/blocs/provider.dart';
 import 'package:scootermerchant/src/models/merchant_model.dart';
-import 'package:scootermerchant/src/pages/notification_order_details/notification_color_page.dart';
+import 'package:scootermerchant/src/pages/drawer/history/history_page.dart';
 import 'package:scootermerchant/src/preferences/merchant_preferences.dart';
 import 'package:scootermerchant/utilities/constants.dart';
 
@@ -48,20 +48,31 @@ class NavDrawer extends StatelessWidget {
               title: Text('Editar productos'),
               onTap: () => this._navigateToProductListChange(context),
             ),
+            // ListTile(
+            //   leading: Icon(Icons.verified_user),
+            //   title: Text('Ayuda'),
+            //   onTap: () => Navigator.push(
+            //     context,
+            //     MaterialPageRoute(
+            //       builder: (context) => NotificationColorPage(),
+            //     ),
+            //   ),
+            // ),
+
             ListTile(
-              leading: Icon(Icons.verified_user),
-              title: Text('Ayuda'),
+              leading: Icon(Icons.timer),
+              title: Text('Historial'),
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => NotificationColorPage(),
+                  builder: (context) => HistoryPage(),
                 ),
               ),
             ),
             ListTile(
               leading: Icon(Icons.lock_open),
               title: Text('Cambiar contraseña'),
-              onTap: () => {Navigator.of(context).pushNamed('settings')},
+              onTap: () => {Navigator.of(context).pushNamed('changePasswordPage')},
             ),
             ListTile(
               leading: Icon(Icons.exit_to_app),
@@ -76,12 +87,12 @@ class NavDrawer extends StatelessWidget {
 
   Future<void> _logOut(LoginBloc bloc, BuildContext context) async {
     if (await bloc.logout()) {
-      Navigator.of(context).pushNamedAndRemoveUntil('login', (route) => false);
+      Navigator.of(context).pushNamedAndRemoveUntil('loginPage', (route) => false);
     }
   }
 
   void _navigateToProductListChange(BuildContext context) {
-    Navigator.of(context).pushNamed('editProducts');
+    Navigator.of(context).pushNamed('changeProductPage');
   }
 
   void _navigateToExample(BuildContext context) {

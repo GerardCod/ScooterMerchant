@@ -58,8 +58,9 @@ class OrderBlocProvider with Validators {
   //   return orders;
   // }
 
-  Future<List<OrderModel>> getOrders(String status) async {
-    final orders = await _orderProvider.getOrdersReady(status: status);
+  Future<List<OrderModel>> getOrders(String status, String ordering) async {
+    print(ordering);
+    final orders = await _orderProvider.getOrdersReady(status: status, ordering: ordering);
    
     changeOrderList(orders);
     return orders;
@@ -96,6 +97,7 @@ class OrderBlocProvider with Validators {
     changeLoaderFinishedOrder(true);
     Map<String, dynamic> response = await _orderProvider.orderReady(model);
     changeLoaderFinishedOrder(false);
+    print(response);
     return response;
   }
 

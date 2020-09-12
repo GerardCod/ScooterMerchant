@@ -3,7 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:scootermerchant/src/pages/home/fragments/order_list_ready.dart';
 import 'package:scootermerchant/src/pages/home/fragments/order_list.dart';
 import 'package:scootermerchant/src/pages/home/fragments/order_list_accepted.dart';
-import 'package:scootermerchant/src/widgets/nav_drawer_widget.dart';
+import 'package:scootermerchant/src/pages/drawer/nav_drawer_widget.dart';
 import 'package:scootermerchant/utilities/constants.dart';
 import '../../preferences/merchant_preferences.dart';
 

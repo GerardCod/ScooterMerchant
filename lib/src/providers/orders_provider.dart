@@ -7,7 +7,6 @@ import 'package:scootermerchant/src/models/order_model.dart';
 import 'package:scootermerchant/src/preferences/merchant_preferences.dart';
 import 'package:scootermerchant/utilities/constants.dart';
 
-
 class OrdersProvider {
   String _baseUri = baseUri;
   MerchantPreferences _prefs = new MerchantPreferences();
@@ -43,15 +42,15 @@ class OrdersProvider {
   }
 
   Future<List<OrderModel>> getOrdersReady(
-      {String status}) async {
+      {String status, String ordering}) async {
     final merchant = _prefs.merchant;
     Uri uri;
-      uri = Uri.https(_baseUri, '/api/v1/merchants/${merchant.id}/orders/', {
-        'order_status': status.toString(),
-        // 'in_process': inProcess.toString()
-      });
-    
+    uri = Uri.https(_baseUri, '/api/v1/merchants/${merchant.id}/orders/', {
+      'order_status': status.toString(),
+      'ordering': ordering.toString(),
+    });
 
+    print(uri);
     http.Response response = await http.get(uri, headers: {
       'Authorization': 'Bearer ' + _prefs.access,
     });
@@ -98,8 +97,12 @@ class OrdersProvider {
       final Uri uri = Uri.https(_baseUri,
           '/api/v1/merchants/${merchant.id}/orders/${model.id}/order_ready/');
 
+      print('uri=============================');
+      print(uri);
+
       http.Response response = await http.put(uri,
           headers: {'Authorization': 'Bearer ' + _prefs.access}, body: {});
+      print(response);
 
       String source = Utf8Decoder().convert(response.bodyBytes);
 
