@@ -14,7 +14,7 @@ class CardItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    initializeDateFormatting('es');
+    initializeDateFormatting('es_MX');
     return _item(orderModel, context);
   }
 
@@ -54,7 +54,13 @@ class CardItem extends StatelessWidget {
           title: Text(name),
           subtitle:
               // Text(orderModel.orderDate),
+              Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
               Text(qrCode),
+              Text(_dateConvert(orderModel.orderDate))
+            ],
+          ),
           trailing: _returnTrailingItem(orderModel),
           // Icon(Icons.arrow_forward_ios, color: Colors.grey[400]),
         ),
@@ -82,7 +88,7 @@ class CardItem extends StatelessWidget {
         ),
         child: Align(
           alignment: Alignment.center,
-                  child: Text(
+          child: Text(
             orderModel.orderStatus.name,
             style: TextStyle(color: Colors.white, fontSize: 12),
             textAlign: TextAlign.center,
@@ -118,7 +124,9 @@ class CardItem extends StatelessWidget {
   // }
 
   _dateConvert(String date) {
-    var now = DateTime.parse(date);
-    return DateFormat.yMEd('es').add_jms().format(now);
+    DateTime dateParsed = DateTime.parse(date).toUtc();
+    DateTime local = dateParsed.toLocal();
+    String timeZoneName = local.timeZoneName;
+    return DateFormat.yMEd('es_MX').add_jms().format(local);
   }
 }
