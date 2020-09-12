@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scootermerchant/src/blocs/order_bloc_provider.dart';
 import 'package:scootermerchant/src/blocs/provider.dart';
+import 'package:scootermerchant/src/blocs/timezone_bloc_provider.dart';
 import 'package:scootermerchant/src/models/order_model.dart';
 import 'package:scootermerchant/src/widgets/card_item.dart';
 import 'package:scootermerchant/utilities/constants.dart';
@@ -12,13 +13,14 @@ class HistoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final OrderBlocProvider bloc = Provider.orderBlocProviderOf(context);
+    final TimeZoneBlocProvider time = Provider.timeZoneBlocProviderOf(context);
     bloc.changeOrderList(null);
-    bloc.getOrders('6,7,8,17','created');
+    bloc.getOrders('6,7,8,17', 'created');
     // bloc.getOrdersPickUp(status: 8);
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: _customAppBar(),
-      body: _customBody(size, bloc),
+      body: _customBody(size, bloc, time),
     );
   }
 
@@ -33,15 +35,17 @@ class HistoryPage extends StatelessWidget {
     );
   }
 
-  Widget _customBody(Size size, OrderBlocProvider bloc) {
+  Widget _customBody(
+      Size size, OrderBlocProvider bloc, TimeZoneBlocProvider time) {
     return Container(
       width: size.width,
       height: size.height,
-      child: _listStreamBuilder(bloc, size),
+      child: _listStreamBuilder(bloc, size, time),
     );
   }
 
-  Widget _listStreamBuilder(OrderBlocProvider bloc, Size size) {
+  Widget _listStreamBuilder(
+      OrderBlocProvider bloc, Size size, TimeZoneBlocProvider time) {
     return StreamBuilder(
         stream: bloc.orderListStream,
         builder:
@@ -61,17 +65,15 @@ class HistoryPage extends StatelessWidget {
               ),
             );
           }
-          return _listBuilder(snapshot, bloc);
+          return _listBuilder(snapshot, bloc, time);
         });
   }
 
-  Widget _listBuilder(
-    AsyncSnapshot<List<OrderModel>> snapshot,
-    OrderBlocProvider bloc,
-  ) {
+  Widget _listBuilder(AsyncSnapshot<List<OrderModel>> snapshot,
+      OrderBlocProvider bloc, TimeZoneBlocProvider time) {
     return ListView.builder(
       itemBuilder: (BuildContext contex, int index) {
-        return CardItem(snapshot.data[index]);
+        return CardItem(snapshot.data[index], time);
       },
       itemCount: snapshot.hasData ? snapshot.data.length : 0,
     );

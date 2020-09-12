@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
+import 'package:scootermerchant/src/blocs/timezone_bloc_provider.dart';
 import 'package:scootermerchant/src/models/order_model.dart';
 import 'package:scootermerchant/src/pages/order_details/order_details_page.dart';
 import 'package:scootermerchant/src/pages/order_details/order_details_page_pick_up.dart';
 import 'package:scootermerchant/utilities/constants.dart';
+import 'package:timezone/timezone.dart';
 
 class CardItem extends StatelessWidget {
   // const CardItem({Key key}) : super(key: key);
   final OrderModel orderModel;
+  final TimeZoneBlocProvider bloc;
 
-  CardItem(this.orderModel);
+  CardItem(this.orderModel, this.bloc);
 
   @override
   Widget build(BuildContext context) {
@@ -124,9 +127,7 @@ class CardItem extends StatelessWidget {
   // }
 
   _dateConvert(String date) {
-    DateTime dateParsed = DateTime.parse(date).toUtc();
-    DateTime local = dateParsed.toLocal();
-    String timeZoneName = local.timeZoneName;
-    return DateFormat.yMEd('es_MX').add_jms().format(local);
+    DateTime dateParsed = bloc.convertLocalToMexico(date);
+    return DateFormat.yMEd('es_MX').add_jms().format(dateParsed);
   }
 }

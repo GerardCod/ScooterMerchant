@@ -1,4 +1,5 @@
 import 'package:flutter/services.dart';
+import 'package:scootermerchant/utilities/constants.dart';
 import 'package:timezone/timezone.dart';
 
 class TimeZoneProvider {
@@ -8,11 +9,14 @@ class TimeZoneProvider {
 
   void setUp() async {
     final data = await rootBundle.load('packages/timezone/data/2020a.tzf');
-    print(data.toString());
     initializeDatabase(data.buffer.asUint8List());
   }
 
-  String convertLocalToDetroit(DateTime date) {
-    return TZDateTime.from(date, getLocation('America/Detroit')).toString();
+  DateTime convertLocalToMexico(String date) {
+    return TZDateTime.from(DateTime.parse(date), getLocation(location));
+  }
+
+  Map<String, Location> get locations {
+    return timeZoneDatabase.locations;
   }
 }

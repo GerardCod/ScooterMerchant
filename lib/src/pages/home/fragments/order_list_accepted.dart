@@ -1,24 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:scootermerchant/src/blocs/order_bloc_provider.dart';
 import 'package:scootermerchant/src/blocs/provider.dart';
+import 'package:scootermerchant/src/blocs/timezone_bloc_provider.dart';
 import 'package:scootermerchant/src/models/order_model.dart';
 import 'package:scootermerchant/src/widgets/card_item.dart';
 import 'package:shimmer/shimmer.dart';
 
 class OrderListAccepted extends StatelessWidget {
-  const OrderListAccepted({Key key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     final OrderBlocProvider bloc = Provider.orderBlocProviderOf(context);
+    final TimeZoneBlocProvider timeZoneBlocProvider =
+        Provider.timeZoneBlocProviderOf(context);
     final size = MediaQuery.of(context).size;
     bloc.changeOrderList(null);
     // bloc.getOrders(status: status['in_process'], inProcess: true);
     bloc.getOrders('15', 'created');
-    return _listStreamBuilder(bloc, size);
+    return _listStreamBuilder(bloc, size, timeZoneBlocProvider);
   }
 
-  Widget _listStreamBuilder(OrderBlocProvider bloc, Size size) {
+  Widget _listStreamBuilder(
+      OrderBlocProvider bloc, Size size, TimeZoneBlocProvider time) {
     return StreamBuilder<List<OrderModel>>(
         stream: bloc.orderListStream,
         builder: (context, snapshot) {
@@ -42,16 +44,16 @@ class OrderListAccepted extends StatelessWidget {
               ),
             );
           }
-          return _listBuilder(context, snapshot, orderBloc: bloc);
+          return _listBuilder(context, snapshot, orderBloc: bloc, time: time);
         });
   }
 
   Widget _listBuilder(
       BuildContext context, AsyncSnapshot<List<OrderModel>> snapshot,
-      {OrderBlocProvider orderBloc}) {
+      {OrderBlocProvider orderBloc, TimeZoneBlocProvider time}) {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
-        (context, index) => CardItem(snapshot.data[index]),
+        (context, index) => CardItem(snapshot.data[index], time),
         childCount: snapshot.hasData ? snapshot.data.length : 0,
       ),
     );

@@ -1,9 +1,14 @@
 import 'package:scootermerchant/src/providers/time_zone_provider.dart';
+import 'package:timezone/timezone.dart';
 
 class TimeZoneBlocProvider {
   final TimeZoneProvider _provider = TimeZoneProvider();
 
-  String convertLocalToDetroit(String date) {
-    return _provider.convertLocalToDetroit(DateTime.parse(date));
+  DateTime convertLocalToMexico(String date) {
+    return _provider.convertLocalToMexico(date);
+  }
+
+  Map<String, Location> get locations {
+    return _provider.locations;
   }
 }
