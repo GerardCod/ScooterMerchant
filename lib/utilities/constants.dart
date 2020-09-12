@@ -11,11 +11,11 @@ String baseUri = "www.scooterdev.tech";
 // String baseUri = "www.scooter-app.team";
 
 
-final Map<String, int> status = {
-  'incoming': 14,
-  'in_process': 15,
-  'order_ready': 16
-};
+// final Map<String, int> status = {
+//   'incoming': 14,
+//   'in_process': 15,
+//   'order_ready': 16
+// };
 const sizeIconsDetails = 28.0;
 
 const backgroundColor = Color(0xfff2f6fc);
