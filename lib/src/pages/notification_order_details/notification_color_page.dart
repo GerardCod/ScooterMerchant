@@ -85,7 +85,7 @@ class _NotificationColorPageState extends State<NotificationColorPage> {
               Padding(
                 padding: EdgeInsets.only(left: 40, right: 40),
                 child: Text(
-                  'Toca cualquier parte de la pantalla para Aceptar.',
+                  'Toca cualquier parte de la pantalla para ver el pedido.',
                   style: TextStyle(color: Colors.white, fontSize: 20),
                   textAlign: TextAlign.center,
                 ),

@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 
 String fontFamily = 'Aspira';
 String fontFamilySecondary = 'Slant';
-String baseUrl = 'https://www.scooterdev.tech/api/v1/';
-String baseUri = "www.scooterdev.tech";
 String location = "America/Mexico_City";
-// String baseUrl = "https://www.scooter-app.team/appback/api/v1/";
-// String baseUri = "www.scooter-app.team";
+// String baseUrl = 'https://www.scooterdev.tech/api/v1/';
+// String baseUri = "www.scooterdev.tech";
+String baseUrl = "https://www.scooter-app.team/appback/api/v1/";
+String baseUri = "www.scooter-app.team";
 
 // final Map<String, int> status = {
 //   'incoming': 14,
