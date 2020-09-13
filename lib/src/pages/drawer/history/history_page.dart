@@ -19,18 +19,28 @@ class HistoryPage extends StatelessWidget {
     // bloc.getOrdersPickUp(status: 8);
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: _customAppBar(),
+      appBar: _customAppBar(context, bloc),
       body: _customBody(size, bloc, time),
     );
   }
 
-  Widget _customAppBar() {
+  Widget _customAppBar(BuildContext context, OrderBlocProvider bloc) {
     return AppBar(
       title: Text(
         'Historial',
         style: TextStyle(color: Colors.white),
       ),
-      iconTheme: IconThemeData(color: Colors.white),
+      leading: IconButton(
+        icon: Icon(
+          Icons.arrow_back,
+          color: Colors.white,
+        ),
+        onPressed: () {
+          bloc.changeOrderList(null);
+          Navigator.pop(context);
+        },
+      ),
+      // iconTheme: IconThemeData(color: Colors.white),
       backgroundColor: primaryColor,
     );
   }
