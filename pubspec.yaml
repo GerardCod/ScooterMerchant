@@ -39,6 +39,7 @@ dependencies:
   date_format: ^1.0.8
   audioplayers: ^0.15.1
   intl: ^0.16.1 
+  timezone: ^0.5.4
 
 dev_dependencies:
   flutter_test:
@@ -74,7 +75,7 @@ flutter:
     - assets/images/no_image.png
     - assets/images/orden.png
     - assets/sounds/ringtone.mp3
-
+    - packages/timezone/data/2020a.tzf
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

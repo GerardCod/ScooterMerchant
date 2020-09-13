@@ -1,22 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:scootermerchant/src/blocs/order_bloc_provider.dart';
 import 'package:scootermerchant/src/blocs/provider.dart';
+import 'package:scootermerchant/src/blocs/timezone_bloc_provider.dart';
 import 'package:scootermerchant/src/models/order_model.dart';
 import 'package:scootermerchant/src/widgets/card_item.dart';
 import 'package:shimmer/shimmer.dart';
 
 class OrderList extends StatelessWidget {
+  const OrderList({Key key});
+
   @override
   Widget build(BuildContext context) {
     final orderListBloc = Provider.orderBlocProviderOf(context);
+    final TimeZoneBlocProvider time = Provider.timeZoneBlocProviderOf(context);
     final size = MediaQuery.of(context).size;
     orderListBloc.changeOrderList(null);
     // orderListBloc.getOrders();
     orderListBloc.getOrders('14', 'created');
-    return _listStreamBuilder(orderListBloc, size);
+    return _listStreamBuilder(orderListBloc, size, time);
   }
 
-  Widget _listStreamBuilder(OrderBlocProvider orderBloc, Size size) {
+  Widget _listStreamBuilder(
+      OrderBlocProvider orderBloc, Size size, TimeZoneBlocProvider time) {
     return StreamBuilder<List<OrderModel>>(
       stream: orderBloc.orderListStream,
       builder: (context, snapshot) {
@@ -40,24 +45,25 @@ class OrderList extends StatelessWidget {
             ),
           );
         }
-        return _listBuilder(context, snapshot, bloc: orderBloc);
+        return _listBuilder(context, snapshot, bloc: orderBloc, time: time);
       },
     );
   }
 
   Widget _listBuilder(
       BuildContext context, AsyncSnapshot<List<OrderModel>> snapshot,
-      {OrderBlocProvider bloc}) {
+      {OrderBlocProvider bloc, TimeZoneBlocProvider time}) {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
-        (context, index) => _listItem(snapshot.data[index], bloc),
+        (context, index) => _listItem(snapshot.data[index], bloc, time),
         childCount: snapshot.hasData ? snapshot.data.length : 0,
       ),
     );
   }
 
-  Widget _listItem(OrderModel model, OrderBlocProvider bloc) {
-    return CardItem(model);
+  Widget _listItem(
+      OrderModel model, OrderBlocProvider bloc, TimeZoneBlocProvider time) {
+    return CardItem(model, time);
   }
 
   Widget _itemSkeleton(Size size) {

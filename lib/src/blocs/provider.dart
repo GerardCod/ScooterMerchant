@@ -3,6 +3,7 @@ import 'package:scootermerchant/src/blocs/order_bloc_provider.dart';
 import 'package:scootermerchant/src/blocs/login_bloc.dart';
 import 'package:scootermerchant/src/blocs/pages/notification_order_details_page_bloc.dart';
 import 'package:scootermerchant/src/blocs/product_bloc_provider.dart';
+import 'package:scootermerchant/src/blocs/timezone_bloc_provider.dart';
 
 class Provider extends InheritedWidget {
   final _loginBloc = LoginBloc();
@@ -10,6 +11,7 @@ class Provider extends InheritedWidget {
   final _notificationOrderDetailsPageBloc =
       new NotificationOrderDetailsPageBloc();
   final _productBlocProvider = ProductBlocProvider();
+  final _timeZoneBlocProvider = TimeZoneBlocProvider();
 
   static Provider _instance;
 
@@ -48,5 +50,11 @@ class Provider extends InheritedWidget {
     return context
         .dependOnInheritedWidgetOfExactType<Provider>()
         ._productBlocProvider;
+  }
+
+  static TimeZoneBlocProvider timeZoneBlocProviderOf(BuildContext context) {
+    return context
+        .dependOnInheritedWidgetOfExactType<Provider>()
+        ._timeZoneBlocProvider;
   }
 }

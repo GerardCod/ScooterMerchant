@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
+import 'package:scootermerchant/src/blocs/timezone_bloc_provider.dart';
 import 'package:scootermerchant/src/models/order_model.dart';
 import 'package:scootermerchant/src/pages/order_details/order_details_page.dart';
 import 'package:scootermerchant/src/pages/order_details/order_details_page_pick_up.dart';
 import 'package:scootermerchant/utilities/constants.dart';
+import 'package:timezone/timezone.dart';
 
 class CardItem extends StatelessWidget {
   // const CardItem({Key key}) : super(key: key);
   final OrderModel orderModel;
+  final TimeZoneBlocProvider bloc;
 
-  CardItem(this.orderModel);
+  CardItem(this.orderModel, this.bloc);
 
   @override
   Widget build(BuildContext context) {
-    initializeDateFormatting('es');
+    initializeDateFormatting('es_MX');
     return _item(orderModel, context);
   }
 
@@ -54,7 +57,13 @@ class CardItem extends StatelessWidget {
           title: Text(name),
           subtitle:
               // Text(orderModel.orderDate),
+              Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
               Text(qrCode),
+              Text(_dateConvert(orderModel.orderDate))
+            ],
+          ),
           trailing: _returnTrailingItem(orderModel),
           // Icon(Icons.arrow_forward_ios, color: Colors.grey[400]),
         ),
@@ -82,7 +91,7 @@ class CardItem extends StatelessWidget {
         ),
         child: Align(
           alignment: Alignment.center,
-                  child: Text(
+          child: Text(
             orderModel.orderStatus.name,
             style: TextStyle(color: Colors.white, fontSize: 12),
             textAlign: TextAlign.center,
@@ -118,7 +127,7 @@ class CardItem extends StatelessWidget {
   // }
 
   _dateConvert(String date) {
-    var now = DateTime.parse(date);
-    return DateFormat.yMEd('es').add_jms().format(now);
+    DateTime dateParsed = bloc.convertLocalToMexico(date);
+    return DateFormat.yMEd('es_MX').add_jms().format(dateParsed);
   }
 }

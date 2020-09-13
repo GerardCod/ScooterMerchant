@@ -1,24 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:scootermerchant/src/blocs/order_bloc_provider.dart';
 import 'package:scootermerchant/src/blocs/provider.dart';
+import 'package:scootermerchant/src/blocs/timezone_bloc_provider.dart';
 import 'package:scootermerchant/src/models/order_model.dart';
 import 'package:scootermerchant/src/widgets/card_item.dart';
 import 'package:shimmer/shimmer.dart';
 
 class OrderListReady extends StatelessWidget {
-  // const OrderHistory({Key key}) : super(key: key);
+  const OrderListReady({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final OrderBlocProvider bloc = Provider.orderBlocProviderOf(context);
+    final TimeZoneBlocProvider time = Provider.timeZoneBlocProviderOf(context);
     bloc.changeOrderList(null);
     bloc.getOrders('3,4,13,16', 'created');
     // bloc.getOrdersPickUp(status: 8);
     final Size size = MediaQuery.of(context).size;
-    return _listStreamBuilder(bloc, size);
+    return _listStreamBuilder(bloc, size, time);
   }
 
-  Widget _listStreamBuilder(OrderBlocProvider bloc, Size size) {
+  Widget _listStreamBuilder(
+      OrderBlocProvider bloc, Size size, TimeZoneBlocProvider time) {
     return StreamBuilder(
         stream: bloc.orderListStream,
         builder:
@@ -42,12 +45,12 @@ class OrderListReady extends StatelessWidget {
               ),
             );
           }
-          return _listBuilder(snapshot, bloc);
+          return _listBuilder(snapshot, bloc, time);
         });
   }
 
-  Widget _listBuilder(
-      AsyncSnapshot<List<OrderModel>> snapshot, OrderBlocProvider bloc) {
+  Widget _listBuilder(AsyncSnapshot<List<OrderModel>> snapshot,
+      OrderBlocProvider bloc, TimeZoneBlocProvider time) {
     return SliverList(
         delegate: SliverChildBuilderDelegate(
             (BuildContext context, int index) =>
@@ -56,7 +59,7 @@ class OrderListReady extends StatelessWidget {
                 //       bloc: bloc,
                 //       typeList: 'history',
                 //     ),
-                CardItem(snapshot.data[index]),
+                CardItem(snapshot.data[index], time),
             childCount: snapshot.hasData ? snapshot.data.length : 0));
   }
 
