@@ -19,10 +19,10 @@ class OrdersProvider {
     Uri uri;
     if (allOrders) {
       uri = Uri.https(
-          _baseUri, '/appback/api/v1/merchants/${merchant.id}/orders/');
+          _baseUri, '/api/v1/merchants/${merchant.id}/orders/');
     } else {
       uri = Uri.https(
-          _baseUri, '/appback/api/v1/merchants/${merchant.id}/orders/', {
+          _baseUri, '/api/v1/merchants/${merchant.id}/orders/', {
         'order_status': status.toString(),
         'in_process': inProcess.toString()
       });
@@ -48,7 +48,7 @@ class OrdersProvider {
     final merchant = _prefs.merchant;
     Uri uri;
     uri = Uri.https(
-        _baseUri, '/appback/api/v1/merchants/${merchant.id}/orders/', {
+        _baseUri, '/api/v1/merchants/${merchant.id}/orders/', {
       'order_status': status.toString(),
       'ordering': ordering.toString(),
     });
@@ -75,7 +75,7 @@ class OrdersProvider {
       final MerchantModel merchant = _prefs.merchant;
       final Uri uri = Uri.https(
         _baseUri,
-        '/appback/api/v1/merchants/${merchant.id}/orders/${model.id}/accept_order/',
+        '/api/v1/merchants/${merchant.id}/orders/${model.id}/accept_order/',
       );
 
       http.Response response = await http.put(uri, headers: {
@@ -99,7 +99,7 @@ class OrdersProvider {
     try {
       final MerchantModel merchant = _prefs.merchant;
       final Uri uri = Uri.https(_baseUri,
-          '/appback/api/v1/merchants/${merchant.id}/orders/${model.id}/order_ready/');
+          '/api/v1/merchants/${merchant.id}/orders/${model.id}/order_ready/');
 
       print('uri=============================');
       print(uri);
@@ -126,7 +126,7 @@ class OrdersProvider {
     try {
       final MerchantModel merchant = _prefs.merchant;
       final Uri uri = Uri.https(_baseUri,
-          '/appback/api/v1/merchants/${merchant.id}/orders/${model.id}/reject_order/');
+          '/api/v1/merchants/${merchant.id}/orders/${model.id}/reject_order/');
 
       http.Response response = await http.put(uri,
           headers: {'Authorization': 'Bearer ' + _prefs.access},
@@ -150,7 +150,7 @@ class OrdersProvider {
     try {
       final MerchantModel merchant = _prefs.merchant;
       final Uri uri = Uri.https(_baseUri,
-          '/appback/api/v1/merchants/${merchant.id}/orders/${model.id}/cancel_order/');
+          '/api/v1/merchants/${merchant.id}/orders/${model.id}/cancel_order/');
 
       http.Response response = await http.put(uri,
           headers: {'Authorization': 'Bearer ' + _prefs.access},
@@ -172,7 +172,7 @@ class OrdersProvider {
     try {
       final MerchantModel merchant = _prefs.merchant;
       final Uri uri = Uri.https(_baseUri,
-          '/appback/api/v1/merchants/${merchant.id}/orders/' + orderId + '/');
+          '/api/v1/merchants/${merchant.id}/orders/' + orderId + '/');
 
       http.Response resp = await http.get(uri, headers: {
         "Authorization": "Bearer " + _prefs.access,
