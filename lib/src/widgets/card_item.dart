@@ -6,7 +6,6 @@ import 'package:scootermerchant/src/models/order_model.dart';
 import 'package:scootermerchant/src/pages/order_details/order_details_page.dart';
 import 'package:scootermerchant/src/pages/order_details/order_details_page_pick_up.dart';
 import 'package:scootermerchant/utilities/constants.dart';
-import 'package:timezone/timezone.dart';
 
 class CardItem extends StatelessWidget {
   // const CardItem({Key key}) : super(key: key);
@@ -22,12 +21,6 @@ class CardItem extends StatelessWidget {
   }
 
   Widget _item(OrderModel orderModel, BuildContext context) {
-    // print('Customer');
-    // print(orderModel.customer.name);
-    // print('orderModel.orderDate.toString()==========');
-    // print(orderModel.orderDate);
-    // print('DateFormat(yyyy-MM-dd hh:mm:ss).format(orderModel.orderDate)');
-    // print(_dateConvert(orderModel.orderDate));
     String name = orderModel.customer.name;
     String qrCode = orderModel.qrCode;
     return Container(
@@ -44,8 +37,6 @@ class CardItem extends StatelessWidget {
                 ),
               );
             } else {
-              print('orderModel.id=======================');
-              print(orderModel.id);
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -55,9 +46,7 @@ class CardItem extends StatelessWidget {
             }
           },
           title: Text(name),
-          subtitle:
-              // Text(orderModel.orderDate),
-              Column(
+          subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(qrCode),
@@ -65,7 +54,6 @@ class CardItem extends StatelessWidget {
             ],
           ),
           trailing: _returnTrailingItem(orderModel),
-          // Icon(Icons.arrow_forward_ios, color: Colors.grey[400]),
         ),
       ),
     );

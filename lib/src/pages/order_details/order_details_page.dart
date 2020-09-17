@@ -89,6 +89,9 @@ class OrderDetailsPage extends StatelessWidget {
           Divider(
             color: Colors.grey,
           ),
+          model.indications != null?
+          _indications(model): Container(),
+          SizedBox(height: 20),
           _productList(model),
           SizedBox(height: 20),
           Align(
@@ -168,6 +171,23 @@ class OrderDetailsPage extends StatelessWidget {
             fontFamily: fontFamily,
           ),
         ),
+      ],
+    );
+  }
+
+  Widget _indications(OrderModel model) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text('Indicaciones',
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+            fontFamily: fontFamily,
+          ),),
+        Text(model.indications),
       ],
     );
   }
