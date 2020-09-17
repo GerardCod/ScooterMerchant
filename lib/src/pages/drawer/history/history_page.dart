@@ -15,12 +15,19 @@ class HistoryPage extends StatelessWidget {
     final OrderBlocProvider bloc = Provider.orderBlocProviderOf(context);
     final TimeZoneBlocProvider time = Provider.timeZoneBlocProviderOf(context);
     bloc.changeOrderList(null);
-    bloc.getOrders('6,7,8,17', 'created');
+    bloc.getOrders(status: '6,7,8,17', ordering: null);
     // bloc.getOrdersPickUp(status: 8);
     final Size size = MediaQuery.of(context).size;
-    return Scaffold(
-      appBar: _customAppBar(context, bloc),
-      body: _customBody(size, bloc, time),
+    return WillPopScope(
+      onWillPop: () async {
+        bloc.changeOrderList(null);
+        Navigator.pop(context);
+        return false;
+      },
+      child: Scaffold(
+        appBar: _customAppBar(context, bloc),
+        body: _customBody(size, bloc, time),
+      ),
     );
   }
 

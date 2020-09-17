@@ -14,7 +14,7 @@ class OrderListReady extends StatelessWidget {
     final OrderBlocProvider bloc = Provider.orderBlocProviderOf(context);
     final TimeZoneBlocProvider time = Provider.timeZoneBlocProviderOf(context);
     bloc.changeOrderList(null);
-    bloc.getOrders('3,4,13,16', 'created');
+    bloc.getOrders(status:'3,4,13,16', ordering:'created');
     // bloc.getOrdersPickUp(status: 8);
     final Size size = MediaQuery.of(context).size;
     return _listStreamBuilder(bloc, size, time);
