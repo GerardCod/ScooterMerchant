@@ -58,7 +58,7 @@ class OrderBlocProvider with Validators {
   //   return orders;
   // }
 
-  Future<List<OrderModel>> getOrders(String status, String ordering) async {
+  Future<List<OrderModel>> getOrders({String status, String ordering}) async {
     print(ordering);
     final orders = await _orderProvider.getOrdersReady(status: status, ordering: ordering);
    

@@ -79,6 +79,7 @@ class OrderDetailsPagePickUp extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           _nameCustomer(orderModel),
+          _orderStatus(orderModel),
           Divider(
             color: Colors.grey,
           ),
@@ -111,6 +112,39 @@ class OrderDetailsPagePickUp extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _orderStatus(OrderModel model) {
+    return Padding(
+      padding: EdgeInsets.only(top: 10, bottom: 10),
+          child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text('Estado del pedido', style: TextStyle(
+            color: Colors.black,
+            fontSize: 18,
+            fontFamily: fontFamily,
+          ),),
+          Container(
+            width: 100,
+            height: 35,
+            padding: EdgeInsets.all(5),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(50.0),
+              color: Colors.orange,
+            ),
+            child: Align(
+              alignment: Alignment.center,
+              child: Text(
+                model.orderStatus.name,
+                style: TextStyle(color: Colors.white, fontSize: 12),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 

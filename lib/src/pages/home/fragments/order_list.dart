@@ -16,7 +16,7 @@ class OrderList extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     orderListBloc.changeOrderList(null);
     // orderListBloc.getOrders();
-    orderListBloc.getOrders('14', 'created');
+    orderListBloc.getOrders(status:'14', ordering:'created');
     return _listStreamBuilder(orderListBloc, size, time);
   }
 
