@@ -18,11 +18,11 @@ class ProductProvider {
     if (allProducts) {
       uri = Uri.https(
         _baseUri,
-        '/appback/api/v1/merchants/${_prefs.merchant.id}/products/',
+        '${urlComplement}merchants/${_prefs.merchant.id}/products/',
       );
     } else {
-      uri = Uri.https(
-          _baseUri, '/appback/api/v1/merchants/${_prefs.merchant.id}/products/', {
+      uri = Uri.https(_baseUri,
+          '${urlComplement}merchants/${_prefs.merchant.id}/products/', {
         'status': status.toString(),
       });
     }
@@ -43,9 +43,9 @@ class ProductProvider {
   Future<Map<String, dynamic>> updateProduct(
       {@required Product product}) async {
     final Uri uri = Uri.https(_baseUri,
-        '/appback/api/v1/merchants/${_prefs.merchant.id}/products/${product.id}/');
-        // print('Product Available Provider');
-        // print(product.isAvailable);
+        '${urlComplement}merchants/${_prefs.merchant.id}/products/${product.id}/');
+    // print('Product Available Provider');
+    // print(product.isAvailable);
     Map<String, dynamic> body = {
       'name': product.name,
       'price': product.price,
