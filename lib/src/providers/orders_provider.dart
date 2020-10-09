@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:core';
 
 import 'package:http/http.dart' as http;
+import 'package:scootermerchant/src/models/current_order_status_model.dart';
 import 'package:scootermerchant/src/models/merchant_model.dart';
 import 'package:scootermerchant/src/models/order_model.dart';
 import 'package:scootermerchant/src/preferences/merchant_preferences.dart';
@@ -13,48 +14,47 @@ class OrdersProvider {
 
   OrdersProvider();
 
-  Future<List<OrderModel>> getOrders(
-      {int status = 14, bool inProcess = false, bool allOrders = false}) async {
-    final merchant = _prefs.merchant;
-    Uri uri;
-    if (allOrders) {
-      uri = Uri.https(
-          _baseUri, '/api/v1/merchants/${merchant.id}/orders/');
-    } else {
-      uri = Uri.https(
-          _baseUri, '/api/v1/merchants/${merchant.id}/orders/', {
-        'order_status': status.toString(),
-        'in_process': inProcess.toString()
-      });
-    }
+  // Future<List<OrderModel>> getOrders(
+  //     {int status = 14, bool inProcess = false, bool allOrders = false}) async {
+  //   final merchant = _prefs.merchant;
+  //   Uri uri;
+  //   if (allOrders) {
+  //     uri = Uri.https(
+  //         _baseUri, '/appback/api/v1/merchants/${merchant.id}/orders/');
+  //   } else {
+  //     uri = Uri.https(
+  //         _baseUri, '/appback/api/v1/merchants/${merchant.id}/orders/', {
+  //       'order_status': status.toString(),
+  //       'in_process': inProcess.toString()
+  //     });
+  //   }
 
-    http.Response response = await http.get(uri, headers: {
-      'Authorization': 'Bearer ' + _prefs.access,
-    });
+  //   http.Response response = await http.get(uri, headers: {
+  //     'Authorization': 'Bearer ' + _prefs.access,
+  //   });
 
-    String source = Utf8Decoder().convert(response.bodyBytes);
-    final Map<String, dynamic> decodedData = json.decode(source);
+  //   String source = Utf8Decoder().convert(response.bodyBytes);
+  //   final Map<String, dynamic> decodedData = json.decode(source);
 
-    if (decodedData == null || decodedData.containsKey('errors')) {
-      return [];
-    }
+  //   if (decodedData == null || decodedData.containsKey('errors')) {
+  //     return [];
+  //   }
 
-    List<dynamic> results = decodedData['results'];
-    return results.map((e) => OrderModel.fromJson(e)).toList();
-  }
+  //   List<dynamic> results = decodedData['results'];
+  //   return results.map((e) => OrderModel.fromJson(e)).toList();
+  // }
 
-  Future<List<OrderModel>> getOrdersReady(
-      {String status, String ordering}) async {
+  Future<List<OrderModel>> getOrders({String status, String ordering}) async {
     final merchant = _prefs.merchant;
     Uri uri;
     uri = Uri.https(
-        _baseUri, '/api/v1/merchants/${merchant.id}/orders/', {
+        _baseUri, '/appback/api/v1/merchants/${merchant.id}/orders/', {
       'order_status': status.toString(),
       'ordering': ordering.toString(),
     });
-    print(uri);
+    // print(uri);
 
-    print(uri);
+    // print(uri);
     http.Response response = await http.get(uri, headers: {
       'Authorization': 'Bearer ' + _prefs.access,
     });
@@ -75,7 +75,7 @@ class OrdersProvider {
       final MerchantModel merchant = _prefs.merchant;
       final Uri uri = Uri.https(
         _baseUri,
-        '/api/v1/merchants/${merchant.id}/orders/${model.id}/accept_order/',
+        '/appback/api/v1/merchants/${merchant.id}/orders/${model.id}/accept_order/',
       );
 
       http.Response response = await http.put(uri, headers: {
@@ -99,14 +99,14 @@ class OrdersProvider {
     try {
       final MerchantModel merchant = _prefs.merchant;
       final Uri uri = Uri.https(_baseUri,
-          '/api/v1/merchants/${merchant.id}/orders/${model.id}/order_ready/');
+          '/appback/api/v1/merchants/${merchant.id}/orders/${model.id}/order_ready/');
 
-      print('uri=============================');
-      print(uri);
+      // print('uri=============================');
+      // print(uri);
 
       http.Response response = await http.put(uri,
           headers: {'Authorization': 'Bearer ' + _prefs.access}, body: {});
-      print(response);
+      // print(response);
 
       String source = Utf8Decoder().convert(response.bodyBytes);
 
@@ -126,7 +126,7 @@ class OrdersProvider {
     try {
       final MerchantModel merchant = _prefs.merchant;
       final Uri uri = Uri.https(_baseUri,
-          '/api/v1/merchants/${merchant.id}/orders/${model.id}/reject_order/');
+          '/appback/api/v1/merchants/${merchant.id}/orders/${model.id}/reject_order/');
 
       http.Response response = await http.put(uri,
           headers: {'Authorization': 'Bearer ' + _prefs.access},
@@ -150,7 +150,7 @@ class OrdersProvider {
     try {
       final MerchantModel merchant = _prefs.merchant;
       final Uri uri = Uri.https(_baseUri,
-          '/api/v1/merchants/${merchant.id}/orders/${model.id}/cancel_order/');
+          '/appback/api/v1/merchants/${merchant.id}/orders/${model.id}/cancel_order/');
 
       http.Response response = await http.put(uri,
           headers: {'Authorization': 'Bearer ' + _prefs.access},
@@ -172,7 +172,7 @@ class OrdersProvider {
     try {
       final MerchantModel merchant = _prefs.merchant;
       final Uri uri = Uri.https(_baseUri,
-          '/api/v1/merchants/${merchant.id}/orders/' + orderId + '/');
+          '/appback/api/v1/merchants/${merchant.id}/orders/' + orderId + '/');
 
       http.Response resp = await http.get(uri, headers: {
         "Authorization": "Bearer " + _prefs.access,
@@ -186,6 +186,30 @@ class OrdersProvider {
       } else {
         return {'ok': true, 'order': OrderModel.fromJson(jsonResp)};
       }
+    } catch (error) {
+      print(error);
+    }
+  }
+
+  Future<CurrentOrderStatusModel> getCurrentOrderStatus(String orderId) async {
+    try {
+      CurrentOrderStatusModel orderModel;
+      final MerchantModel merchant = _prefs.merchant;
+      final url = baseUrl +
+          'merchants/${merchant.id}/orders/$orderId/current_status/';
+      // print('Url=========================================');
+      // print(url);
+      // return orderModel;
+      http.Response resp = await http.get(Uri.encodeFull(url), headers: {
+        "Authorization": "Bearer " + _prefs.access,
+        'Content-type': 'application/json'
+      });
+      String source = Utf8Decoder().convert(resp.bodyBytes);
+      Map<String, dynamic> decodedData = json.decode(source);
+
+      orderModel = CurrentOrderStatusModel.fromJson(decodedData['data']);
+
+      return orderModel;
     } catch (error) {
       print(error);
     }

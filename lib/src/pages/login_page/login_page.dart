@@ -158,6 +158,8 @@ class LoginPage extends StatelessWidget {
     if (response['ok']) {
       Navigator.pushReplacementNamed(context, 'homePage');
     } else {
+      // print("Response=============================");
+      // print(response);
       showSnackBar(context, 'Usuario o contraseña incorrectos.', colorDanger);
     }
   }

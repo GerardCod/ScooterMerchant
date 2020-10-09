@@ -7,17 +7,20 @@ import 'package:scootermerchant/src/widgets/card_item.dart';
 import 'package:shimmer/shimmer.dart';
 
 class OrderList extends StatelessWidget {
-  const OrderList({Key key});
+  // const OrderList({Key key});
 
   @override
   Widget build(BuildContext context) {
-    final orderListBloc = Provider.orderBlocProviderOf(context);
+    final OrderBlocProvider  bloc = Provider.orderBlocProviderOf(context);
     final TimeZoneBlocProvider time = Provider.timeZoneBlocProviderOf(context);
     final size = MediaQuery.of(context).size;
-    orderListBloc.changeOrderList(null);
-    // orderListBloc.getOrders();
-    orderListBloc.getOrders(status:'14', ordering:'created');
-    return _listStreamBuilder(orderListBloc, size, time);
+    // bloc.changeOrderList(null);
+    // bloc.getOrders();
+    // print(bloc.orderList);
+    // if (bloc.orderList == null) {
+      bloc.getOrders(status: '14', ordering: 'created');
+    // }
+    return _listStreamBuilder(bloc, size, time);
   }
 
   Widget _listStreamBuilder(
@@ -39,7 +42,7 @@ class OrderList extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                'No hay ningun pedido.',
+                'No hay ningún pedido entrante.',
                 textAlign: TextAlign.center,
               ),
             ),
@@ -78,7 +81,7 @@ class OrderList extends StatelessWidget {
 
   List<Widget> _listItemSkeleton(Size size) {
     List listings = List<Widget>();
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 4; i++) {
       listings.add(
         Container(
           margin: EdgeInsets.only(bottom: 10),

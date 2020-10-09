@@ -13,16 +13,17 @@ class OrderListAccepted extends StatelessWidget {
     final TimeZoneBlocProvider timeZoneBlocProvider =
         Provider.timeZoneBlocProviderOf(context);
     final size = MediaQuery.of(context).size;
-    bloc.changeOrderList(null);
-    // bloc.getOrders(status: status['in_process'], inProcess: true);
-    bloc.getOrders(status:'15', ordering:'created');
+    // bloc.changeOrderList(null);
+    // if (bloc.orderListAccepted == null) {
+      bloc.getOrdersAccepted(status: '15', ordering: 'created');
+    // }
     return _listStreamBuilder(bloc, size, timeZoneBlocProvider);
   }
 
   Widget _listStreamBuilder(
       OrderBlocProvider bloc, Size size, TimeZoneBlocProvider time) {
     return StreamBuilder<List<OrderModel>>(
-        stream: bloc.orderListStream,
+        stream: bloc.orderListAcceptedStream,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return SliverToBoxAdapter(
@@ -38,7 +39,7 @@ class OrderListAccepted extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  'No hay ningun pedido en preparación.',
+                  'No hay ningún pedido en preparación.',
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -70,7 +71,7 @@ class OrderListAccepted extends StatelessWidget {
 
   List<Widget> _listItemSkeleton() {
     List listings = List<Widget>();
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 4; i++) {
       listings.add(
         Container(
           margin: EdgeInsets.only(bottom: 10),

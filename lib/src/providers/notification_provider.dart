@@ -71,14 +71,14 @@ class NotificationsProvider {
   }
 
   Future<Map<String, StringConversionSink>> registrarToken(String token) async {
-    final url = _baseUrl + '/devices/';
+    final url = _baseUrl + 'devices/';
     final authData = {
       "registration_id": token,
       "type": Platform.isAndroid ? 'android' : 'ios'
     };
 
     // print('AQUIIII');
-    print(authData);
+    // print(authData);
 
     http.Response resp = await http.post(Uri.encodeFull(url),
         headers: {
@@ -88,13 +88,14 @@ class NotificationsProvider {
 
     if (resp.statusCode != 200 && resp.statusCode != 201) {
       print('Algo salio mal');
-      print(resp.body);
+      // print(url);
+      // print(resp.body);
       return null;
     }
 
     Map<String, dynamic> decodedResp = json.decode(resp.body);
     print('Resigtrar Token');
-    print(decodedResp);
+    // print(decodedResp);
     // print(statusCode);
   }
 

@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:scootermerchant/src/blocs/product_bloc_provider.dart';
 import 'package:scootermerchant/src/blocs/provider.dart';
 import 'package:scootermerchant/src/models/product_model.dart';
-import 'package:scootermerchant/src/pages/drawer/change_products/product_card.dart';
+import 'package:scootermerchant/src/pages/drawer/products/product_card.dart';
 import 'package:scootermerchant/utilities/constants.dart';
 import 'package:shimmer/shimmer.dart';
 
-class ChangeProductPage extends StatelessWidget {
-  const ChangeProductPage({Key key}) : super(key: key);
+class ListProductsPage extends StatelessWidget {
+  // const ChangeProductPage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

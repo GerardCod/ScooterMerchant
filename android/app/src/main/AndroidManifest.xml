@@ -9,6 +9,10 @@
         android:name=".Application"
         android:label="Scooter Comercios"
         android:icon="@mipmap/launcher_icon">
+
+        <meta-data
+        android:name="com.google.android.geo.API_KEY"
+        android:value="AIzaSyDcAruMxBUQlW9S672oSoe1dyr7l8WIxlU"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

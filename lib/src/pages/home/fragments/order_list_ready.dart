@@ -7,23 +7,25 @@ import 'package:scootermerchant/src/widgets/card_item.dart';
 import 'package:shimmer/shimmer.dart';
 
 class OrderListReady extends StatelessWidget {
-  const OrderListReady({Key key}) : super(key: key);
+  // const OrderListReady({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final OrderBlocProvider bloc = Provider.orderBlocProviderOf(context);
     final TimeZoneBlocProvider time = Provider.timeZoneBlocProviderOf(context);
-    bloc.changeOrderList(null);
-    bloc.getOrders(status:'3,4,13,16', ordering:'created');
-    // bloc.getOrdersPickUp(status: 8);
     final Size size = MediaQuery.of(context).size;
+    // bloc.changeOrderList(null);
+    // if (bloc.orderListReady == null) {
+      bloc.getOrdersReady(status: '3,4,13,16', ordering: 'order_date');
+    // }
+    // bloc.getOrdersPickUp(status: 8);x
     return _listStreamBuilder(bloc, size, time);
   }
 
   Widget _listStreamBuilder(
       OrderBlocProvider bloc, Size size, TimeZoneBlocProvider time) {
     return StreamBuilder(
-        stream: bloc.orderListStream,
+        stream: bloc.orderListReadyStream,
         builder:
             (BuildContext context, AsyncSnapshot<List<OrderModel>> snapshot) {
           if (!snapshot.hasData) {
@@ -39,7 +41,7 @@ class OrderListReady extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  'No hay ningun pedido.',
+                  'No hay ningún pedido listo.',
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -54,11 +56,6 @@ class OrderListReady extends StatelessWidget {
     return SliverList(
         delegate: SliverChildBuilderDelegate(
             (BuildContext context, int index) =>
-                // OrderCard(
-                //       model: snapshot.data[index],
-                //       bloc: bloc,
-                //       typeList: 'history',
-                //     ),
                 CardItem(snapshot.data[index], time),
             childCount: snapshot.hasData ? snapshot.data.length : 0));
   }
@@ -74,7 +71,7 @@ class OrderListReady extends StatelessWidget {
 
   List<Widget> _listItemSkeleton() {
     List listings = List<Widget>();
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 4; i++) {
       listings.add(
         Container(
           margin: EdgeInsets.only(bottom: 10),

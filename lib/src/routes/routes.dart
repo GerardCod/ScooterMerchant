@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scootermerchant/src/pages/drawer/change_password/change_password_page.dart';
-import 'package:scootermerchant/src/pages/drawer/change_products/list_product_change.dart';
+import 'package:scootermerchant/src/pages/drawer/products/list_products_page.dart';
 import 'package:scootermerchant/src/pages/forgot_password/forgot_password_page.dart';
 import 'package:scootermerchant/src/pages/home/home_page.dart';
 import 'package:scootermerchant/src/pages/login_page/login_page.dart';
@@ -13,7 +13,7 @@ final Map<String, Widget Function(BuildContext)> routes = {
   'homePage': (BuildContext context) => HomePage(),
   'changePasswordPage': (BuildContext context) => ChangePasswordPage(),
   'forgotPasswordPage': (BuildContext context) => ForgotPasswordPage(),
-  'changeProductPage': (BuildContext context) => ChangeProductPage(),
+  'listProductsPage': (BuildContext context) => ListProductsPage(),
   'productDetailsPage': (BuildContext context) => ProductDetailsPage(),
   'notificationColorPage': (BuildContext context) => NotificationColorPage(),
 };

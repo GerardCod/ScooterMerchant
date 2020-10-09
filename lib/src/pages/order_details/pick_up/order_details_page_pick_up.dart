@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:scootermerchant/src/blocs/order_bloc_provider.dart';
-import 'package:scootermerchant/src/blocs/provider.dart';
 import 'package:scootermerchant/src/models/order_model.dart';
+import 'package:scootermerchant/src/pages/order_details/pick_up/delivery_pick_up_page.dart';
 import 'package:scootermerchant/utilities/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -16,7 +15,7 @@ class OrderDetailsPagePickUp extends StatelessWidget {
     // final Map<String, dynamic> args = ModalRoute.of(context).settings.arguments;
     // final OrderModel model = args['model'];
     // final String typeList = args['type'];
-    final OrderBlocProvider bloc = Provider.orderBlocProviderOf(context);
+    // final OrderBlocProvider bloc = Provider.orderBlocProviderOf(context);
     final _scaffoldKey = GlobalKey<ScaffoldState>();
 
     return Scaffold(
@@ -24,7 +23,26 @@ class OrderDetailsPagePickUp extends StatelessWidget {
       backgroundColor: backgroundColor,
       appBar: _customAppBar(),
       body: _customBody(size, orderModel, context),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.help_outline),
+          backgroundColor: secondaryColor,
+          onPressed: () => _displayBottomSheet(context, size)),
+      // persistentFooterButtons: <Widget>[
+      //   _showButtonsHelp(context, size),
+      // ],
     );
+  }
+
+  void _displayBottomSheet(BuildContext context, Size size) {
+    showModalBottomSheet(
+        context: context,
+        builder: (ctx) {
+          return Container(
+            height: MediaQuery.of(context).size.height * 0.3,
+            child: _showButtonsHelp(context, size),
+          );
+        });
   }
 
   Widget _customAppBar() {
@@ -79,7 +97,7 @@ class OrderDetailsPagePickUp extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           _nameCustomer(orderModel),
-          orderModel.indications != null
+          orderModel.indications != 'null'
               ? _indications(orderModel)
               : Container(),
           SizedBox(height: 20),
@@ -88,6 +106,8 @@ class OrderDetailsPagePickUp extends StatelessWidget {
             color: Colors.grey,
           ),
           _informationDelivery(orderModel, context),
+          SizedBox(height: 10),
+          _showDelivery(context),
         ],
       ),
     );
@@ -158,7 +178,7 @@ class OrderDetailsPagePickUp extends StatelessWidget {
             padding: EdgeInsets.all(5),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(50.0),
-              color: Colors.orange,
+              color: _showColorStatus(),
             ),
             child: Align(
               alignment: Alignment.center,
@@ -173,6 +193,15 @@ class OrderDetailsPagePickUp extends StatelessWidget {
       ),
     );
   }
+  Color _showColorStatus() {
+    if (orderModel.orderStatus.id == 7 || orderModel.orderStatus.id == 8) {
+      return Colors.red;
+    }
+    if (orderModel.orderStatus.id == 6) {
+      return Colors.green;
+    }
+    return Colors.orange;
+  }
 
   Widget _informationDelivery(OrderModel orderModel, BuildContext context) {
     return Row(
@@ -181,14 +210,19 @@ class OrderDetailsPagePickUp extends StatelessWidget {
         Row(
           children: <Widget>[
             _imageDelivery(orderModel.deliveryMan.picture, context),
-            _nameDelivery(orderModel.deliveryMan.name),
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  _nameDelivery(orderModel.deliveryMan.name),
+                  Text('Scooter'),
+                ],
+              ),
+            ),
           ],
         ),
-        Row(
-          children: <Widget>[
-            _callDelivery(orderModel.deliveryMan.phoneNumber),
-          ],
-        )
+        _callDelivery(orderModel.deliveryMan.phoneNumber)
       ],
     );
   }
@@ -220,14 +254,44 @@ class OrderDetailsPagePickUp extends StatelessWidget {
   }
 
   Widget _nameDelivery(String name) {
-    return Padding(
-      padding: EdgeInsets.only(left: 10),
-      child: Text(
-        name,
-        style: TextStyle(
-          color: Colors.black,
-          fontWeight: FontWeight.bold,
-          fontSize: 16,
+    return Text(
+      name,
+      style: TextStyle(
+        color: Colors.black,
+        fontWeight: FontWeight.bold,
+        fontSize: 16,
+      ),
+    );
+  }
+
+  Widget _showDelivery(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    return Container(
+      width: size.width,
+      child: Center(
+        child: RaisedButton(
+          child: Wrap(
+            direction: Axis.horizontal,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: <Widget>[
+              Text(
+                'Seguir repartidor  ',
+                style: TextStyle(color: Colors.white),
+              ),
+              Icon(
+                Icons.map,
+                color: Colors.white,
+              )
+            ],
+          ),
+          onPressed: orderModel.orderStatus.id != 6
+              ? () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) =>
+                          DeliveryPickUp(orderModel)))
+              : null,
+          color: secondaryColor,
         ),
       ),
     );
@@ -434,6 +498,55 @@ class OrderDetailsPagePickUp extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _showButtonsHelp(BuildContext context, size) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: <Widget>[
+          SizedBox(height: 20),
+          Align(
+            alignment: Alignment.center,
+            child: Text(
+              '¿Tienes algún problema?',
+              style: TextStyle(fontSize: 18),
+            ),
+          ),
+          Divider(),
+          Text(
+            'Puedes ',
+            style: TextStyle(fontSize: 18),
+          ),
+          SizedBox(height: 10),
+          Container(
+            width: size.width * 0.6,
+            child: RaisedButton(
+              color: primaryColor,
+              child: Text(
+                'Llamar al cliente',
+                style: TextStyle(color: Colors.white),
+              ),
+              onPressed: () => launch("tel:${orderModel.customer.phoneNumber}"),
+            ),
+          ),
+          Text(
+            'o',
+            style: TextStyle(fontSize: 18),
+          ),
+          Container(
+            width: size.width * 0.6,
+            child: RaisedButton(
+              color: secondaryColor,
+              child: Text('Llamar a la central',
+                  style: TextStyle(color: Colors.white)),
+              onPressed: () =>
+                  launch("tel:${orderModel.stationObject.phoneNumber}"),
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -5,13 +5,14 @@ import 'package:flutter/material.dart';
 String fontFamily = 'Aspira';
 String fontFamilySecondary = 'Slant';
 String location = "America/Mexico_City";
-String baseUrl = 'https://www.scooterdev.tech/api/v1/';
+
+String baseUrl = 'https://www.scooterdev.tech/appback/api/v1/';
 String baseUri = "www.scooterdev.tech";
 // String urlComplement = "/api/v1/";
 // String baseUrl = "https://www.scooter-app.team/appback/api/v1/";
 // String baseUri = "www.scooter-app.team";
 
-// final Map<String, int> status = {x
+// final Map<String, int> status = {
 //   'incoming': 14,
 //   'in_process': 15,
 //   'order_ready': 16
@@ -21,7 +22,7 @@ const sizeIconsDetails = 28.0;
 const backgroundColor = Color(0xfff2f6fc);
 const primaryColor = Color(0xffff724e);
 const primaryColorSecondary = Color(0xffff894e);
-const secondaryColor = Color(0xff3B5998);
+const secondaryColor = Color(0xff2A2F3A);
 
 const textColorTF = Color(0xffFF724C);
 const backgroundBtnFacebook = Color(0xFF3B5998);

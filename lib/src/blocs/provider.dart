@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:scootermerchant/src/blocs/order_bloc_provider.dart';
 import 'package:scootermerchant/src/blocs/login_bloc.dart';
+import 'package:scootermerchant/src/blocs/pages/delivery_pick_up_page_bloc.dart';
 import 'package:scootermerchant/src/blocs/pages/notification_order_details_page_bloc.dart';
 import 'package:scootermerchant/src/blocs/product_bloc_provider.dart';
 import 'package:scootermerchant/src/blocs/timezone_bloc_provider.dart';
@@ -12,6 +13,7 @@ class Provider extends InheritedWidget {
       new NotificationOrderDetailsPageBloc();
   final _productBlocProvider = ProductBlocProvider();
   final _timeZoneBlocProvider = TimeZoneBlocProvider();
+  final _deliveryPickUpPageBloc = DeliveryPickUpPageBloc();
 
   static Provider _instance;
 
@@ -56,5 +58,10 @@ class Provider extends InheritedWidget {
     return context
         .dependOnInheritedWidgetOfExactType<Provider>()
         ._timeZoneBlocProvider;
+  }
+  static DeliveryPickUpPageBloc deliveryPickUpPageBloc(BuildContext context) {
+    return context
+        .dependOnInheritedWidgetOfExactType<Provider>()
+        ._deliveryPickUpPageBloc;
   }
 }

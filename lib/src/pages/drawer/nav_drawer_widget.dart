@@ -92,12 +92,12 @@ class NavDrawer extends StatelessWidget {
   }
 
   void _navigateToProductListChange(BuildContext context) {
-    Navigator.of(context).pushNamed('changeProductPage');
+    Navigator.of(context).pushNamed('listProductsPage');
   }
 
-  void _navigateToExample(BuildContext context) {
-    Navigator.pushNamed(context, 'notificationColorPage');
-  }
+  // void _navigateToExample(BuildContext context) {
+  //   Navigator.pushNamed(context, 'notificationColorPage');
+  // }
 
   Widget _switchDisponibility(BuildContext context, LoginBloc bloc) {
     return Row(

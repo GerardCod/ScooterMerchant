@@ -4,6 +4,7 @@ import 'package:scootermerchant/src/blocs/provider.dart';
 import 'package:scootermerchant/src/models/order_model.dart';
 import 'package:scootermerchant/src/pages/home/home_page.dart';
 import 'package:scootermerchant/utilities/constants.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class OrderDetailsPage extends StatelessWidget {
   // const OrderDetailsPage({Key key}) : super(key: key);
@@ -13,9 +14,6 @@ class OrderDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    // final Map<String, dynamic> args = ModalRoute.of(context).settings.arguments;
-    // final OrderModel model = args['model'];
-    // final String typeList = args['type'];
     final OrderBlocProvider bloc = Provider.orderBlocProviderOf(context);
     final _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -39,6 +37,61 @@ class OrderDetailsPage extends StatelessWidget {
                 context: context,
                 model: orderModel,
                 scaffoldKey: _scaffoldKey),
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.help_outline),
+          backgroundColor: secondaryColor,
+          onPressed: () => _displayBottomSheet(context, size)),
+
+      // persistentFooterButtons: <Widget>[
+      //   orderModel.orderStatus.id == 14? Container(child: Text(''),) :
+      //   _showButtonsHelp(context, size),
+      // ],
+    );
+  }
+
+  void _displayBottomSheet(BuildContext context, Size size) {
+    showModalBottomSheet(
+        context: context,
+        builder: (ctx) {
+          return Container(
+            height: size.height * 0.25,
+            child: _showButtonsHelp(context, size),
+          );
+        });
+  }
+
+  Widget _showButtonsHelp(BuildContext context, size) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: <Widget>[
+          SizedBox(height: 20),
+          Align(
+            alignment: Alignment.center,
+            child: Text(
+              '¿Tienes algún problema?',
+              style: TextStyle(fontSize: 18),
+            ),
+          ),
+          Divider(),
+          Text(
+            'Puedes ',
+            style: TextStyle(fontSize: 18),
+          ),
+          SizedBox(height: 10),
+          Container(
+            width: size.width * 0.6,
+            child: RaisedButton(
+              color: primaryColor,
+              child: Text(
+                'Llamar al cliente',
+                style: TextStyle(color: Colors.white),
+              ),
+              onPressed: () => launch("tel:${orderModel.customer.phoneNumber}"),
+            ),
           ),
         ],
       ),
@@ -89,8 +142,7 @@ class OrderDetailsPage extends StatelessWidget {
           Divider(
             color: Colors.grey,
           ),
-          model.indications != null?
-          _indications(model): Container(),
+          model.indications != 'null' ? _indications(model) : Container(),
           SizedBox(height: 20),
           _productList(model),
           SizedBox(height: 20),
@@ -180,13 +232,15 @@ class OrderDetailsPage extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text('Indicaciones',
+        Text(
+          'Indicaciones',
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
             fontSize: 18,
             fontFamily: fontFamily,
-          ),),
+          ),
+        ),
         Text(model.indications),
       ],
     );
@@ -410,9 +464,17 @@ class OrderDetailsPage extends StatelessWidget {
             MaterialPageRoute(builder: (BuildContext context) => HomePage()),
             ModalRoute.withName('homePage'));
       });
+      bloc.getOrders(status: '14', ordering: 'created');
     } else {
       scaffoldKey.currentState
-          .showSnackBar(_createSnackBar(Colors.red, response['message']));
+          .showSnackBar(_createSnackBar(Colors.red, response['message']))
+          .closed
+          .then((value) {
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (BuildContext context) => HomePage()),
+            ModalRoute.withName('homePage'));
+      });
     }
   }
 
@@ -597,7 +659,7 @@ class OrderDetailsPage extends StatelessWidget {
   _createSnackBar(Color color, String message) {
     return SnackBar(
       content: Text(message),
-      duration: Duration(seconds: 3),
+      duration: Duration(seconds: 2),
       backgroundColor: color,
     );
   }
@@ -672,7 +734,7 @@ class OrderDetailsPage extends StatelessWidget {
       GlobalKey<ScaffoldState> scaffoldKey, OrderModel order) async {
     Map<String, dynamic> response = await bloc.orderFinshed(order);
     if (response['ok']) {
-      print(response);
+      // print(response);
       scaffoldKey.currentState
           .showSnackBar(_createSnackBar(Colors.green, response['message']))
           .closed
@@ -683,7 +745,7 @@ class OrderDetailsPage extends StatelessWidget {
             ModalRoute.withName('homePage'));
       });
     } else {
-      print(response);
+      // print(response);
       scaffoldKey.currentState
           .showSnackBar(_createSnackBar(Colors.red, response['message']));
     }
