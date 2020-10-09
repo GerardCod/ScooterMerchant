@@ -74,7 +74,6 @@ final textStyleOrderDetailsText = TextStyle(
 final textStyleScooter = TextStyle(
     color: Colors.white,
     fontSize: 50.0,
-    fontWeight: FontWeight.bold,
     fontFamily: fontFamilySecondary);
 
 final textStyleBtnFacebook = TextStyle(

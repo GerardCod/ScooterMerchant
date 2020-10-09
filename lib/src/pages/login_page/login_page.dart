@@ -6,7 +6,7 @@ import 'package:scootermerchant/utilities/constants.dart';
 import 'package:scootermerchant/utilities/functions.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({Key key}) : super(key: key);
+  // const LoginPage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,24 +15,6 @@ class LoginPage extends StatelessWidget {
       body: SafeArea(
         child: Center(child: _formLogin(context)),
       ),
-    );
-  }
-
-  Widget _header(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    return Container(
-      width: double.infinity,
-      height: size.height * 0.45,
-      decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              primaryColor,
-              textColorTF,
-            ],
-          ),
-          borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(40.0),
-              bottomRight: Radius.circular(40.0))),
     );
   }
 
@@ -58,11 +40,11 @@ class LoginPage extends StatelessWidget {
             width: size.width,
           ),
           FlatButton(
-              onPressed: () {
-                Navigator.of(context).pushNamed('forgotPassword');
-              },
-              child:
-                  Text('Olvidé mi contraseña', style: textHypervinculeWhite)),
+            onPressed: () {
+              Navigator.of(context).pushNamed('forgotPassword');
+            },
+            child: Text('Olvidé mi contraseña', style: textHypervinculeWhite),
+          ),
         ],
       ),
     );
@@ -186,17 +168,34 @@ class LoginPage extends StatelessWidget {
     return StreamBuilder(
       stream: bloc.passwordStream,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-        return TextField(
-          keyboardType: TextInputType.text,
-          decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Contraseña',
-              contentPadding:
-                  EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
-              prefixIcon: Icon(Icons.lock),
-              errorText: snapshot.error),
-          obscureText: true,
-          onChanged: bloc.changePassword,
+        return StreamBuilder<bool>(
+          stream: bloc.showPasswordStream,
+          builder: (BuildContext context, AsyncSnapshot snapshotShowPassword) {
+            return TextField(
+              keyboardType: TextInputType.text,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Contraseña',
+                contentPadding:
+                    EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
+                prefixIcon: Icon(Icons.lock),
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.remove_red_eye),
+                  onPressed: () {
+                    if (snapshotShowPassword.data == null) {
+                      bloc.changeShowPassword(false);
+                    }
+                    bloc.changeShowPassword(!snapshotShowPassword.data);
+                  },
+                ),
+                errorText: snapshot.error,
+              ),
+              obscureText: snapshotShowPassword.hasData
+                  ? snapshotShowPassword.data
+                  : true,
+              onChanged: bloc.changePassword,
+            );
+          },
         );
       },
     );

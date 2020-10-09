@@ -11,6 +11,7 @@ class LoginBloc with Validators {
   final _confirmPasswordController = BehaviorSubject<String>();
   final _availabilityController = BehaviorSubject<bool>();
   final _showLoaderController = BehaviorSubject<bool>();
+  final _showPasswordController = BehaviorSubject<bool>();
 
   Future<Map<String, dynamic>> login(AuthModel model) async {
     changeShowLoader(true);
@@ -57,11 +58,13 @@ class LoginBloc with Validators {
 
   Stream<bool> get availabilityStream => _availabilityController.stream;
   Stream<bool> get showLoaderStream => _showLoaderController.stream;
+  Stream<bool> get showPasswordStream => _showPasswordController.stream;
 
   String get email => _emailController.value;
   String get password => _passwordController.value;
   String get confirmPassword => _confirmPasswordController.value;
   bool get showLoader => _showLoaderController.value;
+  bool get showPassword => _showPasswordController.value;
 
   Function(String) get changeEmail => _emailController.sink.add;
   Function(String) get changePassword => _passwordController.sink.add;
@@ -70,12 +73,14 @@ class LoginBloc with Validators {
 
   Function(bool) get changeAvailability => _availabilityController.sink.add;
   Function(bool) get changeShowLoader => _showLoaderController.sink.add;
+  Function(bool) get changeShowPassword => _showPasswordController.sink.add;
 
   dispose() {
-    _emailController.close();
-    _passwordController.close();
-    _confirmPasswordController.close();
-    _availabilityController.close();
-    _showLoaderController.close();
+    _emailController?.close();
+    _passwordController?.close();
+    _confirmPasswordController?.close();
+    _availabilityController?.close();
+    _showLoaderController?.close();
+    _showPasswordController?.close();
   }
 }
