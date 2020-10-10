@@ -8,6 +8,9 @@ class OrderBlocProvider with Validators {
 
   // Controllers
   final _orderListController = BehaviorSubject<List<OrderModel>>();
+  final _orderListAcceptedController = BehaviorSubject<List<OrderModel>>();
+  final _orderListReadyController = BehaviorSubject<List<OrderModel>>();
+  final _orderListHistoryController = BehaviorSubject<List<OrderModel>>();
   final _rejectReasonController = BehaviorSubject<String>();
   final _cancelReasonController = BehaviorSubject<String>();
   final _loaderAcceptOrderController = BehaviorSubject<bool>();
@@ -16,30 +19,37 @@ class OrderBlocProvider with Validators {
   final _loaderCancelOrderController = BehaviorSubject<bool>();
 
   // Streams
-  Stream<bool> get loaderAcceptOrderStream =>
-      _loaderAcceptOrderController.stream;
-  Stream<bool> get loaderFinishedOrderStream =>
-      _loaderFinishedOrderController.stream;
-  Stream<bool> get loaderCancelOrderStream =>
-      _loaderCancelOrderController.stream;
-  Stream<bool> get loaderRejectOrderStream =>
-      _loaderRejectOrderController.stream;
+  Stream<List<OrderModel>> get orderListStream => _orderListController.stream;
+  Stream<List<OrderModel>> get orderListAcceptedStream => _orderListAcceptedController.stream;
+  Stream<List<OrderModel>> get orderListReadyStream => _orderListReadyController.stream;
+  Stream<List<OrderModel>> get orderListHistoryStream => _orderListHistoryController.stream;
+
   Stream<String> get rejectReasonStream => _rejectReasonController.stream;
+  Stream<bool> get loaderAcceptOrderStream => _loaderAcceptOrderController.stream;
+  Stream<bool> get loaderFinishedOrderStream => _loaderFinishedOrderController.stream;
+  Stream<bool> get loaderCancelOrderStream => _loaderCancelOrderController.stream;
+  Stream<bool> get loaderRejectOrderStream => _loaderRejectOrderController.stream;
   Stream<String> get cancelReasonStream => _cancelReasonController.stream;
 
   // Insert
-  Function(bool) get changeLoaderAcceptOrder =>
-      _loaderAcceptOrderController.sink.add;
-  Function(bool) get changeLoaderRejectOrder =>
-      _loaderRejectOrderController.sink.add;
-  Function(bool) get changeLoaderFinishedOrder =>
-      _loaderFinishedOrderController.sink.add;
-  Function(bool) get changeLoaderCancelOrder =>
-      _loaderCancelOrderController.sink.add;
+  Function(List<OrderModel>) get changeOrderList => _orderListController.sink.add;
+  Function(List<OrderModel>) get changeOrderListAccepted => _orderListAcceptedController.sink.add;
+  Function(List<OrderModel>) get changeOrderListReady => _orderListReadyController.sink.add;
+  Function(List<OrderModel>) get changeOrderListHistory => _orderListHistoryController.sink.add;
+
+  Function(bool) get changeLoaderAcceptOrder => _loaderAcceptOrderController.sink.add;
+  Function(bool) get changeLoaderRejectOrder => _loaderRejectOrderController.sink.add;
+  Function(bool) get changeLoaderFinishedOrder => _loaderFinishedOrderController.sink.add;
+  Function(bool) get changeLoaderCancelOrder => _loaderCancelOrderController.sink.add;
   Function(String) get changeRejectReason => _rejectReasonController.sink.add;
   Function(String) get changeCancelReason => _cancelReasonController.sink.add;
 
   // Ultimos valores
+  List<OrderModel> get orderList => _orderListController.value;
+  List<OrderModel> get orderListAccepted => _orderListAcceptedController.value;
+  List<OrderModel> get orderListReady => _orderListReadyController.value;
+  List<OrderModel> get orderListHistory => _orderListHistoryController.value;
+
   bool get loaderAcceptOrder => _loaderAcceptOrderController.value;
   bool get loaderRejectOrder => _loaderRejectOrderController.value;
   bool get loaderFinishedOrder => _loaderFinishedOrderController.value;
@@ -47,22 +57,24 @@ class OrderBlocProvider with Validators {
   String get rejectReason => _rejectReasonController.value;
   String get cancelReason => _cancelReasonController.value;
 
-  //Provider methods
-
-  ///Retrieve a list of orders given the status and inProcess arguments.
-  // Future<List<OrderModel>> getOrders(
-  //     {int status = 14, bool inProcess = false, bool allOrders = false}) async {
-  //   final orders = await _orderProvider.getOrders(
-  //       status: status, inProcess: inProcess, allOrders: allOrders);
-  //   changeOrderList(orders);
-  //   return orders;
-  // }
-
   Future<List<OrderModel>> getOrders({String status, String ordering}) async {
-    print(ordering);
-    final orders = await _orderProvider.getOrdersReady(status: status, ordering: ordering);
-   
+    final orders = await _orderProvider.getOrders(status: status, ordering: ordering);
     changeOrderList(orders);
+    return orders;
+  }
+  Future<List<OrderModel>> getOrdersReady({String status, String ordering}) async {
+    final orders = await _orderProvider.getOrders(status: status, ordering: ordering);
+    changeOrderListReady(orders);
+    return orders;
+  }
+  Future<List<OrderModel>> getOrdersAccepted({String status, String ordering}) async {
+    final orders = await _orderProvider.getOrders(status: status, ordering: ordering);
+    changeOrderListAccepted(orders);
+    return orders;
+  }
+  Future<List<OrderModel>> getOrdersHistory({String status, String ordering}) async {
+    final orders = await _orderProvider.getOrders(status: status, ordering: ordering);
+    changeOrderListHistory(orders);
     return orders;
   }
 
@@ -98,29 +110,15 @@ class OrderBlocProvider with Validators {
     Map<String, dynamic> response = await _orderProvider.orderReady(model);
     changeLoaderFinishedOrder(false);
     print(response);
-    return response;
+    return response; 
   }
 
   Future<Map<String, dynamic>> getOrder(String orderId) async {
     return await _orderProvider.getOrder(orderId);
   }
 
-  //Order list stream
 
-  Stream<List<OrderModel>> get orderListStream => _orderListController.stream;
 
-  Function(List<OrderModel>) get changeOrderList =>
-      _orderListController.sink.add;
-
-  List<OrderModel> get orderList => _orderListController.value;
-
-//   void drainStream() {
-//     _orderListController.value = null;
-//     _rejectReasonController.value = null;
-//     _cancelReasonController.value = null;
-// /*     _newOrderController.value = null;
-//  */
-//   }
 
   dispose() {
     _orderListController?.close();

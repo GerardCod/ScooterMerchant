@@ -70,6 +70,6 @@ class ProductCard extends StatelessWidget {
       BuildContext context, Product model, ProductBlocProvider bloc) async {
     bloc.cleanProductState();
     await Navigator.of(context)
-        .pushReplacementNamed('productDetailsPage', arguments: model);
+        .pushNamed('productDetailsPage', arguments: model);
   }
 }

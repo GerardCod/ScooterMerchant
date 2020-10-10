@@ -20,7 +20,8 @@ class LoginProvider {
     try {
       final response =
           await http.post(_baseUrl + 'merchants/login/', body: model.toMap());
-      // print(_baseUrl + 'merchants/login/');
+    //  print('URL+=============================');
+    //   print(_baseUrl + 'merchants/login/');
       String source = Utf8Decoder().convert(response.bodyBytes);
       Map<String, dynamic> decodedResp = json.decode(source);
       if (decodedResp.containsKey('access')) {
@@ -81,9 +82,9 @@ class LoginProvider {
 
       String source = Utf8Decoder().convert(response.bodyBytes);
       Map<String, dynamic> decodedData = json.decode(source);
-      print('before condition.');
+      // print('before condition.');
       if (response.statusCode >= 400) {
-        print(decodedData);
+        // print(decodedData);
         return {'ok': false, 'message': 'Error al cambiar la contraseña.'};
       } else {
         return {'ok': true, 'message': 'Contraseña cambiada con éxito.'};

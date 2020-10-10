@@ -6,7 +6,7 @@ import 'package:scootermerchant/utilities/constants.dart';
 import 'package:scootermerchant/utilities/functions.dart';
 
 class ProductDetailsPage extends StatelessWidget {
-  const ProductDetailsPage({Key key}) : super(key: key);
+  // const ProductDetailsPage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,8 @@ class ProductDetailsPage extends StatelessWidget {
     }
     // bloc.changeProductPrice(model.price);
     return Scaffold(
-      appBar: AppBar(
+      appBar: AppBar( 
+        
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () => Navigator.of(context).pop(),
@@ -46,49 +47,31 @@ class ProductDetailsPage extends StatelessWidget {
 
   Widget _containerImage(Product model, Size size) {
     return Container(
-      width: double.infinity,
-      height: size.height * 0.3,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(40.0),
-            bottomRight: Radius.circular(40.0)),
-        image: DecorationImage(
-          image: model.picture == null
-              ? AssetImage('assets/images/no_image.png')
-              : NetworkImage(model.picture),
-          fit: BoxFit.cover,
-        ),
-      ),
+      padding: EdgeInsets.all(15),
+      height: 250,
+      child: model.picture != null
+          ? Image.network(model.picture)
+          : Image.asset('assets/images/no_image.png'),
     );
   }
 
   Widget _containerForm(
       ProductBlocProvider bloc, BuildContext context, Product product) {
-    return Container(
-      width: double.infinity,
-      child: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          children: <Widget>[
-            Text('Datos del producto', style: textStyleDetailCardTitle),
-            SizedBox(
-              height: 48.0,
-            ),
-            _productNameStreamBuilder(bloc, product),
-            SizedBox(
-              height: 24.0,
-            ),
-            _productPriceStreamBuilder(bloc, product),
-            SizedBox(
-              height: 24.0,
-            ),
-            _switchDisponibility(bloc, product),
-            // SizedBox(
-            //   height: 24.0,
-            // ),
-            _buttonStreamBuilder(bloc, product, context)
-          ],
-        ),
+    return Padding(
+      padding: EdgeInsets.all(16.0),
+      child: Column(
+        children: <Widget>[
+          SizedBox(height: 20.0),
+          Text('Datos del producto', style: textStyleDetailCardTitle),
+          SizedBox(height: 15.0),
+          _productNameStreamBuilder(bloc, product),
+          SizedBox(height: 24.0),
+          _productPriceStreamBuilder(bloc, product),
+          SizedBox(height: 24.0),
+          _switchDisponibility(bloc, product),
+          SizedBox(height: 10.0),
+          _buttonStreamBuilder(bloc, product, context)
+        ],
       ),
     );
   }
@@ -134,18 +117,31 @@ class ProductDetailsPage extends StatelessWidget {
   }
 
   Widget _switchDisponibility(ProductBlocProvider bloc, Product product) {
-    // print('product.isAvailable============================');
-    // print(product.isAvailable);
     return Row(
       children: <Widget>[
-        Text(
-          'Disponible',
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 17,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+        StreamBuilder<bool>(
+            stream: bloc.productAvailableStream,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return Text(
+                  snapshot.data ? 'Disponible' : 'No disponible',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                  ),
+                );
+              } else {
+                return Text(
+                  product.isAvailable ? 'Disponible' : 'No disponible',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                  ),
+                );
+              }
+            }),
         SizedBox(
           width: 8.0,
         ),
@@ -197,8 +193,7 @@ class ProductDetailsPage extends StatelessWidget {
                     )
                   ],
                 ),
-                shape: radiusButtons,
-                color: primaryColor,
+                color: secondaryColor,
                 onPressed: () => this._updateProduct(product, bloc, context)),
           );
         });
@@ -209,7 +204,7 @@ class ProductDetailsPage extends StatelessWidget {
     product.name = bloc.productName;
     product.price = bloc.productPrice;
     product.isAvailable = bloc.productAvailable;
-    print(product.price);
+    // print(product.price);
     if (product.name.isEmpty || product.price == null) {
       showSnackBar(context, 'Todos los campos son obligatorios', colorDanger);
       return;

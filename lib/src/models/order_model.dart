@@ -297,6 +297,7 @@ class DeliveryMan {
   String picture;
   String phoneNumber;
   double reputation;
+  Point location;
   // bool isSafeUser;
 
   DeliveryMan(
@@ -308,6 +309,7 @@ class DeliveryMan {
     picture = json['picture'];
     phoneNumber = json['phone_number'];
     reputation = json['reputation'];
+    location = json['location'] != null ? Point.fromJson(json['location']): null;
   }
 
   Map<String, dynamic> toJson() {

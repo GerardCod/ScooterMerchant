@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:scootermerchant/src/blocs/order_bloc_provider.dart';
-import 'package:scootermerchant/src/blocs/provider.dart';
 import 'package:scootermerchant/src/pages/home/fragments/order_list_ready.dart';
 import 'package:scootermerchant/src/pages/home/fragments/order_list.dart';
 import 'package:scootermerchant/src/pages/home/fragments/order_list_accepted.dart';
@@ -29,8 +27,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final OrderBlocProvider bloc = Provider.orderBlocProviderOf(context);
-    bloc.changeOrderList(null);
+    // final OrderBlocProvider bloc = Provider.orderBlocProviderOf(context);
+    // bloc.changeOrderList(null);
     return Scaffold(
       endDrawer: NavDrawer(),
       body: CustomScrollView(

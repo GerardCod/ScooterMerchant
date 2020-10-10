@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:scootermerchant/src/blocs/timezone_bloc_provider.dart';
 import 'package:scootermerchant/src/models/order_model.dart';
 import 'package:scootermerchant/src/pages/order_details/order_details_page.dart';
-import 'package:scootermerchant/src/pages/order_details/order_details_page_pick_up.dart';
+import 'package:scootermerchant/src/pages/order_details/pick_up/order_details_page_pick_up.dart';
 import 'package:scootermerchant/utilities/constants.dart';
 
 class CardItem extends StatelessWidget {
@@ -28,6 +28,7 @@ class CardItem extends StatelessWidget {
       child: Card(
         elevation: 3,
         child: ListTile(
+          contentPadding: EdgeInsets.all(8),
           onTap: () {
             if (orderModel.deliveryMan != null) {
               Navigator.push(
@@ -67,26 +68,43 @@ class CardItem extends StatelessWidget {
       );
     }
     if (orderModel.deliveryMan != null) {
+      if (orderModel.orderStatus.id == 6) {
+        return _showOrderStatus();
+      }
       return _imageDelivery(orderModel.deliveryMan.picture);
     } else {
-      return Container(
-        width: 100,
-        height: 40,
-        padding: EdgeInsets.all(5),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(50.0),
-          color: Colors.orange,
-        ),
-        child: Align(
-          alignment: Alignment.center,
-          child: Text(
-            orderModel.orderStatus.name,
-            style: TextStyle(color: Colors.white, fontSize: 12),
-            textAlign: TextAlign.center,
-          ),
-        ),
-      );
+      return _showOrderStatus();
     }
+  }
+
+  Widget _showOrderStatus() {
+    return Container(
+      width: 100,
+      height: 40,
+      padding: EdgeInsets.all(5),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(50.0),
+        color: _showColorStatus(),
+      ),
+      child: Align(
+        alignment: Alignment.center,
+        child: Text(
+          orderModel.orderStatus.name,
+          style: TextStyle(color: Colors.white, fontSize: 12),
+          textAlign: TextAlign.center,
+        ),
+      ),
+    );
+  }
+
+  Color _showColorStatus() {
+    if (orderModel.orderStatus.id == 7 || orderModel.orderStatus.id == 8) {
+      return Colors.red;
+    }
+    if (orderModel.orderStatus.id == 6) {
+      return Colors.green;
+    }
+    return Colors.orange;
   }
 
   Widget _imageDelivery(String picture) {

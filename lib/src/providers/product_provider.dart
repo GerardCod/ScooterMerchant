@@ -62,7 +62,7 @@ class ProductProvider {
     Map<String, dynamic> decodedData = json.decode(source);
 
     if (response.statusCode >= 400) {
-      print(decodedData);
+      // print(decodedData);
       return {'ok': false, 'message': 'Error al actualizar el producto.'};
     }
     return {'ok': true, 'message': 'Producto actualizado.'};

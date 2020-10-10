@@ -14,13 +14,15 @@ class HistoryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final OrderBlocProvider bloc = Provider.orderBlocProviderOf(context);
     final TimeZoneBlocProvider time = Provider.timeZoneBlocProviderOf(context);
-    bloc.changeOrderList(null);
-    bloc.getOrders(status: '6,7,8,17', ordering: null);
+    // bloc.changeOrderList(null);
+    // if (bloc.orderListHistory == null) {
+      bloc.getOrdersHistory(status: '', ordering: 'order_date');
+    // }
     // bloc.getOrdersPickUp(status: 8);
     final Size size = MediaQuery.of(context).size;
     return WillPopScope(
       onWillPop: () async {
-        bloc.changeOrderList(null);
+        // bloc.changeOrderList(null);
         Navigator.pop(context);
         return false;
       },
@@ -43,11 +45,9 @@ class HistoryPage extends StatelessWidget {
           color: Colors.white,
         ),
         onPressed: () {
-          bloc.changeOrderList(null);
           Navigator.pop(context);
         },
       ),
-      // iconTheme: IconThemeData(color: Colors.white),
       backgroundColor: primaryColor,
     );
   }
@@ -64,7 +64,7 @@ class HistoryPage extends StatelessWidget {
   Widget _listStreamBuilder(
       OrderBlocProvider bloc, Size size, TimeZoneBlocProvider time) {
     return StreamBuilder(
-        stream: bloc.orderListStream,
+        stream: bloc.orderListHistoryStream,
         builder:
             (BuildContext context, AsyncSnapshot<List<OrderModel>> snapshot) {
           if (!snapshot.hasData) {
@@ -77,7 +77,7 @@ class HistoryPage extends StatelessWidget {
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                'No hay ningun pedido.',
+                'No hay ningun pedido en el historial.',
                 textAlign: TextAlign.center,
               ),
             );
@@ -107,7 +107,7 @@ class HistoryPage extends StatelessWidget {
 
   List<Widget> _listItemSkeleton() {
     List listings = List<Widget>();
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 4; i++) {
       listings.add(
         Container(
           margin: EdgeInsets.only(bottom: 10),
