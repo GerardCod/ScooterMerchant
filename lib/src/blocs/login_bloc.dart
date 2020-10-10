@@ -10,6 +10,7 @@ class LoginBloc with Validators {
   final _passwordController = BehaviorSubject<String>();
   final _confirmPasswordController = BehaviorSubject<String>();
   final _availabilityController = BehaviorSubject<bool>();
+  final _showLoaderAvailabilityController = BehaviorSubject<bool>();
   final _showLoaderController = BehaviorSubject<bool>();
   final _showPasswordController = BehaviorSubject<bool>();
 
@@ -36,8 +37,10 @@ class LoginBloc with Validators {
 
   Future<Map<String, dynamic>> updateAvailability(
       {@required bool isOpen}) async {
+    changeLoaderAvailability(true);
     final response = await _provider.updateAvailability(isOpen: isOpen);
     changeAvailability(response['data']);
+    changeLoaderAvailability(false);
     return response;
   }
 
@@ -57,6 +60,8 @@ class LoginBloc with Validators {
       Rx.combineLatest2(emailStream, passwordStream, (a, b) => true);
 
   Stream<bool> get availabilityStream => _availabilityController.stream;
+  Stream<bool> get loaderAvailabilityStream =>
+      _showLoaderAvailabilityController.stream;
   Stream<bool> get showLoaderStream => _showLoaderController.stream;
   Stream<bool> get showPasswordStream => _showPasswordController.stream;
 
@@ -65,6 +70,7 @@ class LoginBloc with Validators {
   String get confirmPassword => _confirmPasswordController.value;
   bool get showLoader => _showLoaderController.value;
   bool get showPassword => _showPasswordController.value;
+  bool get loaderAvailability => _showLoaderAvailabilityController.value;
 
   Function(String) get changeEmail => _emailController.sink.add;
   Function(String) get changePassword => _passwordController.sink.add;
@@ -74,6 +80,8 @@ class LoginBloc with Validators {
   Function(bool) get changeAvailability => _availabilityController.sink.add;
   Function(bool) get changeShowLoader => _showLoaderController.sink.add;
   Function(bool) get changeShowPassword => _showPasswordController.sink.add;
+  Function(bool) get changeLoaderAvailability =>
+      _showLoaderAvailabilityController.sink.add;
 
   dispose() {
     _emailController?.close();
@@ -82,5 +90,6 @@ class LoginBloc with Validators {
     _availabilityController?.close();
     _showLoaderController?.close();
     _showPasswordController?.close();
+    _showLoaderAvailabilityController?.close();
   }
 }

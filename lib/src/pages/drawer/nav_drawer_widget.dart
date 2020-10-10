@@ -7,8 +7,6 @@ import 'package:scootermerchant/src/preferences/merchant_preferences.dart';
 import 'package:scootermerchant/utilities/constants.dart';
 
 class NavDrawer extends StatelessWidget {
-  // const NavDrawer({Key key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     final LoginBloc bloc = Provider.of(context);
@@ -26,39 +24,17 @@ class NavDrawer extends StatelessWidget {
                   merchant.merchantName,
                   style: TextStyle(fontSize: 25),
                 ),
-                // decoration: BoxDecoration(
-                //     color: Colors.green,
-                //     image: DecorationImage(
-                //         fit: BoxFit.fill,
-                //         image: AssetImage('assets/images/cover.jpg'))
-                //         ),
               ),
             ),
             Container(
               padding: EdgeInsets.all(16.0),
               child: _switchDisponibility(context, bloc),
             ),
-            /*   ListTile(
-              leading: Icon(Icons.settings),
-              title: Text('Configuración'),
-              onTap: () => {Navigator.pushNamed(context, 'settings')},
-            ), */
             ListTile(
               leading: Icon(Icons.mode_edit),
               title: Text('Editar productos'),
               onTap: () => this._navigateToProductListChange(context),
             ),
-            // ListTile(
-            //   leading: Icon(Icons.verified_user),
-            //   title: Text('Ayuda'),
-            //   onTap: () => Navigator.push(
-            //     context,
-            //     MaterialPageRoute(
-            //       builder: (context) => NotificationColorPage(),
-            //     ),
-            //   ),
-            // ),
-
             ListTile(
               leading: Icon(Icons.timer),
               title: Text('Historial'),
@@ -72,7 +48,8 @@ class NavDrawer extends StatelessWidget {
             ListTile(
               leading: Icon(Icons.lock_open),
               title: Text('Cambiar contraseña'),
-              onTap: () => {Navigator.of(context).pushNamed('changePasswordPage')},
+              onTap: () =>
+                  {Navigator.of(context).pushNamed('changePasswordPage')},
             ),
             ListTile(
               leading: Icon(Icons.exit_to_app),
@@ -87,7 +64,8 @@ class NavDrawer extends StatelessWidget {
 
   Future<void> _logOut(LoginBloc bloc, BuildContext context) async {
     if (await bloc.logout()) {
-      Navigator.of(context).pushNamedAndRemoveUntil('loginPage', (route) => false);
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil('loginPage', (route) => false);
     }
   }
 
@@ -113,7 +91,24 @@ class NavDrawer extends StatelessWidget {
         SizedBox(
           width: 8.0,
         ),
-        _switchStreamBuilder(bloc),
+        StreamBuilder<bool>(
+          stream: bloc.loaderAvailabilityStream,
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.hasData) {
+              if (snapshot.data) {
+                return SizedBox(
+                  height: 25,
+                  width: 25,
+                  child: CircularProgressIndicator(),
+                );
+              }
+              return _switchStreamBuilder(bloc);
+            } else {
+              bloc.changeLoaderAvailability(false);
+              return _switchStreamBuilder(bloc);
+            }
+          },
+        ),
       ],
     );
   }
@@ -122,7 +117,6 @@ class NavDrawer extends StatelessWidget {
     return StreamBuilder(
       stream: bloc.availabilityStream,
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-        // print(MerchantPreferences().isOpen);
         return Switch(
           value: snapshot.hasData && MerchantPreferences().isOpen != null
               ? snapshot.data
