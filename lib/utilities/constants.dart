@@ -6,11 +6,11 @@ String fontFamily = 'Aspira';
 String fontFamilySecondary = 'Slant';
 String location = "America/Mexico_City";
 
-String baseUrl = 'https://www.scooterdev.tech/appback/api/v1/';
-String baseUri = "www.scooterdev.tech";
+// String baseUrl = 'https://www.scooterdev.tech/appback/api/v1/';
+// String baseUri = "www.scooterdev.tech";
 // String urlComplement = "/api/v1/";
-// String baseUrl = "https://www.scooter-app.team/appback/api/v1/";
-// String baseUri = "www.scooter-app.team";
+String baseUrl = "https://www.scooter-app.team/appback/api/v1/";
+String baseUri = "www.scooter-app.team";
 
 // final Map<String, int> status = {
 //   'incoming': 14,
@@ -72,9 +72,7 @@ final textStyleOrderDetailsText = TextStyle(
     fontSize: 16.0);
 
 final textStyleScooter = TextStyle(
-    color: Colors.white,
-    fontSize: 50.0,
-    fontFamily: fontFamilySecondary);
+    color: Colors.white, fontSize: 50.0, fontFamily: fontFamilySecondary);
 
 final textStyleBtnFacebook = TextStyle(
     color: Colors.white,

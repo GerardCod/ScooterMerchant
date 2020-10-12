@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:package_info/package_info.dart';
 import 'package:scootermerchant/src/blocs/provider.dart';
 import 'package:scootermerchant/src/preferences/merchant_preferences.dart';
 import 'package:scootermerchant/src/providers/notification_provider.dart';
@@ -50,6 +51,7 @@ class _MyAppState extends State<MyApp> {
             .pushNamed('notificationColorPage');
       }
     });
+    _verifyUpdates(navigatorKey);
   }
 
   @override
@@ -66,6 +68,20 @@ class _MyAppState extends State<MyApp> {
       ),
     );
   }
+}
+
+// VerifyUpdates in PlayStore
+Future<Null> _verifyUpdates(GlobalKey<NavigatorState> navigatorKey) {
+  PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
+    final String currentVersion = packageInfo.buildNumber;
+    checkVersion().then((Map<String, dynamic> response) {
+      int newVersion = response['data']['build_number'];
+      if (int.parse(currentVersion) < newVersion) {
+        navigatorKey.currentState
+            .pushReplacementNamed('newObligatoryVersionPage');
+      }
+    });
+  });
 }
 
 Future<void> refreshToken(token, MerchantPreferences _prefs) async {
@@ -105,5 +121,20 @@ Future<Map<String, dynamic>> apiRefreshToken(MerchantPreferences _prefs) async {
   } else {
     _prefs.access = null;
     return {'ok': false, 'message': decodedResp['errors']['message']};
+  }
+}
+
+Future<Map<String, dynamic>> checkVersion() async {
+  String _baseUrl = baseUrl;
+  final resp = await http.get(_baseUrl + "users/check_version_merchant/");
+
+  String source = Utf8Decoder().convert(resp.bodyBytes);
+
+  Map<String, dynamic> decodedResp = json.decode(source);
+
+  if (resp.statusCode >= 400) {
+    return {'ok': false, 'message': decodedResp['errors']['message']};
+  } else {
+    return {'ok': true, 'data': decodedResp};
   }
 }
