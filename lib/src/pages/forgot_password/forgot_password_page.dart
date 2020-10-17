@@ -23,22 +23,22 @@ class ForgotPasswordPage extends StatelessWidget {
     );
   }
 
-  Widget _header(Size size) {
-    return Container(
-      width: double.infinity,
-      height: size.height * 0.45,
-      decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              primaryColor,
-              textColorTF,
-            ],
-          ),
-          borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(40.0),
-              bottomRight: Radius.circular(40.0))),
-    );
-  }
+  // Widget _header(Size size) {
+  //   return Container(
+  //     width: double.infinity,
+  //     height: size.height * 0.45,
+  //     decoration: BoxDecoration(
+  //         gradient: LinearGradient(
+  //           colors: [
+  //             primaryColor,
+  //             textColorTF,
+  //           ],
+  //         ),
+  //         borderRadius: BorderRadius.only(
+  //             bottomLeft: Radius.circular(40.0),
+  //             bottomRight: Radius.circular(40.0))),
+  //   );
+  // }
 
   Widget _formForgotPassword(LoginBloc bloc, Size size, BuildContext context) {
     return SingleChildScrollView(

@@ -39,7 +39,7 @@ class OrderDetailsPagePickUp extends StatelessWidget {
         context: context,
         builder: (ctx) {
           return Container(
-            height: MediaQuery.of(context).size.height * 0.3,
+            height: MediaQuery.of(context).size.height * 0.35,
             child: _showButtonsHelp(context, size),
           );
         });
@@ -193,6 +193,7 @@ class OrderDetailsPagePickUp extends StatelessWidget {
       ),
     );
   }
+
   Color _showColorStatus() {
     if (orderModel.orderStatus.id == 7 || orderModel.orderStatus.id == 8) {
       return Colors.red;
@@ -503,51 +504,56 @@ class OrderDetailsPagePickUp extends StatelessWidget {
   }
 
   Widget _showButtonsHelp(BuildContext context, size) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        children: <Widget>[
-          SizedBox(height: 20),
-          Align(
-            alignment: Alignment.center,
-            child: Text(
-              '¿Tienes algún problema?',
-              style: TextStyle(fontSize: 18),
-            ),
-          ),
-          Divider(),
-          Text(
-            'Puedes ',
-            style: TextStyle(fontSize: 18),
-          ),
-          SizedBox(height: 10),
-          Container(
-            width: size.width * 0.6,
-            child: RaisedButton(
-              color: primaryColor,
-              child: Text(
-                'Llamar al cliente',
-                style: TextStyle(color: Colors.white),
+    return ListView(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: <Widget>[
+              SizedBox(height: 20),
+              Align(
+                alignment: Alignment.center,
+                child: Text(
+                  '¿Tienes algún problema?',
+                  style: TextStyle(fontSize: 18),
+                ),
               ),
-              onPressed: () => launch("tel:${orderModel.customer.phoneNumber}"),
-            ),
+              Divider(),
+              Text(
+                'Puedes ',
+                style: TextStyle(fontSize: 18),
+              ),
+              SizedBox(height: 10),
+              Container(
+                width: size.width * 0.6,
+                child: RaisedButton(
+                  color: primaryColor,
+                  child: Text(
+                    'Llamar al cliente',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  onPressed: () =>
+                      launch("tel:${orderModel.customer.phoneNumber}"),
+                ),
+              ),
+              Text(
+                'o',
+                style: TextStyle(fontSize: 18),
+              ),
+              Container(
+                width: size.width * 0.6,
+                child: RaisedButton(
+                  color: secondaryColor,
+                  child: Text('Llamar a la central',
+                      style: TextStyle(color: Colors.white)),
+                  onPressed: () =>
+                      launch("tel:${orderModel.stationObject.phoneNumber}"),
+                ),
+              ),
+            ],
           ),
-          Text(
-            'o',
-            style: TextStyle(fontSize: 18),
-          ),
-          Container(
-            width: size.width * 0.6,
-            child: RaisedButton(
-              color: secondaryColor,
-              child: Text('Llamar a la central',
-                  style: TextStyle(color: Colors.white)),
-              onPressed: () =>
-                  launch("tel:${orderModel.stationObject.phoneNumber}"),
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

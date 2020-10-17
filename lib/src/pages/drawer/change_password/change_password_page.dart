@@ -36,15 +36,12 @@ class ChangePasswordPage extends StatelessWidget {
       width: double.infinity,
       height: size.height * 0.45,
       decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              primaryColor,
-              textColorTF,
-            ],
-          ),
-          borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(40.0),
-              bottomRight: Radius.circular(40.0))),
+        color: primaryColor,
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(40.0),
+          bottomRight: Radius.circular(40.0),
+        ),
+      ),
     );
   }
 
