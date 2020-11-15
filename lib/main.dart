@@ -75,7 +75,7 @@ Future<Null> _verifyUpdates(GlobalKey<NavigatorState> navigatorKey) {
   PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
     final String currentVersion = packageInfo.buildNumber;
     checkVersion().then((Map<String, dynamic> response) {
-      int newVersion = response['data']['build_number'];
+      int newVersion = response['data']['build_number']; 
       if (int.parse(currentVersion) < newVersion) {
         navigatorKey.currentState
             .pushReplacementNamed('newObligatoryVersionPage');

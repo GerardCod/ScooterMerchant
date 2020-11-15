@@ -73,7 +73,9 @@ class _HomePageState extends State<HomePage> {
                               color: Color(0xff808080),
                             ),
                           ],
+                          
                         ),
+                        textAlign: TextAlign.center,
                       ),
                     ),
                   ),

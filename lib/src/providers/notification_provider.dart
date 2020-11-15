@@ -104,7 +104,7 @@ class NotificationsProvider {
     // await _createNofification(message);
     print('====== onMessage ====== ');
     print('message: $message');
-    // await _createNofification(message);
+    await _createNofification(message);
 
     Map<String, dynamic> argument = {'data': 'no-data', 'type': 'no-type'};
 
