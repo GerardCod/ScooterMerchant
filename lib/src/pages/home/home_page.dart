@@ -35,10 +35,10 @@ class _HomePageState extends State<HomePage> {
         slivers: <Widget>[
           SliverAppBar(
             // actions: <Widget>[_switchDisponibility(context, bloc)],
-            title: Text(
-              'SCOOTER',
-              style: textStyleForAppBar,
-            ),
+            // title: Text(
+            //   'SCOOTER',
+            //   style: textStyleForAppBar,
+            // ),
             floating: false,
             pinned: true,
             expandedHeight: 120,

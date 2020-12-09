@@ -47,10 +47,11 @@ class OrderDetailsPagePickUp extends StatelessWidget {
 
   Widget _customAppBar() {
     return AppBar(
-      title: Text('Detalles del pedido', style: TextStyle(color: Colors.white)),
-      elevation: 0,
+      brightness: Brightness.light,
+      backgroundColor: Colors.white,
+      title: Text('Detalles del pedido', style: txtStyleAppBar),
       iconTheme: IconThemeData(
-        color: Colors.white,
+        color: Colors.black,
       ),
     );
   }
@@ -58,7 +59,7 @@ class OrderDetailsPagePickUp extends StatelessWidget {
   Widget _customBody(Size size, OrderModel orderModel, BuildContext context) {
     return Stack(
       children: <Widget>[
-        _header(size),
+        // _header(size),
         SingleChildScrollView(
             child: Column(
           children: <Widget>[

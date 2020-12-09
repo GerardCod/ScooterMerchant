@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:package_info/package_info.dart';
 import 'package:scootermerchant/src/blocs/provider.dart';
@@ -56,14 +57,36 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.light,
+          statusBarBrightness: Brightness.light,
+          systemNavigationBarIconBrightness: Brightness.light,
+          systemNavigationBarColor: Colors.black),
+    );
+
+    SystemChrome.setPreferredOrientations(
+      [
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ],
+    );
+
+    final textTheme = Theme.of(context).textTheme.apply(
+          fontFamily: fontFamily,
+        );
     return Provider(
       child: MaterialApp(
         title: 'Scooter',
+        theme: ThemeData(
+          primaryColor: Colors.black,
+          accentColor: secondaryColor,
+          textTheme: textTheme,
+        ),
+        debugShowCheckedModeBanner: false,
         navigatorKey: navigatorKey,
         initialRoute: getInitialRoute(prefs),
-        debugShowCheckedModeBanner: false,
-        theme:
-            ThemeData(primaryColor: primaryColor, accentColor: secondaryColor),
         routes: routes,
       ),
     );
@@ -75,7 +98,7 @@ Future<Null> _verifyUpdates(GlobalKey<NavigatorState> navigatorKey) {
   PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
     final String currentVersion = packageInfo.buildNumber;
     checkVersion().then((Map<String, dynamic> response) {
-      int newVersion = response['data']['build_number']; 
+      int newVersion = response['data']['build_number'];
       if (int.parse(currentVersion) < newVersion) {
         navigatorKey.currentState
             .pushReplacementNamed('newObligatoryVersionPage');

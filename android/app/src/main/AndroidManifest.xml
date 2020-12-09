@@ -7,7 +7,7 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name=".Application"
-        android:label="Scooter Comercios"
+        android:label="Los pedidos | Comercios"
         android:icon="@mipmap/launcher_icon">
 
         <meta-data

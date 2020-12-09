@@ -15,6 +15,7 @@ class NewVersionPage extends StatelessWidget {
     final _pref = MerchantPreferences();
     final size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: Colors.white,
       body: _customBody(size, context, _pref),
     );
   }
@@ -35,7 +36,7 @@ class NewVersionPage extends StatelessWidget {
                     Flexible(
                       flex: 3,
                       child: Image.asset(
-                        'assets/images/logos/logo.png',
+                        'assets/icon/icon_launcher.jpg',
                         height: 50,
                         width: 50,
                       ),
@@ -44,7 +45,7 @@ class NewVersionPage extends StatelessWidget {
                     Flexible(
                       flex: 7,
                       child: Text(
-                        'Scooter Comercios necesita una actualización.',
+                        'Los Pedidos - Comercios, necesita una actualización.',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,

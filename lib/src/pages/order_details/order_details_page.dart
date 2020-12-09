@@ -20,11 +20,11 @@ class OrderDetailsPage extends StatelessWidget {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title:
-            Text('Detalles del pedido', style: TextStyle(color: Colors.white)),
-        elevation: 0,
+        brightness: Brightness.light,
+        backgroundColor: Colors.white,
+        title: Text('Detalles del pedido', style: txtStyleAppBar),
         iconTheme: IconThemeData(
-          color: Colors.white,
+          color: Colors.black,
         ),
       ),
       body: Stack(

@@ -16,12 +16,14 @@ class ListProductsPage extends StatelessWidget {
     bloc.getProducts();
     return Scaffold(
       appBar: AppBar(
+        brightness: Brightness.light,
         title: Text(
           'Lista de productos',
-          style: textStyleBtnComprar,
+          style: txtStyleAppBar,
         ),
+        backgroundColor: Colors.white,
         iconTheme: IconThemeData(
-          color: Colors.white,
+          color: Colors.black,
         ),
       ),
       body: _createListStreamBuilder(bloc, size),

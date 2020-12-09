@@ -7,93 +7,78 @@ import 'package:scootermerchant/utilities/functions.dart';
 
 class LoginPage extends StatelessWidget {
   // const LoginPage({Key key}) : super(key: key);
+  LoginBloc loginBloc;
+  Size size;
 
   @override
   Widget build(BuildContext context) {
+    size = MediaQuery.of(context).size;
+    loginBloc = Provider.of(context);
     return Scaffold(
-      backgroundColor: primaryColor,
-      body: SafeArea(
-        child: Center(child: _formLogin(context)),
-      ),
+      appBar: _customAppBar(),
+      backgroundColor: Colors.white,
+      body: _customBody(context),
     );
   }
 
-  Widget _formLogin(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final bloc = Provider.of(context);
+  Widget _customAppBar() {
+    return AppBar(
+      brightness: Brightness.light,
+      backgroundColor: Colors.white,
+      elevation: 0,
+    );
+  }
 
+  Widget _customBody(BuildContext context) {
     return SingleChildScrollView(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          SizedBox(
-            height: 15.0,
-          ),
-          Text('SCOOTER', style: textStyleScooter),
-          SizedBox(
-            height: 20.0,
-          ),
-          _formContainer(bloc),
-          SizedBox(
-            height: 15.0,
-            width: size.width,
-          ),
-          FlatButton(
-            onPressed: () {
-              Navigator.of(context).pushNamed('forgotPassword');
-            },
-            child: Text('Olvidé mi contraseña', style: textHypervinculeWhite),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _formContainer(LoginBloc bloc) {
-    return Container(
-      padding: EdgeInsets.all(24.0),
-      margin: EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-                color: Color.fromRGBO(0, 0, 0, 0.25),
-                offset: Offset(0, 2.5),
-                blurRadius: 1.5,
-                spreadRadius: 1.5)
+          child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 35),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Image.asset('assets/icon/icon_launcher.jpg', height: 160),
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              'Bienvenido comerciante',
+              style: textStyleTitleListTile,
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(
+              height: 25,
+            ),
+            _emailStreamBuilder(),
+            SizedBox(height: 16.0),
+            _passwordStreamBuilder(),
+            SizedBox(
+              height: 16.0,
+            ),
+            _buttonForm(),
+            // _formContainer(),
+            SizedBox(
+              height: 15.0,
+              width: size.width,
+            ),
+            FlatButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed('forgotPasswordPage');
+              },
+              child: Text('Olvidé mi contraseña', style: textHypervinculeWhite),
+            ),
           ],
-          borderRadius: BorderRadius.all(Radius.circular(20.0))),
-      child: Column(
-        children: <Widget>[
-          Text(
-            'Bienvenido querido comerciante',
-            style: textStyleTitleListTile,
-            textAlign: TextAlign.center,
-          ),
-          SizedBox(
-            height: 48.0,
-          ),
-          _emailStreamBuilder(bloc),
-          SizedBox(height: 16.0),
-          _passwordStreamBuilder(bloc),
-          SizedBox(
-            height: 16.0,
-          ),
-          _buttonForm(bloc)
-        ],
+        ),
       ),
     );
   }
 
-  Widget _buttonForm(LoginBloc bloc) {
+  Widget _buttonForm() {
     return StreamBuilder(
-        stream: bloc.validationStream,
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
+        stream: loginBloc.validationStream,
+        builder: (context, snapshot) {
           return RaisedButton(
-            onPressed: snapshot.hasData
-                ? () => _login(bloc.email, bloc.password, context, bloc)
-                : null,
+            onPressed: snapshot.hasData ? () => _login(context) : null,
             color: primaryColor,
             textColor: Colors.white,
             padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 40.0),
@@ -103,7 +88,7 @@ class LoginPage extends StatelessWidget {
               ),
             ),
             child: StreamBuilder<bool>(
-              stream: bloc.showLoaderStream,
+              stream: loginBloc.showLoaderStream,
               // initialData: initialData ,
               builder: (context, snapshotLoader) {
                 return Container(
@@ -133,10 +118,10 @@ class LoginPage extends StatelessWidget {
         });
   }
 
-  Future<void> _login(String email, String password, BuildContext context,
-      LoginBloc bloc) async {
-    final user = AuthModel(username: email, password: password);
-    final response = await bloc.login(user);
+  Future<void> _login(BuildContext context) async {
+    final user =
+        AuthModel(username: loginBloc.email, password: loginBloc.password);
+    final response = await loginBloc.login(user);
     if (response['ok']) {
       Navigator.pushReplacementNamed(context, 'homePage');
     } else {
@@ -146,9 +131,9 @@ class LoginPage extends StatelessWidget {
     }
   }
 
-  Widget _emailStreamBuilder(LoginBloc bloc) {
+  Widget _emailStreamBuilder() {
     return StreamBuilder(
-        stream: bloc.emailStream,
+        stream: loginBloc.emailStream,
         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
           return TextField(
             keyboardType: TextInputType.emailAddress,
@@ -159,17 +144,17 @@ class LoginPage extends StatelessWidget {
                     EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
                 prefixIcon: Icon(Icons.alternate_email),
                 errorText: snapshot.error),
-            onChanged: bloc.changeEmail,
+            onChanged: loginBloc.changeEmail,
           );
         });
   }
 
-  Widget _passwordStreamBuilder(LoginBloc bloc) {
+  Widget _passwordStreamBuilder() {
     return StreamBuilder(
-      stream: bloc.passwordStream,
+      stream: loginBloc.passwordStream,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         return StreamBuilder<bool>(
-          stream: bloc.showPasswordStream,
+          stream: loginBloc.showPasswordStream,
           builder: (BuildContext context, AsyncSnapshot snapshotShowPassword) {
             return TextField(
               keyboardType: TextInputType.text,
@@ -183,9 +168,9 @@ class LoginPage extends StatelessWidget {
                   icon: Icon(Icons.remove_red_eye),
                   onPressed: () {
                     if (snapshotShowPassword.data == null) {
-                      bloc.changeShowPassword(false);
+                      loginBloc.changeShowPassword(false);
                     }
-                    bloc.changeShowPassword(!snapshotShowPassword.data);
+                    loginBloc.changeShowPassword(!snapshotShowPassword.data);
                   },
                 ),
                 errorText: snapshot.error,
@@ -193,7 +178,7 @@ class LoginPage extends StatelessWidget {
               obscureText: snapshotShowPassword.hasData
                   ? snapshotShowPassword.data
                   : true,
-              onChanged: bloc.changePassword,
+              onChanged: loginBloc.changePassword,
             );
           },
         );

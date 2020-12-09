@@ -21,15 +21,12 @@ class ProductDetailsPage extends StatelessWidget {
     }
     // bloc.changeProductPrice(model.price);
     return Scaffold(
-      appBar: AppBar( 
-        
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        title: Text('Detalles del producto', style: textStyleBtnComprar),
+      appBar: AppBar(
+        title: Text('Detalles del producto', style: txtStyleAppBar),
+        brightness: Brightness.light,
+        backgroundColor: Colors.white,
         iconTheme: IconThemeData(
-          color: Colors.white,
+          color: Colors.black,
         ),
       ),
       body: SingleChildScrollView(
@@ -187,7 +184,7 @@ class ProductDetailsPage extends StatelessWidget {
                         child: SizedBox(
                           height: 20,
                           width: 20,
-                          child: CircularProgressIndicator(),
+                          child: CircularProgressIndicator(backgroundColor: Colors.white,),
                         ),
                       ),
                     )

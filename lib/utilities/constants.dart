@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
-String fontFamily = 'Aspira';
+String fontFamily = 'poppins';
 String fontFamilySecondary = 'Slant';
 String location = "America/Mexico_City";
 
@@ -21,7 +21,7 @@ String baseUri = "www.scooterdev.tech";
 const sizeIconsDetails = 28.0;
 
 const backgroundColor = Color(0xfff2f6fc);
-const primaryColor = Color(0xffff724e);
+const primaryColor = Color(0xffe00616);
 const primaryColorSecondary = Color(0xffff894e);
 const secondaryColor = Color(0xff2A2F3A);
 
@@ -39,6 +39,13 @@ final radiusButtons = RoundedRectangleBorder(
 
 final paddingChips = EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0);
 final radiusChips = BorderRadius.circular(20.0);
+
+final txtStyleAppBar = TextStyle(
+  fontSize: 18,
+  fontWeight: FontWeight.bold,
+  fontFamily: fontFamily,
+  color: Colors.black,
+);
 
 final textStyleSnackBar = TextStyle(
     fontFamily: fontFamily,

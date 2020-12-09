@@ -16,31 +16,19 @@ class ChangePasswordPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        brightness: Brightness.light,
+        backgroundColor: Colors.white,
         title: Text(
           'Contraseña',
-          style: textStyleBtnComprar,
+          style: txtStyleAppBar,
         ),
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: IconThemeData(color: Colors.black),
       ),
       body: Stack(
         children: <Widget>[
-          _header(size),
+          // _header(size),
           _formChangePassword(bloc, token, context)
         ],
-      ),
-    );
-  }
-
-  Widget _header(Size size) {
-    return Container(
-      width: double.infinity,
-      height: size.height * 0.45,
-      decoration: BoxDecoration(
-        color: primaryColor,
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(40.0),
-          bottomRight: Radius.circular(40.0),
-        ),
       ),
     );
   }

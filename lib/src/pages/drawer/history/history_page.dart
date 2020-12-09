@@ -37,18 +37,11 @@ class HistoryPage extends StatelessWidget {
     return AppBar(
       title: Text(
         'Historial',
-        style: TextStyle(color: Colors.white),
+        style: txtStyleAppBar,
       ),
-      leading: IconButton(
-        icon: Icon(
-          Icons.arrow_back,
-          color: Colors.white,
-        ),
-        onPressed: () {
-          Navigator.pop(context);
-        },
-      ),
-      backgroundColor: primaryColor,
+      backgroundColor: Colors.white,
+      iconTheme: IconThemeData(color: Colors.black),
+      brightness: Brightness.light,
     );
   }
 

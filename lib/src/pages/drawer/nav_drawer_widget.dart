@@ -64,6 +64,9 @@ class NavDrawer extends StatelessWidget {
 
   Future<void> _logOut(LoginBloc bloc, BuildContext context) async {
     if (await bloc.logout()) {
+      // bloc.changeEmail(null);
+      // bloc.changePassword(null);
+      // bloc.changeShowPassword(false);
       Navigator.of(context)
           .pushNamedAndRemoveUntil('loginPage', (route) => false);
     }
