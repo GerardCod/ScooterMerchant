@@ -7,6 +7,6 @@
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@mipmap/scooter_orange" />
+            android:src="@mipmap/splashlospedidos" />
     </item>
 </layer-list>
