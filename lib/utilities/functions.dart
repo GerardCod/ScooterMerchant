@@ -49,4 +49,33 @@ void showSnackBar(BuildContext context, String message, Color colorBackground) {
   Scaffold.of(context).showSnackBar(snackBar);
 }
 
-
+void showAlert(BuildContext context, String titulo, String mensaje) {
+  showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            titulo,
+            style: TextStyle(
+                fontWeight: FontWeight.bold, fontFamily: 'Avira', fontSize: 22),
+          ),
+          content: Text(
+            mensaje,
+            style: TextStyle(
+              fontSize: 18,
+            ),
+          ),
+          actions: <Widget>[
+            RaisedButton(
+              color: secondaryColor,
+              child: Text('Aceptar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
+                // Navigator.pop(context);
+              },
+            )
+          ],
+        );
+      });
+}

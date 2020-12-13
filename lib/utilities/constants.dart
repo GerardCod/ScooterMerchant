@@ -6,7 +6,7 @@ String fontFamily = 'poppins';
 String fontFamilySecondary = 'Slant';
 String location = "America/Mexico_City";
 
-String baseUrl = 'https://www.scooterdev.tech/appback/api/v1/';
+String baseUrl = 'https://www.scooterdev.tech/api/v1/';
 String baseUri = "www.scooterdev.tech";
 
 // String urlComplement = "/api/v1/";

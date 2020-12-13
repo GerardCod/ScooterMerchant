@@ -4,6 +4,7 @@ import 'package:scootermerchant/src/blocs/provider.dart';
 import 'package:scootermerchant/src/models/order_model.dart';
 import 'package:scootermerchant/src/pages/home/home_page.dart';
 import 'package:scootermerchant/utilities/constants.dart';
+import 'package:scootermerchant/utilities/functions.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class OrderDetailsPage extends StatelessWidget {
@@ -29,7 +30,7 @@ class OrderDetailsPage extends StatelessWidget {
       ),
       body: Stack(
         children: <Widget>[
-          _header(size),
+          // _header(size),
           SingleChildScrollView(
             child: _containerInfo(
                 size: size,
@@ -318,11 +319,25 @@ class OrderDetailsPage extends StatelessWidget {
         ),
         Expanded(
           flex: 2,
-          child: Container(),
+          child: Align(
+            alignment: Alignment.bottomRight,
+            child: Text(
+              '\$' + priceProduct(product),
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
         ),
-        // Container(padding: EdgeInsets.only(top: 25, bottom: 25))
       ],
     );
+  }
+
+  String priceProduct(Details product) {
+    double price = product.productPrice * product.quantity;
+    return price.toStringAsFixed(2);
   }
 
   Widget _descriptionProduct(Details product) {
@@ -699,7 +714,7 @@ class OrderDetailsPage extends StatelessWidget {
       ),
       color: secondaryColor,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
             'Terminado',
@@ -708,10 +723,12 @@ class OrderDetailsPage extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
+          SizedBox(width: 10),
           StreamBuilder<bool>(
             stream: bloc.loaderFinishedOrderStream,
             builder: (context, snapshot) {
               return Visibility(
+                visible: snapshot.hasData && snapshot.data == true,
                 child: SizedBox(
                   width: 25,
                   height: 25,
@@ -719,7 +736,6 @@ class OrderDetailsPage extends StatelessWidget {
                     backgroundColor: Colors.white,
                   ),
                 ),
-                visible: snapshot.hasData && snapshot.data == true,
               );
             },
           )
@@ -829,16 +845,20 @@ class OrderDetailsPage extends StatelessWidget {
           MaterialPageRoute(builder: (BuildContext context) => HomePage()),
           ModalRoute.withName('homePage'));
     } else {
-      Navigator.pop(context);
-      scaffoldKey.currentState
-          .showSnackBar(_createSnackBar(Colors.green, response['message']))
-          .closed
-          .then((value) {
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (BuildContext context) => HomePage()),
-            ModalRoute.withName('homePage'));
-      });
+      print(response['message']);
+      showAlert(
+          context, 'Error, comunicate con el soporte', response['message']);
+      // Navigator.pop(context);
+
+      // scaffoldKey.currentState
+      //     .showSnackBar(_createSnackBar(Colors.green, 'Nel perro'))
+      //     .closed
+      //     .then((value) {
+      //   Navigator.pushAndRemoveUntil(
+      //       context,
+      //       MaterialPageRoute(builder: (BuildContext context) => HomePage()),
+      //       ModalRoute.withName('homePage'));
+      // });
     }
   }
 }

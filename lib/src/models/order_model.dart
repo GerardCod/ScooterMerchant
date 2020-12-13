@@ -83,7 +83,9 @@ class OrderModel {
     customer = json['customer'] != null
         ? new Customer.fromJson(json['customer'])
         : null;
-    deliveryMan = json['delivery_man'] != null ? DeliveryMan.fromJson(json['delivery_man']) : null;
+    deliveryMan = json['delivery_man'] != null
+        ? DeliveryMan.fromJson(json['delivery_man'])
+        : null;
     station = json['station'];
     if (json['details'] != null) {
       details = new List<Details>();
@@ -135,9 +137,8 @@ class OrderModel {
     if (this.customer != null) {
       data['customer'] = this.customer.toJson();
     }
-    if(this.deliveryMan != null){
-    data['delivery_man'] = this.deliveryMan.toJson();
-      
+    if (this.deliveryMan != null) {
+      data['delivery_man'] = this.deliveryMan.toJson();
     }
     data['station'] = this.station;
     if (this.details != null) {
@@ -227,6 +228,8 @@ class Details {
   Null picture;
   int productId;
   int quantity;
+  double productPrice;
+
   List<MenuOptions> menuOptions;
 
   Details(
@@ -234,6 +237,7 @@ class Details {
       this.picture,
       this.productId,
       this.quantity,
+      this.productPrice,
       this.menuOptions});
 
   Details.fromJson(Map<String, dynamic> json) {
@@ -241,6 +245,7 @@ class Details {
     picture = json['picture'];
     productId = json['product_id'];
     quantity = json['quantity'];
+    productPrice = json['product_price'];
     if (json['menu_options'] != null) {
       menuOptions = new List<MenuOptions>();
       json['menu_options'].forEach((v) {
@@ -255,6 +260,7 @@ class Details {
     data['picture'] = this.picture;
     data['product_id'] = this.productId;
     data['quantity'] = this.quantity;
+    data['product_price'] = this.productPrice;
     if (this.menuOptions != null) {
       data['details'] = this.menuOptions.map((v) => v.toJson()).toList();
     }
@@ -301,7 +307,7 @@ class DeliveryMan {
   // bool isSafeUser;
 
   DeliveryMan(
-      {this.id, this.name,this.picture, this.phoneNumber, this.reputation});
+      {this.id, this.name, this.picture, this.phoneNumber, this.reputation});
 
   DeliveryMan.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -309,7 +315,8 @@ class DeliveryMan {
     picture = json['picture'];
     phoneNumber = json['phone_number'];
     reputation = json['reputation'];
-    location = json['location'] != null ? Point.fromJson(json['location']): null;
+    location =
+        json['location'] != null ? Point.fromJson(json['location']) : null;
   }
 
   Map<String, dynamic> toJson() {
