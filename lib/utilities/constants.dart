@@ -6,12 +6,13 @@ String fontFamily = 'poppins';
 String fontFamilySecondary = 'Slant';
 String location = "America/Mexico_City";
 
-String baseUrl = 'https://www.scooterdev.tech/api/v1/';
-String baseUri = "www.scooterdev.tech";
+// String baseUrl = 'https://www.scooterdev.tech/api/v1/';
+// String baseUri = "www.scooterdev.tech";
 
-// String urlComplement = "/api/v1/";
 // String baseUrl = "https://www.scooter-app.team/appback/api/v1/";
 // String baseUri = "www.scooter-app.team";
+String baseUrl = "https://api.lospedidos.site/api/v1/";
+String baseUri = "api.lospedidos.site";
 
 // final Map<String, int> status = {
 //   'incoming': 14,

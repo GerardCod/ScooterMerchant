@@ -20,8 +20,8 @@ class LoginProvider {
     try {
       final response =
           await http.post(_baseUrl + 'merchants/login/', body: model.toMap());
-    //  print('URL+=============================');
-    //   print(_baseUrl + 'merchants/login/');
+     print('URL+=============================');
+      print(_baseUrl + 'merchants/login/');
       String source = Utf8Decoder().convert(response.bodyBytes);
       Map<String, dynamic> decodedResp = json.decode(source);
       if (decodedResp.containsKey('access')) {
