@@ -487,6 +487,7 @@ class Options {
   int option;
   String optionName;
   double priceOption;
+  int quantity;
 
   Options({this.id, this.option, this.optionName, this.priceOption});
 
@@ -495,6 +496,7 @@ class Options {
     option = json['option'];
     optionName = json['option_name'];
     priceOption = json['price_option'];
+    quantity = json['quantity'];
   }
 
   Map<String, dynamic> toJson() {

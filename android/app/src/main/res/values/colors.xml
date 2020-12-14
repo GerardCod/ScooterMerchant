@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <color name="gradientstart">#FF724C</color>
+    <color name="gradientend">#FFFFFF</color>
+    <color name="colorSplashScreen">#f2f6fc</color>
+	<color name="splash_color">#f2f6fc</color>
+	<color name="primaryColor">#ff724c</color>
+</resources>

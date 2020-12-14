@@ -3,4 +3,5 @@
     <string name="notification_merchant_channel_name">Message</string>
     <string name="notification_delivered_orders_channel">delivered</string>
     <string name="notification_delivered_orders_channel_name">Delivered</string>
+    <string name="default_notification_channel_id">messages</string>
 </resources>

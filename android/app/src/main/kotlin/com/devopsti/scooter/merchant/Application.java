@@ -22,7 +22,7 @@ public class Application extends FlutterApplication implements PluginRegistrantC
     System.out.println("Notification sent");
     FlutterFirebaseMessagingService.setPluginRegistrant(this);
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-      NotificationChannel channel = new NotificationChannel("locations", "Locations", NotificationManager.IMPORTANCE_HIGH);
+      NotificationChannel channel = new NotificationChannel("messages", "messages", NotificationManager.IMPORTANCE_HIGH);
       channel.setSound(null, null);
       NotificationManager manager = getSystemService(NotificationManager.class);
       manager.createNotificationChannel(channel);
@@ -46,7 +46,7 @@ public class Application extends FlutterApplication implements PluginRegistrantC
     }
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-      NotificationChannel channel3 = new NotificationChannel("delivered", "Delivered", NotificationManager.IMPORTANCE_HIGH);
+      NotificationChannel channel3 = new NotificationChannel("claxon", "claxon", NotificationManager.IMPORTANCE_HIGH);
       Uri uri = Uri.parse("android.resource://" + this.getPackageName() + "/" + R.raw.carhorn);
 
       AudioAttributes att = new AudioAttributes.Builder()
