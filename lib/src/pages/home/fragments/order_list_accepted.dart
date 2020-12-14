@@ -15,9 +15,31 @@ class OrderListAccepted extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     // bloc.changeOrderList(null);
     // if (bloc.orderListAccepted == null) {
-      bloc.getOrdersAccepted(status: '15', ordering: 'created');
+    bloc.getOrdersAccepted(status: '15', ordering: 'created');
     // }
-    return _listStreamBuilder(bloc, size, timeZoneBlocProvider);
+    return StreamBuilder<bool>(
+        stream: bloc.loaderListStream,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            if (snapshot.data) {
+              return SliverToBoxAdapter(
+                child: Shimmer.fromColors(
+                  baseColor: Colors.grey[300],
+                  highlightColor: Colors.grey[100],
+                  child: _itemSkeleton(size),
+                ),
+              );
+            }
+            return _listStreamBuilder(bloc, size, timeZoneBlocProvider);
+          }
+          return SliverToBoxAdapter(
+            child: Shimmer.fromColors(
+              baseColor: Colors.grey[300],
+              highlightColor: Colors.grey[100],
+              child: _itemSkeleton(size),
+            ),
+          );
+        });
   }
 
   Widget _listStreamBuilder(

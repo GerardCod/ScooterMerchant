@@ -11,6 +11,7 @@ class OrderBlocProvider with Validators {
   final _orderListAcceptedController = BehaviorSubject<List<OrderModel>>();
   final _orderListReadyController = BehaviorSubject<List<OrderModel>>();
   final _orderListHistoryController = BehaviorSubject<List<OrderModel>>();
+  final _loaderListController = BehaviorSubject<bool>();
   final _rejectReasonController = BehaviorSubject<String>();
   final _cancelReasonController = BehaviorSubject<String>();
   final _loaderAcceptOrderController = BehaviorSubject<bool>();
@@ -23,6 +24,7 @@ class OrderBlocProvider with Validators {
   Stream<List<OrderModel>> get orderListAcceptedStream => _orderListAcceptedController.stream;
   Stream<List<OrderModel>> get orderListReadyStream => _orderListReadyController.stream;
   Stream<List<OrderModel>> get orderListHistoryStream => _orderListHistoryController.stream;
+  Stream<bool> get loaderListStream => _loaderListController.stream;
 
   Stream<String> get rejectReasonStream => _rejectReasonController.stream;
   Stream<bool> get loaderAcceptOrderStream => _loaderAcceptOrderController.stream;
@@ -36,6 +38,7 @@ class OrderBlocProvider with Validators {
   Function(List<OrderModel>) get changeOrderListAccepted => _orderListAcceptedController.sink.add;
   Function(List<OrderModel>) get changeOrderListReady => _orderListReadyController.sink.add;
   Function(List<OrderModel>) get changeOrderListHistory => _orderListHistoryController.sink.add;
+  Function(bool) get changeLoaderList => _loaderListController.sink.add;
 
   Function(bool) get changeLoaderAcceptOrder => _loaderAcceptOrderController.sink.add;
   Function(bool) get changeLoaderRejectOrder => _loaderRejectOrderController.sink.add;
@@ -49,6 +52,7 @@ class OrderBlocProvider with Validators {
   List<OrderModel> get orderListAccepted => _orderListAcceptedController.value;
   List<OrderModel> get orderListReady => _orderListReadyController.value;
   List<OrderModel> get orderListHistory => _orderListHistoryController.value;
+  bool get loaderList => _loaderListController.value;
 
   bool get loaderAcceptOrder => _loaderAcceptOrderController.value;
   bool get loaderRejectOrder => _loaderRejectOrderController.value;
@@ -58,23 +62,31 @@ class OrderBlocProvider with Validators {
   String get cancelReason => _cancelReasonController.value;
 
   Future<List<OrderModel>> getOrders({String status, String ordering}) async {
+    changeLoaderList(true);
     final orders = await _orderProvider.getOrders(status: status, ordering: ordering);
     changeOrderList(orders);
+    changeLoaderList(false);
     return orders;
   }
   Future<List<OrderModel>> getOrdersReady({String status, String ordering}) async {
+    changeLoaderList(true);
     final orders = await _orderProvider.getOrders(status: status, ordering: ordering);
     changeOrderListReady(orders);
+    changeLoaderList(false);
     return orders;
   }
   Future<List<OrderModel>> getOrdersAccepted({String status, String ordering}) async {
+    changeLoaderList(true);
     final orders = await _orderProvider.getOrders(status: status, ordering: ordering);
     changeOrderListAccepted(orders);
+    changeLoaderList(false);
     return orders;
   }
   Future<List<OrderModel>> getOrdersHistory({String status, String ordering}) async {
+    changeLoaderList(true);
     final orders = await _orderProvider.getOrders(status: status, ordering: ordering);
     changeOrderListHistory(orders);
+    changeLoaderList(false);
     return orders;
   }
 
@@ -117,11 +129,12 @@ class OrderBlocProvider with Validators {
     return await _orderProvider.getOrder(orderId);
   }
 
-
-
-
   dispose() {
     _orderListController?.close();
+    _orderListAcceptedController?.close();
+    _orderListReadyController?.close();
+    _orderListHistoryController?.close();
+    _loaderListController?.close();
     _rejectReasonController?.close();
     _cancelReasonController?.close();
     _loaderAcceptOrderController?.close();

@@ -16,10 +16,32 @@ class OrderListReady extends StatelessWidget {
     final Size size = MediaQuery.of(context).size;
     // bloc.changeOrderList(null);
     // if (bloc.orderListReady == null) {
-      bloc.getOrdersReady(status: '3,4,13,16', ordering: 'order_date');
+    bloc.getOrdersReady(status: '3,4,13,16', ordering: 'order_date');
     // }
     // bloc.getOrdersPickUp(status: 8);x
-    return _listStreamBuilder(bloc, size, time);
+    return StreamBuilder<bool>(
+        stream: bloc.loaderListStream,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            if (snapshot.data) {
+              return SliverToBoxAdapter(
+                child: Shimmer.fromColors(
+                  baseColor: Colors.grey[300],
+                  highlightColor: Colors.grey[100],
+                  child: _itemSkeleton(size),
+                ),
+              );
+            }
+            return _listStreamBuilder(bloc, size, time);
+          }
+          return SliverToBoxAdapter(
+            child: Shimmer.fromColors(
+              baseColor: Colors.grey[300],
+              highlightColor: Colors.grey[100],
+              child: _itemSkeleton(size),
+            ),
+          );
+        });
   }
 
   Widget _listStreamBuilder(

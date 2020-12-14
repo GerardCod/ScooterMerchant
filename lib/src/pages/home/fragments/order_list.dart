@@ -11,16 +11,38 @@ class OrderList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final OrderBlocProvider  bloc = Provider.orderBlocProviderOf(context);
+    final OrderBlocProvider bloc = Provider.orderBlocProviderOf(context);
     final TimeZoneBlocProvider time = Provider.timeZoneBlocProviderOf(context);
     final size = MediaQuery.of(context).size;
     // bloc.changeOrderList(null);
     // bloc.getOrders();
     // print(bloc.orderList);
     // if (bloc.orderList == null) {
-      bloc.getOrders(status: '14', ordering: 'created');
+    bloc.getOrders(status: '14', ordering: 'created');
     // }
-    return _listStreamBuilder(bloc, size, time);
+    return StreamBuilder<bool>(
+        stream: bloc.loaderListStream,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            if (snapshot.data) {
+              return SliverToBoxAdapter(
+                child: Shimmer.fromColors(
+                  baseColor: Colors.grey[300],
+                  highlightColor: Colors.grey[100],
+                  child: _itemSkeleton(size),
+                ),
+              );
+            }
+            return _listStreamBuilder(bloc, size, time);
+          }
+          return SliverToBoxAdapter(
+            child: Shimmer.fromColors(
+              baseColor: Colors.grey[300],
+              highlightColor: Colors.grey[100],
+              child: _itemSkeleton(size),
+            ),
+          );
+        });
   }
 
   Widget _listStreamBuilder(
