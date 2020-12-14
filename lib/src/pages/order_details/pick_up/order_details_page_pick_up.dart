@@ -99,9 +99,11 @@ class OrderDetailsPagePickUp extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           _nameCustomer(orderModel),
-          orderModel.indications != null
-              ? _indications(orderModel)
-              : Container(),
+          Divider(
+            color: Colors.grey,
+          ),
+          orderModel.indications != null ? _indications() : Container(),
+          _paymentMethod(),
           SizedBox(height: 20),
           _orderStatus(orderModel),
           Divider(
@@ -141,7 +143,7 @@ class OrderDetailsPagePickUp extends StatelessWidget {
     );
   }
 
-  Widget _indications(OrderModel model) {
+  Widget _indications() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -155,7 +157,7 @@ class OrderDetailsPagePickUp extends StatelessWidget {
             fontFamily: fontFamily,
           ),
         ),
-        Text(model.indications),
+        Text(orderModel.indications),
       ],
     );
   }
@@ -334,6 +336,35 @@ class OrderDetailsPagePickUp extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _paymentMethod() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Método de pago',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400)),
+        SizedBox(height: 5),
+        orderModel.isPaymentOnline
+            ? Row(
+                children: [
+                  Icon(Icons.credit_card_outlined, size: 20),
+                  SizedBox(width: 12),
+                  Text('Pagado con tarjeta',
+                      style: TextStyle(fontSize: 17, color: Colors.green))
+                ],
+              )
+            : Row(
+                children: [
+                  Image.asset('assets/images/payment/cash_payment.png',
+                      height: 20, width: 20),
+                  SizedBox(width: 12),
+                  Text('Pago en efectivo', style: TextStyle(fontSize: 17))
+                ],
+              )
+      ],
     );
   }
 
