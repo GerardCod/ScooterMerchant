@@ -386,10 +386,14 @@ class OrderDetailsPage extends StatelessWidget {
   }
 
   Widget _itemOption(Details product, int indexMenuO, indexOption) {
+    String quantity = product
+        .menuOptions[indexMenuO].options[indexOption].quantity
+        .toString();
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Text(product.menuOptions[indexMenuO].options[indexOption].optionName),
+        Text('x$quantity ' +
+            product.menuOptions[indexMenuO].options[indexOption].optionName),
         Text(_showPriceOption(product, indexMenuO, indexOption))
       ],
     );

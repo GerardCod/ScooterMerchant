@@ -470,7 +470,6 @@ class OrderDetailsPagePickUp extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        // Text(),
         Text('x$quantity ' +
             product.menuOptions[indexMenuO].options[indexOption].optionName),
         Text(_showPriceOption(product, indexMenuO, indexOption)),
