@@ -30,44 +30,47 @@ class LoginPage extends StatelessWidget {
   }
 
   Widget _customBody(BuildContext context) {
-    return SingleChildScrollView(
-          child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 35),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Image.asset('assets/icon/icon_launcher.jpg', height: 160),
-            SizedBox(
-              height: 20,
-            ),
-            Text(
-              'Bienvenido comerciante',
-              style: textStyleTitleListTile,
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(
-              height: 25,
-            ),
-            _emailStreamBuilder(),
-            SizedBox(height: 16.0),
-            _passwordStreamBuilder(),
-            SizedBox(
-              height: 16.0,
-            ),
-            _buttonForm(),
-            // _formContainer(),
-            SizedBox(
-              height: 15.0,
-              width: size.width,
-            ),
-            FlatButton(
-              onPressed: () {
-                Navigator.of(context).pushNamed('forgotPasswordPage');
-              },
-              child: Text('Olvidé mi contraseña', style: textHypervinculeWhite),
-            ),
-          ],
+    return Center(
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 35),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Image.asset('assets/icon/icon_launcher.jpg', height: 160),
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                'Bienvenido comerciante',
+                style: textStyleTitleListTile,
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(
+                height: 25,
+              ),
+              _emailStreamBuilder(),
+              SizedBox(height: 16.0),
+              _passwordStreamBuilder(),
+              SizedBox(
+                height: 16.0,
+              ),
+              _buttonForm(),
+              // _formContainer(),
+              SizedBox(
+                height: 15.0,
+                width: size.width,
+              ),
+              FlatButton(
+                onPressed: () {
+                  Navigator.of(context).pushNamed('forgotPasswordPage');
+                },
+                child:
+                    Text('Olvidé mi contraseña', style: textHypervinculeWhite),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -28,6 +28,7 @@ class OrderModel {
   double totalOrder;
   bool isDeliveryByStore;
   bool isOrderToMerchant;
+  bool isPaymentOnline;
 
   OrderModel(
       {this.id,
@@ -58,7 +59,8 @@ class OrderModel {
       this.orderPrice,
       this.totalOrder,
       this.isDeliveryByStore,
-      this.isOrderToMerchant});
+      this.isOrderToMerchant,
+      this.isPaymentOnline});
 
   OrderModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -111,6 +113,7 @@ class OrderModel {
     totalOrder = json['total_order'];
     isDeliveryByStore = json['is_delivery_by_store'];
     isOrderToMerchant = json['is_order_to_merchant'];
+    isPaymentOnline = json['is_payment_online'];
   }
 
   Map<String, dynamic> toJson() {
@@ -160,6 +163,7 @@ class OrderModel {
     data['total_order'] = this.totalOrder;
     data['is_delivery_by_store'] = this.isDeliveryByStore;
     data['is_order_to_merchant'] = this.isOrderToMerchant;
+    data['is_payment_online'] = this.isPaymentOnline;
     return data;
   }
 }

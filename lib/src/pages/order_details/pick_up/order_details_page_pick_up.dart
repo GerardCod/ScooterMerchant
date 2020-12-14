@@ -65,6 +65,7 @@ class OrderDetailsPagePickUp extends StatelessWidget {
           children: <Widget>[
             _cardInfo(orderModel, context),
             _cardProducts(orderModel),
+            SizedBox(height: 100)
           ],
         )),
       ],
@@ -98,7 +99,7 @@ class OrderDetailsPagePickUp extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           _nameCustomer(orderModel),
-          orderModel.indications != 'null'
+          orderModel.indications != null
               ? _indications(orderModel)
               : Container(),
           SizedBox(height: 20),
@@ -174,7 +175,7 @@ class OrderDetailsPagePickUp extends StatelessWidget {
             ),
           ),
           Container(
-            width: 100,
+            width: 160,
             height: 35,
             padding: EdgeInsets.all(5),
             decoration: BoxDecoration(
@@ -485,13 +486,11 @@ class OrderDetailsPagePickUp extends StatelessWidget {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => Scaffold(
+          backgroundColor: Colors.white,
           appBar: AppBar(
-            backgroundColor: backgroundColor,
-            elevation: 0,
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back),
-              onPressed: () => Navigator.pop(context),
-            ),
+            brightness: Brightness.light,
+            backgroundColor: Colors.white,
+            iconTheme: IconThemeData(color: Colors.black),
           ),
           body: Center(
             child: Hero(

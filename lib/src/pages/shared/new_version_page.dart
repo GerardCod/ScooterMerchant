@@ -16,7 +16,16 @@ class NewVersionPage extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: _customAppBar(),
       body: _customBody(size, context, _pref),
+    );
+  }
+
+  Widget _customAppBar() {
+    return AppBar(
+      brightness: Brightness.light,
+      backgroundColor: Colors.white,
+      elevation: 0,
     );
   }
 

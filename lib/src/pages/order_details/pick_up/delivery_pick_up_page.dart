@@ -9,6 +9,7 @@ import 'package:scootermerchant/src/blocs/pages/delivery_pick_up_page_bloc.dart'
 import 'package:scootermerchant/src/blocs/provider.dart';
 import 'package:scootermerchant/src/models/current_order_status_model.dart';
 import 'package:scootermerchant/src/models/order_model.dart';
+import 'package:scootermerchant/utilities/constants.dart';
 
 class DeliveryPickUp extends StatefulWidget {
   final OrderModel orderModel;
@@ -49,7 +50,8 @@ class _DeliveryPickUpState extends State<DeliveryPickUp> {
   @override
   void initState() {
     super.initState();
-    this.timer = Timer.periodic(Duration(seconds: 40), (Timer timer) => getCurrentOrderStatus());
+    this.timer = Timer.periodic(
+        Duration(seconds: 40), (Timer timer) => getCurrentOrderStatus());
   }
 
   @override
@@ -65,11 +67,13 @@ class _DeliveryPickUpState extends State<DeliveryPickUp> {
 
   Widget _customAppBar() {
     return AppBar(
+      brightness: Brightness.light,
+      backgroundColor: Colors.white,
       title: Text(
         'Ubicación del repartidor',
-        style: TextStyle(color: Colors.white),
+        style: txtStyleAppBar,
       ),
-      iconTheme: IconThemeData(color: Colors.white),
+      iconTheme: IconThemeData(color: Colors.black),
     );
   }
 
@@ -125,8 +129,7 @@ class _DeliveryPickUpState extends State<DeliveryPickUp> {
     );
 
     // Marker Merchant
-    List<double> coordinatesMerchant =
-        orderModel.merchantLocation.coordinates;
+    List<double> coordinatesMerchant = orderModel.merchantLocation.coordinates;
     LatLng latLngMerchant =
         LatLng(coordinatesMerchant[1], coordinatesMerchant[0]);
     Marker markerMerchant = new Marker(
@@ -136,8 +139,7 @@ class _DeliveryPickUpState extends State<DeliveryPickUp> {
     );
 
     // Marker Customer
-    List<double> coordinatesCustomer =
-        orderModel.toAddress.point.coordinates;
+    List<double> coordinatesCustomer = orderModel.toAddress.point.coordinates;
     LatLng latLngCustomer =
         LatLng(coordinatesCustomer[1], coordinatesCustomer[0]);
     Marker markerCustomer = Marker(
@@ -190,10 +192,10 @@ class _DeliveryPickUpState extends State<DeliveryPickUp> {
   }
 
   void getCurrentOrderStatus() async {
-    CurrentOrderStatusModel orderStatusModel =
-        await pickUpPageBloc.getCurrentOrderStatus(orderId: orderModel.id.toString());
-        // print('Order Status===============================================');
-        // print(orderStatusModel.orderStatus);
+    CurrentOrderStatusModel orderStatusModel = await pickUpPageBloc
+        .getCurrentOrderStatus(orderId: orderModel.id.toString());
+    // print('Order Status===============================================');
+    // print(orderStatusModel.orderStatus);
     if (orderStatusModel.deliveryMan != null) {
       List<double> currentLocationDelivery =
           orderStatusModel.deliveryMan.location.coordinates;
