@@ -51,7 +51,7 @@ class _DeliveryPickUpState extends State<DeliveryPickUp> {
   void initState() {
     super.initState();
     this.timer = Timer.periodic(
-        Duration(seconds: 5), (Timer timer) => getCurrentOrderStatus());
+        Duration(seconds: 40), (Timer timer) => getCurrentOrderStatus());
   }
 
   @override
