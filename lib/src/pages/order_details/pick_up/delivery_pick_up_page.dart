@@ -51,7 +51,7 @@ class _DeliveryPickUpState extends State<DeliveryPickUp> {
   void initState() {
     super.initState();
     this.timer = Timer.periodic(
-        Duration(seconds: 40), (Timer timer) => getCurrentOrderStatus());
+        Duration(seconds: 5), (Timer timer) => getCurrentOrderStatus());
   }
 
   @override
@@ -173,12 +173,6 @@ class _DeliveryPickUpState extends State<DeliveryPickUp> {
           LatLngBounds(southwest: latLngMerchant, northeast: latLngCustomer);
     }
 
-//
-
-    // LatLngBounds bound = LatLngBounds(
-    //   southwest: LatLng(18.450271, -97.416633),
-    //   northeast: LatLng(18.507514, -97.392354),
-    // );
     Future.delayed(new Duration(milliseconds: 100), () {
       CameraUpdate u2 = CameraUpdate.newLatLngBounds(bound, 50);
 
@@ -217,6 +211,9 @@ class _DeliveryPickUpState extends State<DeliveryPickUp> {
         .getCurrentOrderStatus(orderId: orderModel.id.toString());
     // print('Order Status===============================================');
     // print(orderStatusModel.orderStatus);
+    // List<double> coordinatesCustomer = orderModel.toAddress.point.coordinates;
+    // LatLng latLngCustomer = LatLng(18.4630928, -97.3958046);
+
     if (orderStatusModel.deliveryMan != null) {
       List<double> currentLocationDelivery =
           orderStatusModel.deliveryMan.location.coordinates;
@@ -228,10 +225,44 @@ class _DeliveryPickUpState extends State<DeliveryPickUp> {
         position: latLngCurrentLocationDelivery,
         icon: _iconDelivery,
       );
+
+      // LatLngBounds boundCurrent;
+      // if (latLngCurrentLocationDelivery.latitude > latLngCustomer.latitude &&
+      //     latLngCurrentLocationDelivery.longitude > latLngCustomer.longitude) {
+      //   boundCurrent = LatLngBounds(
+      //       southwest: latLngCustomer,
+      //       northeast: latLngCurrentLocationDelivery);
+      // } else if (latLngCurrentLocationDelivery.longitude >
+      //     latLngCustomer.longitude) {
+      //   boundCurrent = LatLngBounds(
+      //       southwest: LatLng(latLngCurrentLocationDelivery.latitude,
+      //           latLngCustomer.longitude),
+      //       northeast: LatLng(latLngCustomer.latitude,
+      //           latLngCurrentLocationDelivery.longitude));
+      // } else if (latLngCurrentLocationDelivery.latitude >
+      //     latLngCustomer.latitude) {
+      //   boundCurrent = LatLngBounds(
+      //       southwest: LatLng(latLngCustomer.latitude,
+      //           latLngCurrentLocationDelivery.longitude),
+      //       northeast: LatLng(latLngCurrentLocationDelivery.latitude,
+      //           latLngCustomer.longitude));
+      // } else {
+      //   boundCurrent = LatLngBounds(
+      //       southwest: latLngCurrentLocationDelivery,
+      //       northeast: latLngCustomer);
+      // }
+
       if (_markers.length > 0) {
         _markers.add(markerCurrentLocationDelivery);
         pickUpPageBloc.changeListMarkers(_markers);
       }
+      // Future.delayed(new Duration(milliseconds: 100), () {
+      //   CameraUpdate u2 = CameraUpdate.newLatLngBounds(boundCurrent, 50);
+
+      //   this.controller.animateCamera(u2).then((void v) {
+      //     check(u2, this.controller);
+      //   });
+      // });
     }
   }
 

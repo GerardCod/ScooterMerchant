@@ -48,8 +48,8 @@ android {
         applicationId "com.devopsti.scooter.merchant"
         minSdkVersion 16
         targetSdkVersion 29
-        versionCode 9
-        versionName "1.0.4"
+        versionCode 10
+        versionName "2.0.0"
     }
 
     signingConfigs {
