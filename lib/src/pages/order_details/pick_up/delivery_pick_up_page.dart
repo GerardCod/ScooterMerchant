@@ -154,10 +154,31 @@ class _DeliveryPickUpState extends State<DeliveryPickUp> {
     _markers.add(markerDelivery);
     pickUpPageBloc.changeListMarkers(_markers);
 
-    LatLngBounds bound = LatLngBounds(
-      southwest: LatLng(18.450271, -97.416633),
-      northeast: LatLng(18.507514, -97.392354),
-    );
+// Pruebas
+    LatLngBounds bound;
+    if (latLngMerchant.latitude > latLngCustomer.latitude &&
+        latLngMerchant.longitude > latLngCustomer.longitude) {
+      bound =
+          LatLngBounds(southwest: latLngCustomer, northeast: latLngMerchant);
+    } else if (latLngMerchant.longitude > latLngCustomer.longitude) {
+      bound = LatLngBounds(
+          southwest: LatLng(latLngMerchant.latitude, latLngCustomer.longitude),
+          northeast: LatLng(latLngCustomer.latitude, latLngMerchant.longitude));
+    } else if (latLngMerchant.latitude > latLngCustomer.latitude) {
+      bound = LatLngBounds(
+          southwest: LatLng(latLngCustomer.latitude, latLngMerchant.longitude),
+          northeast: LatLng(latLngMerchant.latitude, latLngCustomer.longitude));
+    } else {
+      bound =
+          LatLngBounds(southwest: latLngMerchant, northeast: latLngCustomer);
+    }
+
+//
+
+    // LatLngBounds bound = LatLngBounds(
+    //   southwest: LatLng(18.450271, -97.416633),
+    //   northeast: LatLng(18.507514, -97.392354),
+    // );
     Future.delayed(new Duration(milliseconds: 100), () {
       CameraUpdate u2 = CameraUpdate.newLatLngBounds(bound, 50);
 

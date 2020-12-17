@@ -94,7 +94,7 @@ class NotificationsProvider {
     }
 
     Map<String, dynamic> decodedResp = json.decode(resp.body);
-    print('Resigtrar Token');
+    print('Registrar Token');
     // print(decodedResp);
     // print(statusCode);
   }
