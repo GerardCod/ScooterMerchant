@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:scootermerchant/src/blocs/login_bloc.dart';
 import 'package:scootermerchant/src/blocs/provider.dart';
 import 'package:scootermerchant/src/models/auth_model.dart';
@@ -15,7 +16,7 @@ class LoginPage extends StatelessWidget {
     size = MediaQuery.of(context).size;
     loginBloc = Provider.of(context);
     return Scaffold(
-      appBar: _customAppBar(),
+      // appBar: _customAppBar(),
       backgroundColor: Colors.white,
       body: _customBody(context),
     );
@@ -30,6 +31,9 @@ class LoginPage extends StatelessWidget {
   }
 
   Widget _customBody(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarIconBrightness: Brightness.dark,
+    ));
     return Center(
       child: SingleChildScrollView(
         child: Padding(
@@ -66,8 +70,8 @@ class LoginPage extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context).pushNamed('forgotPasswordPage');
                 },
-                child:
-                    Text('Olvidé mi contraseña', style: textHypervinculeWhite),
+                child: Text('Olvidé mi contraseña',
+                    style: TextStyle(color: primaryColor)),
               ),
             ],
           ),
@@ -143,8 +147,8 @@ class LoginPage extends StatelessWidget {
             decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Correo electrónico',
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
+                // contentPadding:p
+                //     EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
                 prefixIcon: Icon(Icons.alternate_email),
                 errorText: snapshot.error),
             onChanged: loginBloc.changeEmail,
@@ -164,8 +168,8 @@ class LoginPage extends StatelessWidget {
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Contraseña',
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
+                // contentPadding:
+                //     EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
                 prefixIcon: Icon(Icons.lock),
                 suffixIcon: IconButton(
                   icon: Icon(Icons.remove_red_eye),

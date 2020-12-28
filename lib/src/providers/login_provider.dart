@@ -11,7 +11,7 @@ import 'package:scootermerchant/utilities/constants.dart';
 import 'package:scootermerchant/src/models/auth_model.dart';
 
 class LoginProvider {
-  String _baseUrl = baseUrl;    
+  String _baseUrl = baseUrl;
   final _prefs = MerchantPreferences();
   final pushProvider = new NotificationsProvider();
   FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
@@ -51,16 +51,14 @@ class LoginProvider {
     try {
       final response = await http
           .post(_baseUrl + 'users/forgot-password/', body: {'username': email});
+      String source = Utf8Decoder().convert(response.bodyBytes);
+      Map<String, dynamic> decodedData = json.decode(source);
+      // print(decodedData['message']);
 
       if (response.statusCode >= 400) {
-        return {
-          'ok': false,
-          'message': 'Error al enviar el email de recuperación'
-        };
+        return {'ok': false, 'message': decodedData['errors']['message']};
       } else {
-        String source = Utf8Decoder().convert(response.bodyBytes);
-        Map<String, dynamic> decodedData = json.decode(source);
-        return {'ok': true, 'message': 'Email enviado. Revisa tu email'};
+        return {'ok': true, 'message': decodedData['message']};
       }
     } catch (e) {
       throw e;

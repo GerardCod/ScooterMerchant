@@ -5,126 +5,81 @@ import 'package:scootermerchant/utilities/constants.dart';
 import 'package:scootermerchant/utilities/functions.dart';
 
 class ForgotPasswordPage extends StatelessWidget {
-  const ForgotPasswordPage({Key key}) : super(key: key);
+  LoginBloc loginBloc;
+  Size size;
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
-    final LoginBloc bloc = Provider.of(context);
+    size = MediaQuery.of(context).size;
+    loginBloc = Provider.of(context);
     return Scaffold(
-      backgroundColor: primaryColor,
-      appBar: AppBar(
-        title: Text('Ovlidé mi contraseña', style: textStyleBtnComprar),
-        iconTheme: IconThemeData(
-          color: Colors.white,
+      backgroundColor: Colors.white,
+      appBar: _customAppBar(),
+      body: _customBody(context),
+    );
+  }
+
+  Widget _customAppBar() {
+    return AppBar(
+      brightness: Brightness.light,
+      backgroundColor: Colors.white,
+      title: Text('Olvidé mi contraseña', style: txtStyleAppBar),
+      iconTheme: IconThemeData(
+        color: Colors.black,
+      ),
+    );
+  }
+
+  Widget _customBody(BuildContext context) {
+    return Center(
+      child: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 15),
+          child: Column(
+            children: <Widget>[
+              Text(
+                'Te enviaremos un mensaje a tu correo para que puedas recuperar tu contraseña',
+                style: textStyleTitleListTile,
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              _emailStreamBuilder(),
+              SizedBox(height: 16.0),
+              _buttonForm()
+            ],
+          ),
         ),
       ),
-      body: Center(child: _formForgotPassword(bloc, size, context)),
     );
   }
 
-  // Widget _header(Size size) {
-  //   return Container(
-  //     width: double.infinity,
-  //     height: size.height * 0.45,
-  //     decoration: BoxDecoration(
-  //         gradient: LinearGradient(
-  //           colors: [
-  //             primaryColor,
-  //             textColorTF,
-  //           ],
-  //         ),
-  //         borderRadius: BorderRadius.only(
-  //             bottomLeft: Radius.circular(40.0),
-  //             bottomRight: Radius.circular(40.0))),
-  //   );
-  // }
-
-  Widget _formForgotPassword(LoginBloc bloc, Size size, BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          SizedBox(
-            height: 15.0,
-          ),
-          Text('SCOOTER', style: textStyleScooter),
-          SizedBox(
-            height: 20.0,
-          ),
-          _formContainer(bloc),
-          SizedBox(
-            height: 15.0,
-            width: size.width,
-          ),
-          FlatButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Regresar', style: textHypervinculeWhite)),
-        ],
-      ),
-    );
-  }
-
-  Widget _formContainer(LoginBloc bloc) {
-    return Container(
-      margin: EdgeInsets.all(16.0),
-      padding: EdgeInsets.all(24.0),
-      decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-                color: Color.fromRGBO(0, 0, 0, 0.25),
-                offset: Offset(0, 2.5),
-                blurRadius: 1.5,
-                spreadRadius: 1.5)
-          ],
-          borderRadius: BorderRadius.all(Radius.circular(20.0))),
-      child: Column(
-        children: <Widget>[
-          Text(
-            'Un email te será enviado para recuperar tu contraseña',
-            style: textStyleTitleListTile,
-            textAlign: TextAlign.center,
-          ),
-          SizedBox(
-            height: 48.0,
-          ),
-          _emailStreamBuilder(bloc),
-          SizedBox(height: 16.0),
-          _buttonForm(bloc)
-        ],
-      ),
-    );
-  }
-
-  Widget _emailStreamBuilder(LoginBloc bloc) {
+  Widget _emailStreamBuilder() {
     return StreamBuilder(
-        stream: bloc.emailStream,
+        stream: loginBloc.emailStream,
         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
           return TextField(
             keyboardType: TextInputType.emailAddress,
             decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Correo electrónico',
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
+                // contentPadding:
+                //     EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
                 prefixIcon: Icon(Icons.alternate_email),
                 errorText: snapshot.error),
-            onChanged: bloc.changeEmail,
+            onChanged: loginBloc.changeEmail,
           );
         });
   }
 
-  Widget _buttonForm(LoginBloc bloc) {
+  Widget _buttonForm() {
     return StreamBuilder(
-        stream: bloc.emailStream,
+        stream: loginBloc.emailStream,
         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
           return RaisedButton(
             onPressed: snapshot.hasData
-                ? () => _forgotPassword(bloc.email, context, bloc)
+                ? () => _forgotPassword(loginBloc.email, context)
                 : null,
             color: primaryColor,
             textColor: Colors.white,
@@ -136,12 +91,13 @@ class ForgotPasswordPage extends StatelessWidget {
         });
   }
 
-  Future<void> _forgotPassword(
-      String email, BuildContext context, LoginBloc bloc) async {
-    final response = await bloc.forgotPassword(email: email);
+  Future<void> _forgotPassword(String email, BuildContext context) async {
+    final response = await loginBloc.forgotPassword(email: email);
 
     if (response['ok']) {
+      // loginBloc.changeEmail(null);
       showSnackBar(context, response['message'], colorSuccess);
+
     } else {
       showSnackBar(context, response['message'], colorDanger);
     }

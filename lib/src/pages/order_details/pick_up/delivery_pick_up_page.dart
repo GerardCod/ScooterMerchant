@@ -36,7 +36,7 @@ class _DeliveryPickUpState extends State<DeliveryPickUp> {
 
   BitmapDescriptor _iconDelivery;
 
-  DeliveryPickUpPageBloc pickUpPageBloc;
+  DeliveryPickUpPageBloc pickUpPageBloc; 
 
   Timer timer;
 
