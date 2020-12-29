@@ -1,35 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:scootermerchant/src/blocs/product_bloc_provider.dart';
+import 'package:scootermerchant/src/blocs/provider.dart';
 import 'package:scootermerchant/src/models/product_model.dart';
 import 'package:scootermerchant/utilities/constants.dart';
 
-class ProductCard extends StatelessWidget {
-  final Product product;
-  final int index;
-  final ProductBlocProvider bloc;
-  const ProductCard({Key key, this.product, this.index, this.bloc})
-      : super(key: key);
+class ProductItem extends StatelessWidget {
+  final ProductModel product;
+  // final int index;
+  // const ProductCard({Key key, this.product, this.index, this.bloc})
+  // : super(key: key);
+  ProductItem(this.product);
+  ProductBlocProvider productBlocProvider;
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: index == 0
-          ? EdgeInsets.all(16.0)
-          : EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(5.0),
-      ),
-      shadowColor: Color.fromRGBO(0, 0, 0, 0.5),
-      child: InkWell(
-        child: Row(
-          children: <Widget>[_containerImage(product), _containerInfo(product)],
+    productBlocProvider = Provider.productBlocProviderOf(context);
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      child: Ink(
+        color: Colors.white,
+        child: ListTile(
+          title: Text(product.name),
+          subtitle: Text('\u0024' + product.price.toStringAsFixed(2)),
+          onTap: () => _navigateToDetails(context),
+          leading: _imageProduct(),
         ),
-        onTap: () => this._navigateToDetails(context, product, bloc),
       ),
     );
   }
 
-  Widget _containerImage(Product product) {
+  Widget _imageProduct() {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(100),
+      child: Container(
+        color: Colors.white,
+        height: 60,
+        width: 60,
+        child: FadeInImage(
+          fit: BoxFit.cover,
+          image: product.picture != null
+              ? NetworkImage('${product.picture}')
+              : AssetImage('assets/images/no_image.png'),
+          placeholder: AssetImage('assets/images/no_image.png'),
+        ),
+      ),
+    );
+  }
+
+  Widget _containerImage(ProductModel product) {
     return Container(
       width: 60.0,
       height: 60.0,
@@ -45,31 +63,9 @@ class ProductCard extends StatelessWidget {
     );
   }
 
-  Widget _containerInfo(Product product) {
-    return Expanded(
-      child: Container(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              product.name,
-              style: textStyleTitleListTile,
-            ),
-            Text(
-              'Precio: ${product.price}',
-              style: textStyleSubtitleListTile,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  void _navigateToDetails(
-      BuildContext context, Product model, ProductBlocProvider bloc) async {
-    bloc.cleanProductState();
+  void _navigateToDetails(BuildContext context) async {
+    productBlocProvider.cleanProductState();
     await Navigator.of(context)
-        .pushNamed('productDetailsPage', arguments: model);
+        .pushNamed('productDetailsPage', arguments: product);
   }
 }

@@ -33,7 +33,7 @@ class CancelOrderDialog extends StatelessWidget {
           height: 12.0,
         ),
         Text(
-            'Escribe un mensaje para ${model.customer.name} para que sepa por qué cancelaste su pedido.',
+            'Escribe un mensaje para ${model.customer.name} con el motivo de la cancelación.',
             style: textStyleSubtitleListTile),
         SizedBox(
           height: 8.0,

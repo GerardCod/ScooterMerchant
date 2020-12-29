@@ -11,7 +11,7 @@ class ProductDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ProductBlocProvider bloc = Provider.productBlocProviderOf(context);
-    final Product model = ModalRoute.of(context).settings.arguments;
+    final ProductModel model = ModalRoute.of(context).settings.arguments;
     final Size size = MediaQuery.of(context).size;
     // bloc.changeProductName(model.name);
     if (bloc.productName == null && bloc.productPrice == null) {
@@ -42,7 +42,7 @@ class ProductDetailsPage extends StatelessWidget {
     );
   }
 
-  Widget _containerImage(Product model, Size size) {
+  Widget _containerImage(ProductModel model, Size size) {
     return Container(
       padding: EdgeInsets.all(15),
       height: 250,
@@ -53,7 +53,7 @@ class ProductDetailsPage extends StatelessWidget {
   }
 
   Widget _containerForm(
-      ProductBlocProvider bloc, BuildContext context, Product product) {
+      ProductBlocProvider bloc, BuildContext context, ProductModel product) {
     return Padding(
       padding: EdgeInsets.all(16.0),
       child: Column(
@@ -73,7 +73,7 @@ class ProductDetailsPage extends StatelessWidget {
     );
   }
 
-  Widget _productNameStreamBuilder(ProductBlocProvider bloc, Product product) {
+  Widget _productNameStreamBuilder(ProductBlocProvider bloc, ProductModel product) {
     return StreamBuilder(
       stream: bloc.productNameStream,
       builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
@@ -93,7 +93,7 @@ class ProductDetailsPage extends StatelessWidget {
     );
   }
 
-  Widget _productPriceStreamBuilder(ProductBlocProvider bloc, Product product) {
+  Widget _productPriceStreamBuilder(ProductBlocProvider bloc, ProductModel product) {
     return StreamBuilder(
       stream: bloc.productPriceStream,
       builder: (BuildContext context, AsyncSnapshot<double> snapshot) {
@@ -113,7 +113,7 @@ class ProductDetailsPage extends StatelessWidget {
     );
   }
 
-  Widget _switchDisponibility(ProductBlocProvider bloc, Product product) {
+  Widget _switchDisponibility(ProductBlocProvider bloc, ProductModel product) {
     return Row(
       children: <Widget>[
         StreamBuilder<bool>(
@@ -147,7 +147,7 @@ class ProductDetailsPage extends StatelessWidget {
     );
   }
 
-  Widget _switchStreamBuilder(ProductBlocProvider bloc, Product product) {
+  Widget _switchStreamBuilder(ProductBlocProvider bloc, ProductModel product) {
     return StreamBuilder(
       stream: bloc.productAvailableStream,
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
@@ -166,7 +166,7 @@ class ProductDetailsPage extends StatelessWidget {
   }
 
   Widget _buttonStreamBuilder(
-      ProductBlocProvider bloc, Product product, BuildContext context) {
+      ProductBlocProvider bloc, ProductModel product, BuildContext context) {
     return StreamBuilder<bool>(
         stream: bloc.showLoaderStream,
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
@@ -197,7 +197,7 @@ class ProductDetailsPage extends StatelessWidget {
   }
 
   void _updateProduct(
-      Product product, ProductBlocProvider bloc, BuildContext context) async {
+      ProductModel product, ProductBlocProvider bloc, BuildContext context) async {
     product.name = bloc.productName;
     product.price = bloc.productPrice;
     product.isAvailable = bloc.productAvailable;

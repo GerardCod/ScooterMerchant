@@ -6,14 +6,44 @@ import 'package:scootermerchant/src/pages/drawer/products/product_card.dart';
 import 'package:scootermerchant/utilities/constants.dart';
 import 'package:shimmer/shimmer.dart';
 
-class ListProductsPage extends StatelessWidget {
+class ListProductsPage extends StatefulWidget {
   // const ChangeProductPage({Key key}) : super(key: key);
+  @override
+  _ListProductsPageState createState() => _ListProductsPageState();
+}
+
+class _ListProductsPageState extends State<ListProductsPage> {
+  ProductBlocProvider productBlocProvider;
+
+  Size size;
+
+  final ScrollController _controller = ScrollController();
+
+  @override
+  void initState() {
+    Future.delayed(Duration.zero, () {
+      _controller.addListener(() {
+        if (_controller.position.pixels ==
+            _controller.position.maxScrollExtent) {
+          print('entro');
+          productBlocProvider.getProducts();
+        }
+      });
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final ProductBlocProvider bloc = Provider.productBlocProviderOf(context);
-    final Size size = MediaQuery.of(context).size;
-    bloc.getProducts();
+    productBlocProvider = Provider.productBlocProviderOf(context);
+    size = MediaQuery.of(context).size;
+    productBlocProvider.getProducts();
     return Scaffold(
       appBar: AppBar(
         brightness: Brightness.light,
@@ -26,21 +56,22 @@ class ListProductsPage extends StatelessWidget {
           color: Colors.black,
         ),
       ),
-      body: _createListStreamBuilder(bloc, size),
+      body: _createListStreamBuilder(),
     );
   }
 
-  Widget _createListStreamBuilder(ProductBlocProvider bloc, Size size) {
-    return StreamBuilder<List<Product>>(
-      stream: bloc.productListStream,
-      builder: (BuildContext context, AsyncSnapshot<List<Product>> snapshot) {
+  Widget _createListStreamBuilder() {
+    return StreamBuilder<List<ProductModel>>(
+      stream: productBlocProvider.productListStream,
+      builder:
+          (BuildContext context, AsyncSnapshot<List<ProductModel>> snapshot) {
         if (!snapshot.hasData) {
           return SingleChildScrollView(
             child: Container(
               child: Shimmer.fromColors(
                 baseColor: Colors.grey[300],
                 highlightColor: Colors.grey[100],
-                child: _itemSkeleton(size),
+                child: _itemSkeleton(),
               ),
             ),
           );
@@ -55,37 +86,35 @@ class ListProductsPage extends StatelessWidget {
             ),
           );
         } else {
-          return _listBuilder(bloc, snapshot);
+          return _listBuilder(snapshot);
         }
       },
     );
   }
 
-  Widget _listBuilder(
-      ProductBlocProvider bloc, AsyncSnapshot<List<Product>> snapshot) {
+  Widget _listBuilder(AsyncSnapshot<List<ProductModel>> snapshot) {
     return ListView.builder(
+      controller: _controller,
       itemBuilder: (BuildContext contex, int index) {
-        return ProductCard(
-          product: snapshot.data[index],
-          index: index,
-          bloc: bloc,
+        return ProductItem(
+          snapshot.data[index],
         );
       },
       itemCount: snapshot.hasData ? snapshot.data.length : 0,
     );
   }
 
-  Widget _itemSkeleton(Size size) {
+  Widget _itemSkeleton() {
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: _listItemSkeleton(size),
+        children: _listItemSkeleton(),
       ),
     );
   }
 
-  List<Widget> _listItemSkeleton(Size size) {
+  List<Widget> _listItemSkeleton() {
     List listings = List<Widget>();
     for (int i = 0; i < 5; i++) {
       listings.add(

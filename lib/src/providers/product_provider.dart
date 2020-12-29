@@ -10,38 +10,47 @@ class ProductProvider {
   final String _baseUri = baseUri;
   final MerchantPreferences _prefs = MerchantPreferences();
 
-  ProductProvider();
+  // ProductProvider();
 
-  Future<List<Product>> getProducts(
-      {int status = 1, bool allProducts = false}) async {
-    Uri uri;
-    if (allProducts) {
-      uri = Uri.https(
-        _baseUri,
-        '/api/v1/merchants/${_prefs.merchant.id}/products/',
-      );
-    } else {
-      uri = Uri.https(
-          _baseUri, '/api/v1/merchants/${_prefs.merchant.id}/products/', {
-        'status': status.toString(),
-      });
+  Future<Map<String, dynamic>> getProducts({
+    int limit,
+    int offset,
+  }) async {
+    dynamic queryParameters = {'': ''};
+    if (limit != null) {
+      queryParameters['limit'] = limit.toString();
+    }
+    if (offset != null) {
+      queryParameters['offset'] = offset.toString();
     }
 
-    final http.Response response = await http
+    Uri uri = Uri.https(_baseUri,
+        '/api/v1/merchants/${_prefs.merchant.id}/products/', queryParameters);
+    http.Response resp = await http
         .get(uri, headers: {'Authorization': 'Bearer ' + _prefs.access});
 
-    if (response.statusCode >= 400) {
-      return [];
-    }
+    String source = Utf8Decoder().convert(resp.bodyBytes);
 
-    String source = Utf8Decoder().convert(response.bodyBytes);
     Map<String, dynamic> decodedData = json.decode(source);
-    List<dynamic> list = decodedData['results'];
-    return list.map((e) => Product.fromJson(e)).toList();
+    final List<ProductModel> products = new List();
+
+    if (decodedData == null) return {};
+
+    if (decodedData['error'] != null) return {};
+    List<dynamic> listDecoded = decodedData['results'];
+    // print('listDecoded===========================');
+    // print(decodedData);
+
+    listDecoded.forEach((product) {
+      final productTemp = ProductModel.fromJson(product);
+      products.add(productTemp);
+    });
+
+    return {'count': decodedData['count'], 'products': products};
   }
 
   Future<Map<String, dynamic>> updateProduct(
-      {@required Product product}) async {
+      {@required ProductModel product}) async {
     final Uri uri = Uri.https(_baseUri,
         '/api/v1/merchants/${_prefs.merchant.id}/products/${product.id}/');
     // print('Product Available Provider');

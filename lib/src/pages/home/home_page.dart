@@ -10,7 +10,6 @@ import '../../preferences/merchant_preferences.dart';
 class HomePage extends StatefulWidget {
   // const HomePage({Key key}) : super(key: key);
 
-
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -29,6 +28,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     // final OrderBlocProvider bloc = Provider.orderBlocProviderOf(context);
     // bloc.changeOrderList(null);
+    print(_prefs.merchant.id);
     return Scaffold(
       endDrawer: NavDrawer(),
       body: CustomScrollView(
@@ -73,7 +73,6 @@ class _HomePageState extends State<HomePage> {
                               color: Color(0xff808080),
                             ),
                           ],
-                          
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -100,7 +99,8 @@ class _HomePageState extends State<HomePage> {
         _bottomNavigationBarItem(Icons.fastfood, 'En preparación'),
         _bottomNavigationBarItem(Icons.motorcycle, 'Listos'),
         // _bottomNavigationBarItem(Icons.history, 'Historial'),
-      ], type: BottomNavigationBarType.fixed,
+      ],
+      type: BottomNavigationBarType.fixed,
       unselectedItemColor: Colors.grey,
       onTap: _onTap,
       selectedItemColor: primaryColor,

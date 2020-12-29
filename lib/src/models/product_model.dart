@@ -1,21 +1,21 @@
-class Product {
+class ProductModel {
   int id;
   String name;
   String description;
   String descriptionLong;
   int stock;
-  Category category;
+  CategoryModel category;
   double price;
   int categoryId;
   String picture;
   int merchant;
   int totalSales;
-  Status status;
+  StatusModel status;
   bool haveMenu;
-  List<MenuCategories> menuCategories;
+  List<MenuCategoriesModel> menuCategories;
   bool isAvailable;
 
-  Product(
+  ProductModel(
       {this.id,
       this.name,
       this.description,
@@ -31,14 +31,14 @@ class Product {
       this.haveMenu,
       this.menuCategories, this.isAvailable});
 
-  Product.fromJson(Map<String, dynamic> json) {
+  ProductModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     description = json['description'];
     descriptionLong = json['description_long'];
     stock = json['stock'];
     category = json['category'] != null
-        ? new Category.fromJson(json['category'])
+        ? new CategoryModel.fromJson(json['category'])
         : null;
     price = json['price'];
     categoryId = json['category_id'];
@@ -46,12 +46,12 @@ class Product {
     merchant = json['merchant'];
     totalSales = json['total_sales'];
     status =
-        json['status'] != null ? new Status.fromJson(json['status']) : null;
+        json['status'] != null ? new StatusModel.fromJson(json['status']) : null;
     haveMenu = json['have_menu'];
     if (json['menu_categories'] != null) {
-      menuCategories = new List<MenuCategories>();
+      menuCategories = new List<MenuCategoriesModel>();
       json['menu_categories'].forEach((v) {
-        menuCategories.add(new MenuCategories.fromJson(v));
+        menuCategories.add(new MenuCategoriesModel.fromJson(v));
       });
     }
     isAvailable = json['is_available'];
@@ -85,20 +85,20 @@ class Product {
   }
 }
 
-class Category {
+class CategoryModel {
   int id;
   String name;
   String picture;
-  Status status;
+  StatusModel status;
 
-  Category({this.id, this.name, this.picture, this.status});
+  CategoryModel({this.id, this.name, this.picture, this.status});
 
-  Category.fromJson(Map<String, dynamic> json) {
+  CategoryModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     picture = json['picture'];
     status =
-        json['status'] != null ? new Status.fromJson(json['status']) : null;
+        json['status'] != null ? new StatusModel.fromJson(json['status']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -113,14 +113,14 @@ class Category {
   }
 }
 
-class Status {
+class StatusModel {
   int id;
   String name;
   String slugName;
 
-  Status({this.id, this.name, this.slugName});
+  StatusModel({this.id, this.name, this.slugName});
 
-  Status.fromJson(Map<String, dynamic> json) {
+  StatusModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     slugName = json['slug_name'];
@@ -135,7 +135,7 @@ class Status {
   }
 }
 
-class MenuCategories {
+class MenuCategoriesModel {
   int id;
   String name;
   bool isRange;
@@ -146,9 +146,9 @@ class MenuCategories {
   int limitOptionsChoose;
   int minOptionsChoose;
   int maxOptionsChoose;
-  List<Options> options;
+  List<OptionsModel> options;
 
-  MenuCategories(
+  MenuCategoriesModel(
       {this.id,
       this.name,
       this.isRange,
@@ -161,7 +161,7 @@ class MenuCategories {
       this.maxOptionsChoose,
       this.options});
 
-  MenuCategories.fromJson(Map<String, dynamic> json) {
+  MenuCategoriesModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     isRange = json['is_range'];
@@ -173,9 +173,9 @@ class MenuCategories {
     minOptionsChoose = json['min_options_choose'];
     maxOptionsChoose = json['max_options_choose'];
     if (json['options'] != null) {
-      options = new List<Options>();
+      options = new List<OptionsModel>();
       json['options'].forEach((v) {
-        options.add(new Options.fromJson(v));
+        options.add(new OptionsModel.fromJson(v));
       });
     }
   }
@@ -199,14 +199,14 @@ class MenuCategories {
   }
 }
 
-class Options {
+class OptionsModel {
   int id;
   String name;
   double price;
 
-  Options({this.id, this.name, this.price});
+  OptionsModel({this.id, this.name, this.price});
 
-  Options.fromJson(Map<String, dynamic> json) {
+  OptionsModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     price = json['price'];
