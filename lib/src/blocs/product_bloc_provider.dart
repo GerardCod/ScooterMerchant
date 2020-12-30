@@ -31,9 +31,10 @@ class ProductBlocProvider with Validators {
   //     _productStockController.stream.transform(validateProductStock);
   Stream<bool> get productAvailableStream => _productAvailableController.stream;
   Stream<bool> get showLoaderStream => _showLoaderController.stream;
-  Stream<bool> get loaderProductsSearchStream => _loaderProductsSearchController.stream;
-  Stream <List<ProductModel>> get listProductsSearchStream => _listProductsSearchController.stream;
-  
+  Stream<bool> get loaderProductsSearchStream =>
+      _loaderProductsSearchController.stream;
+  Stream<List<ProductModel>> get listProductsSearchStream =>
+      _listProductsSearchController.stream;
 
   // Validators
   Stream<bool> get validateProductInformation => Rx.combineLatest2(
@@ -50,8 +51,10 @@ class ProductBlocProvider with Validators {
   Function(bool) get changeProductAvailable =>
       _productAvailableController.sink.add;
   Function(bool) get changeShowLoader => _showLoaderController.sink.add;
-  Function(bool) get changeLoaderProductsSearch => _loaderProductsSearchController.sink.add;
-  Function(List<ProductModel>) get changeListProductsSearch => _listProductsSearchController.sink.add;
+  Function(bool) get changeLoaderProductsSearch =>
+      _loaderProductsSearchController.sink.add;
+  Function(List<ProductModel>) get changeListProductsSearch =>
+      _listProductsSearchController.sink.add;
 
   //Getters
   List<ProductModel> get productList => _productListController.value;
@@ -61,7 +64,8 @@ class ProductBlocProvider with Validators {
   bool get productAvailable => _productAvailableController.value;
   bool get showLoader => _showLoaderController.value;
   bool get loaderProductsSearch => _loaderProductsSearchController.value;
-  List<ProductModel> get listProductsSearch => _listProductsSearchController.value;
+  List<ProductModel> get listProductsSearch =>
+      _listProductsSearchController.value;
 
   // Future<List<ProductModel>> getProducts() async {
   //   final response = await _productProvider.getProducts();
@@ -88,6 +92,7 @@ class ProductBlocProvider with Validators {
       limit = limit + 15;
     }
 
+    // print('entro');
     Map<String, dynamic> listTemp = await _productProvider.getProducts(
       limit: limit,
       offset: offset,
@@ -96,6 +101,7 @@ class ProductBlocProvider with Validators {
     count = listTemp['count'];
     productsTemp.addAll(listTemp['products']);
     changeProductList(productsTemp);
+
     changeShowLoader(false);
   }
 

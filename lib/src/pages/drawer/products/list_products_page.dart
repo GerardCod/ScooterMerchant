@@ -27,8 +27,9 @@ class _ListProductsPageState extends State<ListProductsPage> {
       _controller.addListener(() {
         if (_controller.position.pixels ==
             _controller.position.maxScrollExtent) {
-          // print('entro');
-          productBlocProvider.getProducts();
+          if (!productBlocProvider.showLoader) {
+            productBlocProvider.getProducts();
+          }
         }
       });
     });
@@ -148,7 +149,7 @@ class _ListProductsPageState extends State<ListProductsPage> {
         Container(
           margin: EdgeInsets.only(bottom: 10),
           width: double.infinity,
-          height: 50.0,
+          height: 65.0,
           color: Colors.white,
         ),
       );
