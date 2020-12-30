@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scootermerchant/src/blocs/product_bloc_provider.dart';
 import 'package:scootermerchant/src/blocs/provider.dart';
 import 'package:scootermerchant/src/models/product_model.dart';
+import 'package:scootermerchant/src/pages/drawer/products/custom_search.dart';
 import 'package:scootermerchant/src/pages/drawer/products/product_card.dart';
 import 'package:scootermerchant/utilities/constants.dart';
 import 'package:shimmer/shimmer.dart';
@@ -84,6 +85,13 @@ class _ListProductsPageState extends State<ListProductsPage> {
       iconTheme: IconThemeData(
         color: Colors.black,
       ),
+      actions: [
+        IconButton(
+          icon: Icon(Icons.search_outlined),
+          onPressed: () =>
+              showSearch(context: context, delegate: CustomSearch()),
+        ),
+      ],
     );
   }
 
@@ -122,38 +130,6 @@ class _ListProductsPageState extends State<ListProductsPage> {
       },
     );
   }
-
-  // Widget _listBuilder(AsyncSnapshot<List<ProductModel>> snapshot) {
-  //   return Column(
-  //     children: [
-  //       Expanded(
-  //         child: ListView.builder(
-  //           controller: _controller,
-  //           itemBuilder: (BuildContext contex, int index) {
-  //             return ProductItem(
-  //               snapshot.data[index],
-  //             );
-  //           },
-  //           itemCount: snapshot.hasData ? snapshot.data.length : 0,
-  //         ),
-  //       ),
-  //       StreamBuilder<bool>(
-  //           stream: productBlocProvider.showLoaderStream,
-  //           builder: (context, snapshot) {
-  //             return Visibility(
-  //               visible: snapshot.hasData && snapshot.data,
-  //               child: Container(
-  //                 child: Shimmer.fromColors(
-  //                   baseColor: Colors.grey[300],
-  //                   highlightColor: Colors.grey[100],
-  //                   child: _itemSkeleton(),
-  //                 ),
-  //               ),
-  //             );
-  //           }),
-  //     ],
-  //   );
-  // }
 
   Widget _itemSkeleton() {
     return Padding(

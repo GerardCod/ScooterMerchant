@@ -15,9 +15,10 @@ class ProductBlocProvider with Validators {
   final _productListController = BehaviorSubject<List<ProductModel>>();
   final _productNameController = BehaviorSubject<String>();
   final _productPriceController = BehaviorSubject<double>();
-  // final _productStockController = BehaviorSubject<int>();
   final _productAvailableController = BehaviorSubject<bool>();
   final _showLoaderController = BehaviorSubject<bool>();
+  final _loaderProductsSearchController = BehaviorSubject<bool>();
+  final _listProductsSearchController = BehaviorSubject<List<ProductModel>>();
 
   //Streams
   Stream<List<ProductModel>> get productListStream =>
@@ -30,6 +31,11 @@ class ProductBlocProvider with Validators {
   //     _productStockController.stream.transform(validateProductStock);
   Stream<bool> get productAvailableStream => _productAvailableController.stream;
   Stream<bool> get showLoaderStream => _showLoaderController.stream;
+  Stream<bool> get loaderProductsSearchStream => _loaderProductsSearchController.stream;
+  Stream <List<ProductModel>> get listProductsSearchStream => _listProductsSearchController.stream;
+  
+
+  // Validators
   Stream<bool> get validateProductInformation => Rx.combineLatest2(
       productNameStream,
       productPriceStream,
@@ -44,6 +50,8 @@ class ProductBlocProvider with Validators {
   Function(bool) get changeProductAvailable =>
       _productAvailableController.sink.add;
   Function(bool) get changeShowLoader => _showLoaderController.sink.add;
+  Function(bool) get changeLoaderProductsSearch => _loaderProductsSearchController.sink.add;
+  Function(List<ProductModel>) get changeListProductsSearch => _listProductsSearchController.sink.add;
 
   //Getters
   List<ProductModel> get productList => _productListController.value;
@@ -52,6 +60,8 @@ class ProductBlocProvider with Validators {
   // int get productStock => _productStockController.value;
   bool get productAvailable => _productAvailableController.value;
   bool get showLoader => _showLoaderController.value;
+  bool get loaderProductsSearch => _loaderProductsSearchController.value;
+  List<ProductModel> get listProductsSearch => _listProductsSearchController.value;
 
   // Future<List<ProductModel>> getProducts() async {
   //   final response = await _productProvider.getProducts();
@@ -60,12 +70,7 @@ class ProductBlocProvider with Validators {
   //   return response;
   // }
 
-  Future<List<ProductModel>> getProducts(
-      {String category,
-      String subcategory,
-      String orderBy,
-      String lat,
-      String lng}) async {
+  Future<List<ProductModel>> getProducts() async {
     List<ProductModel> productsTemp = [];
 
     if (productList != null) {
@@ -103,6 +108,15 @@ class ProductBlocProvider with Validators {
     return response;
   }
 
+  Future<List<ProductModel>> searchProducts(String search) async {
+    changeLoaderProductsSearch(true);
+    List<ProductModel> response =
+        await _productProvider.getProductsSearch(search: search);
+    changeListProductsSearch(response);
+    changeLoaderProductsSearch(false);
+    return response;
+  }
+
   cleanProductState() {
     this._productNameController.value = null;
     this._productPriceController.value = null;
@@ -116,5 +130,7 @@ class ProductBlocProvider with Validators {
     _productPriceController.close();
     // _productStockController.close();
     _productAvailableController.close();
+    _loaderProductsSearchController.close();
+    _listProductsSearchController.close();
   }
 }

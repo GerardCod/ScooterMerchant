@@ -76,4 +76,37 @@ class ProductProvider {
     }
     return {'ok': true, 'message': 'Producto actualizado.'};
   }
+
+  Future<List<ProductModel>> getProductsSearch({dynamic search}) async {
+    dynamic queryParameters = {'': ''};
+    // int areaId = _prefs.areaId;
+
+    // queryParameters['area_id'] = areaId.toString();
+
+    if (search != null) {
+      queryParameters['search'] = search.toString();
+    }
+
+    var uri = Uri.https(_baseUri, '/api/v1/merchants/${_prefs.merchant.id}/products/', queryParameters);
+
+    http.Response resp = await http.get(uri, headers: {'Authorization': 'Bearer ' + _prefs.access});
+
+    String source = Utf8Decoder().convert(resp.bodyBytes);
+
+    Map<String, dynamic> decodedData = json.decode(source);
+    final List<ProductModel> merchants = new List();
+
+    if (decodedData == null) return [];
+
+    if (decodedData['error'] != null) return [];
+    List<dynamic> listDecoded = decodedData['results'];
+
+    listDecoded.forEach((merchant) {
+      final addressTemp = ProductModel.fromJson(merchant);
+
+      merchants.add(addressTemp);
+    });
+
+    return merchants;
+  }
 }
