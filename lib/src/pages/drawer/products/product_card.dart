@@ -2,13 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:scootermerchant/src/blocs/product_bloc_provider.dart';
 import 'package:scootermerchant/src/blocs/provider.dart';
 import 'package:scootermerchant/src/models/product_model.dart';
-import 'package:scootermerchant/utilities/constants.dart';
 
 class ProductItem extends StatelessWidget {
-  final ProductModel product;
-  // final int index;
-  // const ProductCard({Key key, this.product, this.index, this.bloc})
-  // : super(key: key);
+  ProductModel product;
   ProductItem(this.product);
   ProductBlocProvider productBlocProvider;
 
@@ -44,22 +40,6 @@ class ProductItem extends StatelessWidget {
           placeholder: AssetImage('assets/images/no_image.png'),
         ),
       ),
-    );
-  }
-
-  Widget _containerImage(ProductModel product) {
-    return Container(
-      width: 60.0,
-      height: 60.0,
-      child: product.picture == null
-          ? Image(
-              image: AssetImage('assets/images/no_image.png'),
-              fit: BoxFit.cover,
-            )
-          : Image(
-              image: NetworkImage(product.picture),
-              fit: BoxFit.cover,
-            ),
     );
   }
 

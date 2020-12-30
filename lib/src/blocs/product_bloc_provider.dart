@@ -78,7 +78,7 @@ class ProductBlocProvider with Validators {
       return [];
     }
     if (productsTemp.length > 0) {
-      // changeLoaderList(true);
+      changeShowLoader(true);
       offset = offset + 15;
       limit = limit + 15;
     }
@@ -91,17 +91,15 @@ class ProductBlocProvider with Validators {
     count = listTemp['count'];
     productsTemp.addAll(listTemp['products']);
     changeProductList(productsTemp);
-    // print('ProductList length');
-    // print(productList.length);
-    // changeLoaderList(false);
+    changeShowLoader(false);
   }
 
   Future<Map<String, dynamic>> updateProduct(
       {@required ProductModel product}) async {
-    changeShowLoader(true);
+    // changeShowLoader(true);
     Map<String, dynamic> response =
         await _productProvider.updateProduct(product: product);
-    changeShowLoader(false);
+    // changeShowLoader(false);
     return response;
   }
 

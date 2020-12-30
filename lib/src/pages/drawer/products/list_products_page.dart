@@ -21,22 +21,22 @@ class _ListProductsPageState extends State<ListProductsPage> {
 
   @override
   void initState() {
+    super.initState();
     Future.delayed(Duration.zero, () {
       _controller.addListener(() {
         if (_controller.position.pixels ==
             _controller.position.maxScrollExtent) {
-          print('entro');
+          // print('entro');
           productBlocProvider.getProducts();
         }
       });
     });
-    super.initState();
   }
 
   @override
   void dispose() {
-    _controller.dispose();
     super.dispose();
+    _controller.dispose();
   }
 
   @override
@@ -45,38 +45,63 @@ class _ListProductsPageState extends State<ListProductsPage> {
     size = MediaQuery.of(context).size;
     productBlocProvider.getProducts();
     return Scaffold(
-      appBar: AppBar(
-        brightness: Brightness.light,
-        title: Text(
-          'Lista de productos',
-          style: txtStyleAppBar,
-        ),
-        backgroundColor: Colors.white,
-        iconTheme: IconThemeData(
-          color: Colors.black,
-        ),
+      body: CustomScrollView(
+        controller: _controller,
+        slivers: [
+          _customAppBar(),
+          _listProducts(),
+          SliverToBoxAdapter(
+            child: StreamBuilder<bool>(
+              stream: productBlocProvider.showLoaderStream,
+              builder: (context, snapshot) {
+                if (snapshot.hasData && snapshot.data) {
+                  return Shimmer.fromColors(
+                    baseColor: Colors.grey[200],
+                    highlightColor: Colors.grey[100],
+                    child: _itemSkeleton(),
+                  );
+                }
+                return Container();
+              },
+            ),
+          )
+        ],
       ),
-      body: _createListStreamBuilder(),
+
+      // _createListStreamBuilder(),
     );
   }
 
-  Widget _createListStreamBuilder() {
+  Widget _customAppBar() {
+    return SliverAppBar(
+      floating: true,
+      brightness: Brightness.light,
+      title: Text(
+        'Lista de productos',
+        style: txtStyleAppBar,
+      ),
+      backgroundColor: Colors.white,
+      iconTheme: IconThemeData(
+        color: Colors.black,
+      ),
+    );
+  }
+
+  Widget _listProducts() {
     return StreamBuilder<List<ProductModel>>(
       stream: productBlocProvider.productListStream,
       builder:
           (BuildContext context, AsyncSnapshot<List<ProductModel>> snapshot) {
         if (!snapshot.hasData) {
-          return SingleChildScrollView(
-            child: Container(
-              child: Shimmer.fromColors(
-                baseColor: Colors.grey[300],
-                highlightColor: Colors.grey[100],
-                child: _itemSkeleton(),
-              ),
+          return SliverToBoxAdapter(
+            child: Shimmer.fromColors(
+              baseColor: Colors.grey[200],
+              highlightColor: Colors.grey[100],
+              child: _itemSkeleton(),
             ),
           );
         } else if (snapshot.data.length == 0) {
-          return Container(
+          return SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
@@ -86,27 +111,53 @@ class _ListProductsPageState extends State<ListProductsPage> {
             ),
           );
         } else {
-          return _listBuilder(snapshot);
+          return SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) => ProductItem(snapshot.data[index]),
+              childCount: snapshot.hasData ? snapshot.data.length : 0,
+            ),
+          );
+          // return _listBuilder(snapshot);
         }
       },
     );
   }
 
-  Widget _listBuilder(AsyncSnapshot<List<ProductModel>> snapshot) {
-    return ListView.builder(
-      controller: _controller,
-      itemBuilder: (BuildContext contex, int index) {
-        return ProductItem(
-          snapshot.data[index],
-        );
-      },
-      itemCount: snapshot.hasData ? snapshot.data.length : 0,
-    );
-  }
+  // Widget _listBuilder(AsyncSnapshot<List<ProductModel>> snapshot) {
+  //   return Column(
+  //     children: [
+  //       Expanded(
+  //         child: ListView.builder(
+  //           controller: _controller,
+  //           itemBuilder: (BuildContext contex, int index) {
+  //             return ProductItem(
+  //               snapshot.data[index],
+  //             );
+  //           },
+  //           itemCount: snapshot.hasData ? snapshot.data.length : 0,
+  //         ),
+  //       ),
+  //       StreamBuilder<bool>(
+  //           stream: productBlocProvider.showLoaderStream,
+  //           builder: (context, snapshot) {
+  //             return Visibility(
+  //               visible: snapshot.hasData && snapshot.data,
+  //               child: Container(
+  //                 child: Shimmer.fromColors(
+  //                   baseColor: Colors.grey[300],
+  //                   highlightColor: Colors.grey[100],
+  //                   child: _itemSkeleton(),
+  //                 ),
+  //               ),
+  //             );
+  //           }),
+  //     ],
+  //   );
+  // }
 
   Widget _itemSkeleton() {
     return Padding(
-      padding: const EdgeInsets.all(10),
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: _listItemSkeleton(),
