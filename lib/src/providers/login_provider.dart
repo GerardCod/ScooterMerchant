@@ -81,6 +81,8 @@ class LoginProvider {
       String source = Utf8Decoder().convert(response.bodyBytes);
       Map<String, dynamic> decodedData = json.decode(source);
       // print('before condition.');
+      print('RESPONSE TO CHANGEPASSWORD');
+      print(decodedData);
       if (response.statusCode >= 400) {
         // print(decodedData);
         return {'ok': false, 'message': 'Error al cambiar la contraseña.'};

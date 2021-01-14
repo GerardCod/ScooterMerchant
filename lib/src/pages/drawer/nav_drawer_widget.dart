@@ -4,6 +4,7 @@ import 'package:scootermerchant/src/blocs/provider.dart';
 import 'package:scootermerchant/src/models/merchant_model.dart';
 import 'package:scootermerchant/src/pages/drawer/history/history_page.dart';
 import 'package:scootermerchant/src/preferences/merchant_preferences.dart';
+import 'package:scootermerchant/src/providers/notification_provider.dart';
 import 'package:scootermerchant/utilities/constants.dart';
 
 class NavDrawer extends StatelessWidget {
@@ -64,6 +65,7 @@ class NavDrawer extends StatelessWidget {
 
   Future<void> _logOut(LoginBloc bloc, BuildContext context) async {
     if (await bloc.logout()) {
+      await NotificationsProvider().deleteToken();
       // bloc.changeEmail(null);
       // bloc.changePassword(null);
       // bloc.changeShowPassword(false);

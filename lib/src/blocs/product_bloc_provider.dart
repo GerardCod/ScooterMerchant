@@ -14,6 +14,7 @@ class ProductBlocProvider with Validators {
 
   final _productListController = BehaviorSubject<List<ProductModel>>();
   final _productNameController = BehaviorSubject<String>();
+  final _productDescriptionController = BehaviorSubject<String>();
   final _productPriceController = BehaviorSubject<double>();
   final _productAvailableController = BehaviorSubject<bool>();
   final _showLoaderController = BehaviorSubject<bool>();
@@ -25,6 +26,8 @@ class ProductBlocProvider with Validators {
       _productListController.stream;
   Stream<String> get productNameStream =>
       _productNameController.stream.transform(validateProductName);
+  Stream<String> get productDescriptionStream =>
+      _productDescriptionController.stream.transform(validateProductName);
   Stream<double> get productPriceStream =>
       _productPriceController.stream.transform(validateProductPrice);
   // Stream<int> get productStockStream =>
@@ -46,6 +49,7 @@ class ProductBlocProvider with Validators {
   Function(List<ProductModel>) get changeProductList =>
       _productListController.sink.add;
   Function(String) get changeProductName => _productNameController.sink.add;
+  Function(String) get changeProductDescription => _productDescriptionController.sink.add;
   Function(double) get changeProductPrice => _productPriceController.sink.add;
   // Function(int) get changeProductStock => _productStockController.sink.add;
   Function(bool) get changeProductAvailable =>
@@ -59,6 +63,7 @@ class ProductBlocProvider with Validators {
   //Getters
   List<ProductModel> get productList => _productListController.value;
   String get productName => _productNameController.value;
+  String get productDescription => _productDescriptionController.value;
   double get productPrice => _productPriceController.value;
   // int get productStock => _productStockController.value;
   bool get productAvailable => _productAvailableController.value;
@@ -109,7 +114,7 @@ class ProductBlocProvider with Validators {
       {@required ProductModel product}) async {
     // changeShowLoader(true);
     Map<String, dynamic> response =
-        await _productProvider.updateProduct(product: product);
+        await _productProvider.updateProduct(product);
     // changeShowLoader(false);
     return response;
   }
@@ -125,6 +130,7 @@ class ProductBlocProvider with Validators {
 
   cleanProductState() {
     this._productNameController.value = null;
+    this._productDescriptionController.value= null;
     this._productPriceController.value = null;
     this._productAvailableController.value = null;
   }
@@ -133,8 +139,8 @@ class ProductBlocProvider with Validators {
     _productListController.close();
     _showLoaderController.close();
     _productNameController.close();
+    _productDescriptionController.close();
     _productPriceController.close();
-    // _productStockController.close();
     _productAvailableController.close();
     _loaderProductsSearchController.close();
     _listProductsSearchController.close();

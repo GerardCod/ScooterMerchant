@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
 import 'package:scootermerchant/src/models/product_model.dart';
 import 'package:scootermerchant/src/preferences/merchant_preferences.dart';
 import 'package:scootermerchant/utilities/constants.dart';
@@ -49,8 +48,7 @@ class ProductProvider {
     return {'count': decodedData['count'], 'products': products};
   }
 
-  Future<Map<String, dynamic>> updateProduct(
-      {@required ProductModel product}) async {
+  Future<Map<String, dynamic>> updateProduct(ProductModel product) async {
     final Uri uri = Uri.https(_baseUri,
         '/api/v1/merchants/${_prefs.merchant.id}/products/${product.id}/');
     // print('Product Available Provider');
@@ -87,9 +85,11 @@ class ProductProvider {
       queryParameters['search'] = search.toString();
     }
 
-    var uri = Uri.https(_baseUri, '/api/v1/merchants/${_prefs.merchant.id}/products/', queryParameters);
+    var uri = Uri.https(_baseUri,
+        '/api/v1/merchants/${_prefs.merchant.id}/products/', queryParameters);
 
-    http.Response resp = await http.get(uri, headers: {'Authorization': 'Bearer ' + _prefs.access});
+    http.Response resp = await http
+        .get(uri, headers: {'Authorization': 'Bearer ' + _prefs.access});
 
     String source = Utf8Decoder().convert(resp.bodyBytes);
 

@@ -6,79 +6,95 @@ import 'package:scootermerchant/utilities/constants.dart';
 import 'package:scootermerchant/utilities/functions.dart';
 
 class ProductDetailsPage extends StatelessWidget {
-  // const ProductDetailsPage({Key key}) : super(key: key);
+  ProductModel productModel;
+  ProductDetailsPage(this.productModel);
+  ProductBlocProvider productBlocProvider;
+  Size size;
 
   @override
   Widget build(BuildContext context) {
-    final ProductBlocProvider bloc = Provider.productBlocProviderOf(context);
-    final ProductModel model = ModalRoute.of(context).settings.arguments;
-    final Size size = MediaQuery.of(context).size;
+    productBlocProvider = Provider.productBlocProviderOf(context);
+    // final ProductModel model = ModalRoute.of(context).settings.arguments;
+    size = MediaQuery.of(context).size;
     // bloc.changeProductName(model.name);
-    if (bloc.productName == null && bloc.productPrice == null) {
-      bloc.changeProductName(model.name);
-      bloc.changeProductPrice(model.price);
-      bloc.changeProductAvailable(model.isAvailable);
-    }
+    // if (bloc.productName == null && bloc.productPrice == null) {
+    productBlocProvider.changeProductName(productModel.name);
+    productBlocProvider.changeProductPrice(productModel.price);
+    productBlocProvider.changeProductAvailable(productModel.isAvailable);
+    productBlocProvider.changeProductDescription(productModel.description);
+    // }
     // bloc.changeProductPrice(model.price);
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Detalles del producto', style: txtStyleAppBar),
-        brightness: Brightness.light,
-        backgroundColor: Colors.white,
-        iconTheme: IconThemeData(
-          color: Colors.black,
-        ),
+      appBar: _customAppBar(),
+      body: _customBody(context),
+    );
+  }
+
+  Widget _customAppBar() {
+    return AppBar(
+      title: Text('Detalles del producto', style: txtStyleAppBar),
+      brightness: Brightness.light,
+      backgroundColor: Colors.white,
+      iconTheme: IconThemeData(
+        color: Colors.black,
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          child: Column(
-            children: <Widget>[
-              _containerImage(model, size),
-              _containerForm(bloc, context, model)
-            ],
-          ),
+    );
+  }
+
+  Widget _customBody(BuildContext context) {
+    return SingleChildScrollView(
+      child: Container(
+        child: Column(
+          children: <Widget>[
+            _containerImage(),
+            _containerForm(context),
+          ],
         ),
       ),
     );
   }
 
-  Widget _containerImage(ProductModel model, Size size) {
+  Widget _containerImage() {
     return Container(
-      padding: EdgeInsets.all(15),
+      padding: EdgeInsets.symmetric(vertical: 15),
       height: 250,
-      child: model.picture != null
-          ? Image.network(model.picture)
-          : Image.asset('assets/images/no_image.png'),
+      child: FadeInImage(
+        fit: BoxFit.cover,
+        image: productModel.picture != null
+            ? NetworkImage('${productModel.picture}')
+            : AssetImage('assets/images/no_image.png'),
+        placeholder: AssetImage('assets/images/no_image.png'),
+      ),
     );
   }
 
-  Widget _containerForm(
-      ProductBlocProvider bloc, BuildContext context, ProductModel product) {
+  Widget _containerForm(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(16.0),
+      padding: EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         children: <Widget>[
-          SizedBox(height: 20.0),
+          SizedBox(height: 30.0),
           Text('Datos del producto', style: textStyleDetailCardTitle),
           SizedBox(height: 15.0),
-          _productNameStreamBuilder(bloc, product),
+          _productName(),
           SizedBox(height: 24.0),
-          _productPriceStreamBuilder(bloc, product),
+          _productPrice(),
           SizedBox(height: 24.0),
-          _switchDisponibility(bloc, product),
+          _switchDisponibility(),
           SizedBox(height: 10.0),
-          _buttonStreamBuilder(bloc, product, context)
+          _buttonStreamBuilder(context),
+          SizedBox(height: 10.0),
         ],
       ),
     );
   }
 
-  Widget _productNameStreamBuilder(ProductBlocProvider bloc, ProductModel product) {
+  Widget _productName() {
     return StreamBuilder(
-      stream: bloc.productNameStream,
+      stream: productBlocProvider.productNameStream,
       builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
         return TextFormField(
-            initialValue: product.name,
+            initialValue: productModel.name,
             keyboardType: TextInputType.text,
             decoration: InputDecoration(
               contentPadding: EdgeInsets.all(16.0),
@@ -87,18 +103,18 @@ class ProductDetailsPage extends StatelessWidget {
               errorText: snapshot.error,
             ),
             onChanged: (value) {
-              bloc.changeProductName(value);
+              productBlocProvider.changeProductName(value);
             });
       },
     );
   }
 
-  Widget _productPriceStreamBuilder(ProductBlocProvider bloc, ProductModel product) {
+  Widget _productPrice() {
     return StreamBuilder(
-      stream: bloc.productPriceStream,
+      stream: productBlocProvider.productPriceStream,
       builder: (BuildContext context, AsyncSnapshot<double> snapshot) {
         return TextFormField(
-          initialValue: product.price.toString(),
+          initialValue: productModel.price.toStringAsFixed(2),
           keyboardType: TextInputType.number,
           decoration: InputDecoration(
               contentPadding: EdgeInsets.all(16.0),
@@ -106,18 +122,18 @@ class ProductDetailsPage extends StatelessWidget {
               labelText: 'Precio',
               errorText: snapshot.error),
           onChanged: (value) {
-            bloc.changeProductPrice(double.parse(value));
+            productBlocProvider.changeProductPrice(double.parse(value));
           },
         );
       },
     );
   }
 
-  Widget _switchDisponibility(ProductBlocProvider bloc, ProductModel product) {
+  Widget _switchDisponibility() {
     return Row(
       children: <Widget>[
         StreamBuilder<bool>(
-            stream: bloc.productAvailableStream,
+            stream: productBlocProvider.productAvailableStream,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return Text(
@@ -130,7 +146,7 @@ class ProductDetailsPage extends StatelessWidget {
                 );
               } else {
                 return Text(
-                  product.isAvailable ? 'Disponible' : 'No disponible',
+                  productModel.isAvailable ? 'Disponible' : 'No disponible',
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 17,
@@ -142,38 +158,37 @@ class ProductDetailsPage extends StatelessWidget {
         SizedBox(
           width: 8.0,
         ),
-        _switchStreamBuilder(bloc, product),
+        _switchStreamBuilder(),
       ],
     );
   }
 
-  Widget _switchStreamBuilder(ProductBlocProvider bloc, ProductModel product) {
+  Widget _switchStreamBuilder() {
     return StreamBuilder(
-      stream: bloc.productAvailableStream,
+      stream: productBlocProvider.productAvailableStream,
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
         // print(MerchantPreferences().isOpen);
         return Switch(
             value: !snapshot.hasData && snapshot.data == null
-                ? product.isAvailable
+                ? productModel.isAvailable
                 : snapshot.data,
             activeColor: colorSuccess,
             onChanged: (bool value) {
-              bloc.changeProductAvailable(value);
+              productBlocProvider.changeProductAvailable(value);
               // print(bloc.productAvailable);
             });
       },
     );
   }
 
-  Widget _buttonStreamBuilder(
-      ProductBlocProvider bloc, ProductModel product, BuildContext context) {
+  Widget _buttonStreamBuilder(BuildContext context) {
     return StreamBuilder<bool>(
-        stream: bloc.showLoaderStream,
+        stream: productBlocProvider.showLoaderStream,
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
           return Container(
-            width: 200,
-            child: RaisedButton(
-                child: Row(
+            width: size.width,
+            child: FloatingActionButton.extended(
+                label: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text('Guardar datos', style: textStyleBtnComprar),
@@ -184,29 +199,30 @@ class ProductDetailsPage extends StatelessWidget {
                         child: SizedBox(
                           height: 20,
                           width: 20,
-                          child: CircularProgressIndicator(backgroundColor: Colors.white,),
+                          child: CircularProgressIndicator(
+                            backgroundColor: Colors.white,
+                          ),
                         ),
                       ),
                     )
                   ],
                 ),
-                color: secondaryColor,
-                onPressed: () => this._updateProduct(product, bloc, context)),
+                onPressed: () => this._updateProduct(context)),
           );
         });
   }
 
-  void _updateProduct(
-      ProductModel product, ProductBlocProvider bloc, BuildContext context) async {
-    product.name = bloc.productName;
-    product.price = bloc.productPrice;
-    product.isAvailable = bloc.productAvailable;
+  void _updateProduct(BuildContext context) async {
+    productModel.name = productBlocProvider.productName;
+    productModel.price = productBlocProvider.productPrice;
+    productModel.isAvailable = productBlocProvider.productAvailable;
     // print(product.price);
-    if (product.name.isEmpty || product.price == null) {
+    if (productModel.name.isEmpty || productModel.price == null) {
       showSnackBar(context, 'Todos los campos son obligatorios', colorDanger);
       return;
     }
-    final response = await bloc.updateProduct(product: product);
+    final response =
+        await productBlocProvider.updateProduct(product: productModel);
     if (response['ok']) {
       // print(response['message']);
       showSnackBar(context, response['message'], colorSuccess);

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scootermerchant/src/blocs/product_bloc_provider.dart';
 import 'package:scootermerchant/src/blocs/provider.dart';
 import 'package:scootermerchant/src/models/product_model.dart';
+import 'package:scootermerchant/src/pages/product_details/product_details_page.dart';
 
 class ProductItem extends StatelessWidget {
   ProductModel product;
@@ -45,7 +46,11 @@ class ProductItem extends StatelessWidget {
 
   void _navigateToDetails(BuildContext context) async {
     productBlocProvider.cleanProductState();
-    await Navigator.of(context)
-        .pushNamed('productDetailsPage', arguments: product);
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (BuildContext context) => ProductDetailsPage(product)));
+    // Navigator.push(context, ProductDetailsPage(product))
+    //     .pushNamed('productDetailsPage', arguments: product);
   }
 }
