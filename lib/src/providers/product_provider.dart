@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:scootermerchant/src/models/product_model.dart';
 import 'package:scootermerchant/src/preferences/merchant_preferences.dart';
@@ -48,22 +49,33 @@ class ProductProvider {
     return {'count': decodedData['count'], 'products': products};
   }
 
-  Future<Map<String, dynamic>> updateProduct(ProductModel product) async {
+  Future<Map<String, dynamic>> updateProduct(
+      ProductModel product, File imagePicked) async {
     try {
+      Map<String, dynamic> body;
+      if (imagePicked == null) {
+        print('sin image');
+        body = {
+          'name': product.name,
+          'price': product.price,
+          'is_available': product.isAvailable,
+        };
+      } else {
+        File imageFile = new File(imagePicked.path);
+        List<int> imageBytes = imageFile.readAsBytesSync();
+        String base64Image = base64.encode(imageBytes);
+
+        body = {
+          'picture': base64Image,
+          'name': product.name,
+          'price': product.price,
+          // 'stock': product.stock
+          'is_available': product.isAvailable,
+        };
+      }
+
       final Uri uri = Uri.https(_baseUri,
           '/api/v1/merchants/${_prefs.merchant.id}/products/${product.id}/');
-      // print('Product Available Provider');
-      // print(product.isAvailable);
-
-      // var body = json.encode(product);
-
-      Map<String, dynamic> body = {
-        'name': product.name,
-        'price': product.price,
-        // 'stock': product.stock
-        'is_available': product.isAvailable,
-      };
-      // print(body);
       final http.Response response =
           await http.patch(uri, body: json.encode(body), headers: {
         'Authorization': 'Bearer ' + _prefs.access,

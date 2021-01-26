@@ -169,17 +169,6 @@ class ProductDetailsPage extends StatelessWidget {
         productBlocProvider.changeImagePicked(imageFile);
       }
     }
-    // final pickedFile = await picker.getImage(source: source, imageQuality: 30);
-    // if (pickedFile != null) {
-    //   File imageFile = new File(pickedFile.path);
-    //   productBlocProvider.changeImagePicked(imageFile);
-    // }
-
-    // Navigator.pop(context);
-
-    // setState(() {
-    //   _image = File(pickedFile.path);
-    // });
   }
 
   Future<bool> _checkCameraPermission(BuildContext context) async {
@@ -497,16 +486,14 @@ class ProductDetailsPage extends StatelessWidget {
     productModel.price = productBlocProvider.productPrice;
     productModel.isAvailable = productBlocProvider.productAvailable;
     productModel.menuCategories = productBlocProvider.listMenuCategories;
-    print(productModel.menuCategories[0].options[0].name);
-    print(productModel.menuCategories[0].options[0].isAvailable);
-    print(productModel.menuCategories[0].options[1].name);
-    print(productModel.menuCategories[0].options[1].isAvailable);
+    // productModel.picture = productBlocProvider.imagePicked.path;
+
     if (productModel.name.isEmpty || productModel.price == null) {
       _scaffoldKey.currentState.showSnackBar(
           _createSnackBar(Colors.red, 'Rellena los campos vacios.'));
     }
     final response =
-        await productBlocProvider.updateProduct(product: productModel);
+        await productBlocProvider.updateProduct(product: productModel, imagePicked: productBlocProvider.imagePicked);
     if (response['ok']) {
       _scaffoldKey.currentState
           .showSnackBar(_createSnackBar(Colors.green, response['message']))

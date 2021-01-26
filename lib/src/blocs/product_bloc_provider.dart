@@ -154,10 +154,10 @@ class ProductBlocProvider with Validators {
   }
 
   Future<Map<String, dynamic>> updateProduct(
-      {@required ProductModel product}) async {
+      {ProductModel product, File imagePicked}) async {
     changeShowLoader(true);
     Map<String, dynamic> response =
-        await _productProvider.updateProduct(product);
+        await _productProvider.updateProduct(product, imagePicked);
     // changeShowLoader(false);
     return response;
   }
