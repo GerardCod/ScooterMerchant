@@ -54,7 +54,6 @@ class ProductProvider {
     try {
       Map<String, dynamic> body;
       if (imagePicked == null) {
-        print('sin image');
         body = {
           'name': product.name,
           'price': product.price,

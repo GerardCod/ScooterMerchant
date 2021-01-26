@@ -156,6 +156,7 @@ class ProductDetailsPage extends StatelessWidget {
         }
         File imageFile = new File(pickedFile.path);
         productBlocProvider.changeImagePicked(imageFile);
+        Navigator.pop(context);
       }
     } else {
       var resp = await _checkCameraPermission(context);
@@ -167,6 +168,7 @@ class ProductDetailsPage extends StatelessWidget {
         }
         File imageFile = new File(pickedFile.path);
         productBlocProvider.changeImagePicked(imageFile);
+        Navigator.pop(context);
       }
     }
   }
@@ -492,15 +494,17 @@ class ProductDetailsPage extends StatelessWidget {
       _scaffoldKey.currentState.showSnackBar(
           _createSnackBar(Colors.red, 'Rellena los campos vacios.'));
     }
-    final response =
-        await productBlocProvider.updateProduct(product: productModel, imagePicked: productBlocProvider.imagePicked);
+    final response = await productBlocProvider.updateProduct(
+        product: productModel, imagePicked: productBlocProvider.imagePicked);
     if (response['ok']) {
       _scaffoldKey.currentState
           .showSnackBar(_createSnackBar(Colors.green, response['message']))
           .closed
           .then((value) {
         productBlocProvider.changeShowLoader(false);
+        productBlocProvider.changeProductList(null);
         productBlocProvider.getProducts();
+
         Navigator.pop(context);
       });
     } else {
