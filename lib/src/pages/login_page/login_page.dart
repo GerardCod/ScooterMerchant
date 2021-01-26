@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:scootermerchant/src/blocs/login_bloc.dart';
 import 'package:scootermerchant/src/blocs/provider.dart';
 import 'package:scootermerchant/src/models/auth_model.dart';
+import 'package:scootermerchant/src/pages/home/home_page.dart';
+import 'package:scootermerchant/src/pages/permissions/permissions_camera_page.dart';
 import 'package:scootermerchant/utilities/constants.dart';
 import 'package:scootermerchant/utilities/functions.dart';
 
@@ -130,7 +133,17 @@ class LoginPage extends StatelessWidget {
         AuthModel(username: loginBloc.email, password: loginBloc.password);
     final response = await loginBloc.login(user);
     if (response['ok']) {
-      Navigator.pushReplacementNamed(context, 'homePage');
+      // var resp = await _checkCameraPermission(context);
+      // if (resp != null && resp) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (BuildContext context) => HomePage()),
+        ModalRoute.withName('/'),
+      );
+      // } else {
+      //   mostrarAlerta(
+      //       context, 'No se puede iniciar sesión sin los permisos adecuados');
+      // }
     } else {
       // print("Response=============================");
       // print(response);
@@ -191,5 +204,70 @@ class LoginPage extends StatelessWidget {
         );
       },
     );
+  }
+
+  Future<bool> _checkCameraPermission(BuildContext context) async {
+    var resp = false;
+    var status = await Permission.camera.status;
+    if (status.isPermanentlyDenied) {
+      await _confirmOpenSettings('Permisos de camara denegados', context);
+    }
+
+    if (status.isUndetermined) {
+      resp = await _openPagePermissionCamera(context);
+    }
+
+    if (status.isDenied) {
+      resp = await _openPagePermissionCamera(context);
+    }
+
+    if ((resp != null && resp) || status.isGranted) {
+      return true;
+    }
+    return false;
+  }
+
+  _openPagePermissionCamera(BuildContext context) async {
+    return await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => PermissionCameraPage()),
+    );
+  }
+
+  Future<Null> _confirmOpenSettings(
+      String message, BuildContext context) async {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(message),
+            content: Text(
+                ' Los permisos han sido denegados ¿desea abrir la configuración para poder habilitarlos?',
+                textAlign: TextAlign.left),
+            actions: <Widget>[
+              RaisedButton(
+                color: Colors.red,
+                child: Text(
+                  'Cancelar',
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
+                ),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+              RaisedButton(
+                color: accentColor,
+                child: Text(
+                  'Aceptar',
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
+                ),
+                onPressed: () {
+                  openAppSettings();
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          );
+        });
   }
 }

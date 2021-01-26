@@ -203,6 +203,7 @@ class OptionsModel {
   int id;
   String name;
   double price;
+  bool isAvailable;
 
   OptionsModel({this.id, this.name, this.price});
 
@@ -210,6 +211,7 @@ class OptionsModel {
     id = json['id'];
     name = json['name'];
     price = json['price'];
+    isAvailable = json['is_available'];
   }
 
   Map<String, dynamic> toJson() {
@@ -217,6 +219,7 @@ class OptionsModel {
     data['id'] = this.id;
     data['name'] = this.name;
     data['price'] = this.price;
+    data['is_available']= this.isAvailable;
     return data;
   }
 }

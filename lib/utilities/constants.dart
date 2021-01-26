@@ -23,7 +23,7 @@ const sizeIconsDetails = 28.0;
 const backgroundColor = Color(0xfff2f6fc);
 const primaryColor = Color(0xffe00616);
 const primaryColorSecondary = Color(0xffff894e);
-const secondaryColor = Color(0xff2A2F3A);
+const accentColor = Color(0xff2A2F3A);
 
 const textColorTF = Color(0xffFF724C);
 const backgroundBtnFacebook = Color(0xFF3B5998);

@@ -3,6 +3,24 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:scootermerchant/utilities/constants.dart';
 
+void mostrarAlerta(BuildContext context, String mensaje) {
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: Text('Información incorrecta'),
+        content: Text(mensaje),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('Ok'),
+            onPressed: () => Navigator.of(context).pop(),
+          )
+        ],
+      );
+    },
+  );
+}
+
 Map<String, dynamic> parseJwtPayLoad(String token) {
   final parts = token.split('.');
   if (parts.length != 3) {
@@ -67,7 +85,7 @@ void showAlert(BuildContext context, String titulo, String mensaje) {
           ),
           actions: <Widget>[
             RaisedButton(
-              color: secondaryColor,
+              color: accentColor,
               child: Text('Aceptar'),
               onPressed: () {
                 Navigator.of(context).pop();

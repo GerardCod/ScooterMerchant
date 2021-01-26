@@ -81,7 +81,7 @@ class _MyAppState extends State<MyApp> {
         title: 'Scooter',
         theme: ThemeData(
           primaryColor: Colors.black,
-          accentColor: secondaryColor,
+          accentColor: accentColor,
           textTheme: textTheme,
         ),
         debugShowCheckedModeBanner: false,

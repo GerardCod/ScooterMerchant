@@ -111,7 +111,7 @@ class ChangePasswordPage extends StatelessWidget {
       stream: bloc.comparePasswordsStream,
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
         return RaisedButton(
-            color: secondaryColor,
+            color: accentColor,
             child: Text('Cambiar contraseña', style: textStyleBtnComprar),
             shape: radiusButtons,
             padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 10.0),

@@ -47,7 +47,7 @@ class OrderDetailsPage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
           child: Icon(Icons.help_outline),
-          backgroundColor: secondaryColor,
+          backgroundColor: accentColor,
           onPressed: () => _displayBottomSheet(context)),
     );
   }
@@ -430,9 +430,9 @@ class OrderDetailsPage extends StatelessWidget {
     return RaisedButton(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(5.0),
-        side: BorderSide(color: secondaryColor),
+        side: BorderSide(color: accentColor),
       ),
-      color: secondaryColor,
+      color: accentColor,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
@@ -497,10 +497,10 @@ class OrderDetailsPage extends StatelessWidget {
   ) {
     return RaisedButton(
       child: Text('Rechazar',
-          style: TextStyle(color: secondaryColor, fontWeight: FontWeight.bold)),
+          style: TextStyle(color: accentColor, fontWeight: FontWeight.bold)),
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5.0),
-          side: BorderSide(color: secondaryColor)),
+          side: BorderSide(color: accentColor)),
       color: Colors.white,
       onPressed: () => _showAlert(context),
     );
@@ -719,9 +719,9 @@ class OrderDetailsPage extends StatelessWidget {
     return RaisedButton(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(5.0),
-        side: BorderSide(color: secondaryColor),
+        side: BorderSide(color: accentColor),
       ),
-      color: secondaryColor,
+      color: accentColor,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -778,11 +778,11 @@ class OrderDetailsPage extends StatelessWidget {
     return RaisedButton(
       child: Text(
         'Cancelar',
-        style: TextStyle(color: secondaryColor, fontWeight: FontWeight.bold),
+        style: TextStyle(color: accentColor, fontWeight: FontWeight.bold),
       ),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(5.0),
-        side: BorderSide(color: secondaryColor),
+        side: BorderSide(color: accentColor),
       ),
       color: Colors.white,
       onPressed: () => _showAlert(context),

@@ -26,7 +26,7 @@ class OrderDetailsPagePickUp extends StatelessWidget {
       // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
           child: Icon(Icons.help_outline),
-          backgroundColor: secondaryColor,
+          backgroundColor: accentColor,
           onPressed: () => _displayBottomSheet(context, size)),
       // persistentFooterButtons: <Widget>[
       //   _showButtonsHelp(context, size),
@@ -296,7 +296,7 @@ class OrderDetailsPagePickUp extends StatelessWidget {
                       builder: (BuildContext context) =>
                           DeliveryPickUp(orderModel)))
               : null,
-          color: secondaryColor,
+          color: accentColor,
         ),
       ),
     );
@@ -578,7 +578,7 @@ class OrderDetailsPagePickUp extends StatelessWidget {
               Container(
                 width: size.width * 0.6,
                 child: RaisedButton(
-                  color: secondaryColor,
+                  color: accentColor,
                   child: Text('Llamar a la central',
                       style: TextStyle(color: Colors.white)),
                   onPressed: () =>

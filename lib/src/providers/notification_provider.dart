@@ -10,7 +10,7 @@ import 'dart:io' show Platform;
 import 'package:scootermerchant/utilities/constants.dart';
 
 class NotificationsProvider {
-  // Local  
+  // Local
   FlutterLocalNotificationsPlugin notificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
@@ -199,19 +199,26 @@ class NotificationsProvider {
   }
 
   Future<Map<String, dynamic>> deleteToken() async {
-    String fcmToken = await _firebaseMessaging.getToken();
-    final url = _baseUrl + '/api/v1/users/delete_devices/';
+    try {
+      String fcmToken = await _firebaseMessaging.getToken();
+      final url = _baseUrl + '/api/v1/users/delete_devices/';
 
-    http.Response resp = await http.put(Uri.encodeFull(url), headers: {
-      "Authorization": "Bearer " + _prefs.access,
-    }, body: {
-      'token': fcmToken
-    });
-    if (resp.statusCode != 200 && resp.statusCode != 201) {
-      return null;
+      http.Response resp = await http.put(Uri.encodeFull(url), headers: {
+        "Authorization": "Bearer " + _prefs.access.toString(),
+      }, body: {
+        'token': fcmToken
+      });
+      if (resp.statusCode != 200 && resp.statusCode != 201) {
+        return null;
+      }
+
+      Map<String, dynamic> decodedResp = json.decode(resp.body);
+      return decodedResp;
+    } catch (ex) {
+      print('error');
+      print(ex);
+      return {};
     }
-
-    Map<String, dynamic> decodedResp = json.decode(resp.body);
   }
 
   dispose() {

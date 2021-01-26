@@ -49,30 +49,41 @@ class ProductProvider {
   }
 
   Future<Map<String, dynamic>> updateProduct(ProductModel product) async {
-    final Uri uri = Uri.https(_baseUri,
-        '/api/v1/merchants/${_prefs.merchant.id}/products/${product.id}/');
-    // print('Product Available Provider');
-    // print(product.isAvailable);
-    Map<String, dynamic> body = {
-      'name': product.name,
-      'price': product.price,
-      // 'stock': product.stock
-      'is_available': product.isAvailable
-    };
-    final http.Response response =
-        await http.patch(uri, body: json.encode(body), headers: {
-      'Authorization': 'Bearer ' + _prefs.access,
-      'Content-Type': 'application/json',
-    });
+    try {
+      final Uri uri = Uri.https(_baseUri,
+          '/api/v1/merchants/${_prefs.merchant.id}/products/${product.id}/');
+      // print('Product Available Provider');
+      // print(product.isAvailable);
 
-    String source = Utf8Decoder().convert(response.bodyBytes);
-    Map<String, dynamic> decodedData = json.decode(source);
+      // var body = json.encode(product);
 
-    if (response.statusCode >= 400) {
-      // print(decodedData);
-      return {'ok': false, 'message': 'Error al actualizar el producto.'};
+      Map<String, dynamic> body = {
+        'name': product.name,
+        'price': product.price,
+        // 'stock': product.stock
+        'is_available': product.isAvailable,
+      };
+      // print(body);
+      final http.Response response =
+          await http.patch(uri, body: json.encode(body), headers: {
+        'Authorization': 'Bearer ' + _prefs.access,
+        'Content-Type': 'application/json',
+      });
+      // print(response);
+
+      String source = Utf8Decoder().convert(response.bodyBytes);
+      Map<String, dynamic> decodedData = json.decode(source);
+      print(decodedData);
+
+      if (response.statusCode >= 400) {
+        return {'ok': false, 'message': 'Error al actualizar el producto.'};
+      }
+      return {'ok': true, 'message': 'Producto actualizado.'};
+    } catch (ex) {
+      print('Error al cambiar un producto');
+      print(ex);
+      return {};
     }
-    return {'ok': true, 'message': 'Producto actualizado.'};
   }
 
   Future<List<ProductModel>> getProductsSearch({dynamic search}) async {

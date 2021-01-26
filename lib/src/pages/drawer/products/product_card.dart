@@ -12,16 +12,15 @@ class ProductItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     productBlocProvider = Provider.productBlocProviderOf(context);
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      child: Ink(
-        color: Colors.white,
-        child: ListTile(
-          title: Text(product.name),
-          subtitle: Text('\u0024' + product.price.toStringAsFixed(2)),
-          onTap: () => _navigateToDetails(context),
-          leading: _imageProduct(),
-        ),
+    return Card(
+      elevation: 1,
+      color: Colors.white,
+      margin: EdgeInsets.only(bottom:2),
+      child: ListTile(
+        title: Text(product.name),
+        subtitle: Text('\u0024' + product.price.toStringAsFixed(2)),
+        onTap: () => _navigateToDetails(context),
+        leading: _imageProduct(),
       ),
     );
   }

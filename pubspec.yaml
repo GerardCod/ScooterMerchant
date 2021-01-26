@@ -42,8 +42,8 @@ dependencies:
   timezone: ^0.5.4
   google_maps_flutter: ^0.5.28
   package_info: ^0.4.1
-
-
+  image_picker: ^0.6.7+4
+  permission_handler: ^5.0.0+hotfix.6
 
 dev_dependencies:
   flutter_test:
@@ -91,6 +91,7 @@ flutter:
     - assets/images/maps/icon_delivery.png
     - assets/icon/
     - assets/images/payment/
+    - assets/images/permissions/
     
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
