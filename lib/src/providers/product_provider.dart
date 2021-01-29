@@ -84,7 +84,50 @@ class ProductProvider {
 
       String source = Utf8Decoder().convert(response.bodyBytes);
       Map<String, dynamic> decodedData = json.decode(source);
-      print(decodedData);
+
+      if (response.statusCode >= 400) {
+        return {'ok': false, 'message': 'Error al actualizar el producto.'};
+      }
+      return {'ok': true, 'message': 'Producto actualizado.'};
+    } catch (ex) {
+      print('Error al cambiar un producto');
+      print(ex);
+      return {};
+    }
+  }
+
+  Future<Map<String, dynamic>> updateCategories(
+      MenuCategoriesModel categories, int productId) async {
+    try {
+      Map<String, dynamic> body;
+
+      body = {
+        "name": categories.name,
+        "is_obligatory": categories.isObligatory,
+        "min_options_choose": categories.minOptionsChoose,
+        "max_options_choose": categories.maxOptionsChoose,
+        "options_to_update": categories.options,
+        // [
+        //   {
+        //     "id": 0,
+        //     "name": "string",
+        //     "price": 0,
+        //     "is_available": true,
+        //   }
+        // ]
+      };
+
+      final Uri uri = Uri.https(_baseUri,
+          '/api/v1/products/$productId/menu_categories/${categories.id}/');
+      final http.Response response =
+          await http.patch(uri, body: json.encode(body), headers: {
+        'Authorization': 'Bearer ' + _prefs.access,
+        'Content-Type': 'application/json',
+      });
+
+      String source = Utf8Decoder().convert(response.bodyBytes);
+      Map<String, dynamic> decodedData = json.decode(source);
+      print(decodedData['data']['616']);
 
       if (response.statusCode >= 400) {
         return {'ok': false, 'message': 'Error al actualizar el producto.'};

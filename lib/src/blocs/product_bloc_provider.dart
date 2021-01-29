@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:scootermerchant/src/blocs/validators.dart';
@@ -24,7 +23,7 @@ class ProductBlocProvider with Validators {
   final _showLoaderController = BehaviorSubject<bool>();
   final _loaderProductsSearchController = BehaviorSubject<bool>();
   final _listProductsSearchController = BehaviorSubject<List<ProductModel>>();
-  final _optionAvailableController = BehaviorSubject<bool>();
+  final _optionAvailableController = BehaviorSubject<OptionsModel>();
   final _imagePickedController = BehaviorSubject<File>();
 
   //Streams
@@ -44,7 +43,8 @@ class ProductBlocProvider with Validators {
       _loaderProductsSearchController.stream;
   Stream<List<ProductModel>> get listProductsSearchStream =>
       _listProductsSearchController.stream;
-  Stream<bool> get optionAvailableStream => _optionAvailableController.stream;
+  Stream<OptionsModel> get optionAvailableStream =>
+      _optionAvailableController.stream;
   Stream<File> get imagePickedStream => _imagePickedController.stream;
 
   // Validators
@@ -69,9 +69,9 @@ class ProductBlocProvider with Validators {
       _loaderProductsSearchController.sink.add;
   Function(List<ProductModel>) get changeListProductsSearch =>
       _listProductsSearchController.sink.add;
-  Function(bool) get changeOptionAvailable =>
+  Function(OptionsModel) get changeOptionAvailable =>
       _optionAvailableController.sink.add;
-      Function(File) get changeImagePicked => _imagePickedController.sink.add;
+  Function(File) get changeImagePicked => _imagePickedController.sink.add;
 
   //Getters
   List<ProductModel> get productList => _productListController.value;
@@ -85,7 +85,7 @@ class ProductBlocProvider with Validators {
   bool get loaderProductsSearch => _loaderProductsSearchController.value;
   List<ProductModel> get listProductsSearch =>
       _listProductsSearchController.value;
-  bool get optionAvailable => _optionAvailableController.value;
+  OptionsModel get optionAvailable => _optionAvailableController.value;
   File get imagePicked => _imagePickedController.value;
 
   // Future<List<ProductModel>> getProducts() async {
@@ -126,12 +126,12 @@ class ProductBlocProvider with Validators {
     changeShowLoader(false);
   }
 
-  void changeStatusOption(
-      OptionsModel option, MenuCategoriesModel menuOption, bool isAvailable) {
+  void changeStatusOption(OptionsModel option, MenuCategoriesModel menuOption,
+      bool isAvailable, int productId) {
     MenuCategoriesModel categoriesModel;
     // Recorrer la lista de menucategories
     for (int i = 0; i < listMenuCategories.length; i++) {
-      // Si el id de la lista de categorias que se recorre es igual a el que recibimos 
+      // Si el id de la lista de categorias que se recorre es igual a el que recibimos
       // entonces asigno ese menu de categoria
       if (listMenuCategories[i].id == menuOption.id) {
         categoriesModel = listMenuCategories[i];
@@ -145,8 +145,11 @@ class ProductBlocProvider with Validators {
             listMenuCategories[i] = categoriesModel;
             // print(categoriesModel.options[j].name);
             // print(categoriesModel.options[j].isAvailable);
-            
-            changeOptionAvailable(isAvailable);
+
+            changeOptionAvailable(categoriesModel.options[j]);
+            print(listMenuCategories[i].options[j].isAvailable);
+            // _productProvider.updateStatusOption(
+            //     listMenuCategories[i], productId);
           }
         }
       }

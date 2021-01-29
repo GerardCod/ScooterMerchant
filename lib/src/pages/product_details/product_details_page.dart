@@ -1,14 +1,8 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:scootermerchant/src/blocs/product_bloc_provider.dart';
 import 'package:scootermerchant/src/blocs/provider.dart';
 import 'package:scootermerchant/src/models/product_model.dart';
-import 'package:scootermerchant/src/pages/permissions/permissions_camera_page.dart';
-import 'package:scootermerchant/src/pages/permissions/permissions_gallery_page.dart';
+import 'package:scootermerchant/src/pages/product_details/product_image.dart';
 import 'package:scootermerchant/utilities/constants.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -18,13 +12,12 @@ class ProductDetailsPage extends StatelessWidget {
   ProductBlocProvider productBlocProvider;
   Size size;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  final picker = ImagePicker();
+  // final picker = ImagePicker();
   // File _image;
 
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
-
     productBlocProvider = Provider.productBlocProviderOf(context);
 
     productBlocProvider.changeProductName(productModel.name);
@@ -33,6 +26,7 @@ class ProductDetailsPage extends StatelessWidget {
     productBlocProvider.changeProductDescription(productModel.description);
     productBlocProvider.changeListMenuCategories(productModel.menuCategories);
     return Scaffold(
+      backgroundColor: Colors.white,
       key: _scaffoldKey,
       body: _customBody(context),
       floatingActionButton: _customFloating(context),
@@ -57,211 +51,16 @@ class ProductDetailsPage extends StatelessWidget {
       physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
       slivers: [
         _customAppBar(),
-        _containerImage(context),
+        ProductImagePage(productModel: productModel),
         _switchDisponibility(),
         _productName(),
         _productPrice(),
+        SliverToBoxAdapter(child: SizedBox(height: 10)),
+        _textCategories(),
         _showListMenuCategories(),
+        // _expansionTile(),
         SliverToBoxAdapter(child: SizedBox(height: 100))
       ],
-    );
-  }
-
-  Widget _containerImage(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: Container(
-        height: 220,
-        padding: EdgeInsets.symmetric(vertical: 15),
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            StreamBuilder<File>(
-                stream: productBlocProvider.imagePickedStream,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData && snapshot.data != null) {
-                    return Image.file(snapshot.data);
-                  }
-                  return FadeInImage(
-                    fit: BoxFit.cover,
-                    image: productModel.picture != null
-                        ? NetworkImage('${productModel.picture}')
-                        : AssetImage('assets/images/no_image.png'),
-                    placeholder: AssetImage('assets/images/no_image.png'),
-                  );
-                }),
-            Ink(
-              color: Colors.white,
-              child: InkWell(
-                onTap: () => _cameraOptionsModal(context),
-                child: Container(
-                  color: Colors.black.withOpacity(0.2),
-                  padding: EdgeInsets.all(5),
-                  child: Icon(Icons.camera_alt_outlined,
-                      color: Colors.white, size: 30),
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
-  void _cameraOptionsModal(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext bc) {
-        return Container(
-          child: new Wrap(
-            children: <Widget>[
-              new ListTile(
-                leading: new Icon(
-                  Icons.image,
-                  color: accentColor,
-                ),
-                title: Text(
-                  'Elegir imagen.',
-                ),
-                onTap: () {
-                  _selectSource(ImageSource.gallery, context);
-                },
-              ),
-              new ListTile(
-                leading: new Icon(
-                  Icons.camera_alt,
-                  color: accentColor,
-                ),
-                title: Text(
-                  'Tomar foto.',
-                ),
-                onTap: () {
-                  _selectSource(ImageSource.camera, context);
-                },
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  void _selectSource(ImageSource source, BuildContext context) async {
-    if (source == ImageSource.gallery) {
-      var resp = await _checkGalleryPermission(context);
-      if (resp != null && resp) {
-        final pickedFile =
-            await picker.getImage(source: source, imageQuality: 30);
-        if (pickedFile == null) {
-          return;
-        }
-        File imageFile = new File(pickedFile.path);
-        productBlocProvider.changeImagePicked(imageFile);
-        Navigator.pop(context);
-      }
-    } else {
-      var resp = await _checkCameraPermission(context);
-      if (resp != null && resp) {
-        final pickedFile =
-            await picker.getImage(source: source, imageQuality: 30);
-        if (pickedFile == null) {
-          return;
-        }
-        File imageFile = new File(pickedFile.path);
-        productBlocProvider.changeImagePicked(imageFile);
-        Navigator.pop(context);
-      }
-    }
-  }
-
-  Future<bool> _checkCameraPermission(BuildContext context) async {
-    var resp = false;
-    var status = await Permission.camera.status;
-    if (status.isPermanentlyDenied) {
-      await _confirmOpenSettings('Permisos de cámara denegados', context);
-    }
-
-    if (status.isUndetermined) {
-      resp = await _openPagePermissionCamera(context);
-    }
-
-    if (status.isDenied) {
-      resp = await _openPagePermissionCamera(context);
-    }
-
-    if ((resp != null && resp) || status.isGranted) {
-      return true;
-    }
-    return false;
-  }
-
-  Future<bool> _checkGalleryPermission(BuildContext context) async {
-    var resp = false;
-    var status = await Permission.storage.status;
-    if (status.isPermanentlyDenied) {
-      await _confirmOpenSettings('Permisos de galería denegados', context);
-    }
-
-    if (status.isUndetermined) {
-      resp = await _openPagePermissionGallery(context);
-    }
-
-    if (status.isDenied) {
-      resp = await _openPagePermissionGallery(context);
-    }
-
-    if ((resp != null && resp) || status.isGranted) {
-      return true;
-    }
-    return false;
-  }
-
-  Future<Null> _confirmOpenSettings(message, BuildContext context) async {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text(message),
-            content: Text(
-                'Los permisos han sido denegados ¿desea abrir la configuración para poder habilitarlos?',
-                textAlign: TextAlign.left),
-            actions: <Widget>[
-              RaisedButton(
-                color: Colors.red,
-                child: Text(
-                  'Cancelar',
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold),
-                ),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-              RaisedButton(
-                color: accentColor,
-                child: Text(
-                  'Aceptar',
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold),
-                ),
-                onPressed: () {
-                  openAppSettings();
-                  Navigator.pop(context);
-                },
-              ),
-            ],
-          );
-        });
-  }
-
-  _openPagePermissionCamera(BuildContext context) async {
-    return await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => PermissionCameraPage()),
-    );
-  }
-
-  _openPagePermissionGallery(BuildContext context) async {
-    return await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => PermissionGalleryPage()),
     );
   }
 
@@ -308,16 +107,16 @@ class ProductDetailsPage extends StatelessWidget {
     return StreamBuilder(
       stream: productBlocProvider.productAvailableStream,
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-        // print(MerchantPreferences().isOpen);
         return Switch(
-            value: !snapshot.hasData && snapshot.data == null
-                ? productModel.isAvailable
-                : snapshot.data,
-            activeColor: colorSuccess,
-            onChanged: (bool value) {
-              productBlocProvider.changeProductAvailable(value);
-              // print(bloc.productAvailable);
-            });
+          value: !snapshot.hasData && snapshot.data == null
+              ? productModel.isAvailable
+              : snapshot.data,
+          activeColor: colorSuccess,
+          onChanged: (bool value) {
+            productBlocProvider.changeProductAvailable(value);
+            // print(bloc.productAvailable);
+          },
+        );
       },
     );
   }
@@ -330,17 +129,18 @@ class ProductDetailsPage extends StatelessWidget {
           stream: productBlocProvider.productNameStream,
           builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
             return TextFormField(
-                initialValue: productModel.name,
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(
-                  contentPadding: EdgeInsets.all(16.0),
-                  border: OutlineInputBorder(),
-                  labelText: 'Nombre',
-                  errorText: snapshot.error,
-                ),
-                onChanged: (value) {
-                  productBlocProvider.changeProductName(value);
-                });
+              initialValue: productModel.name,
+              keyboardType: TextInputType.text,
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.all(16.0),
+                border: OutlineInputBorder(),
+                labelText: 'Nombre',
+                errorText: snapshot.error,
+              ),
+              onChanged: (value) {
+                productBlocProvider.changeProductName(value);
+              },
+            );
           },
         ),
       ),
@@ -372,6 +172,22 @@ class ProductDetailsPage extends StatelessWidget {
     );
   }
 
+  Widget _textCategories() {
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        child: Text(
+          'Categorías',
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            fontSize: 17,
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _showListMenuCategories() {
     return StreamBuilder<List<MenuCategoriesModel>>(
       stream: productBlocProvider.listMenuCategoriesStream,
@@ -379,8 +195,7 @@ class ProductDetailsPage extends StatelessWidget {
         if (snapshot.hasData) {
           return SliverList(
             delegate: SliverChildBuilderDelegate(
-              (context, index) =>
-                  _showItemMenuCategories(snapshot.data[index], index),
+              (context, index) => _showItemMenuCategories(snapshot.data[index], index),
               childCount: snapshot.data.length,
             ),
           );
@@ -409,42 +224,63 @@ class ProductDetailsPage extends StatelessWidget {
               style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
             ),
           ),
-          _showListOptions(menuCaregory.options, menuCaregory),
+          // _showListOptions(menuCaregory.options, menuCaregory),
         ],
       ),
     );
   }
 
-  Widget _showListOptions(
-      List<OptionsModel> options, MenuCategoriesModel menu) {
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      itemCount: options.length,
-      itemBuilder: (context, index) => _itemOption(options[index], menu),
-    );
-  }
+  // Widget _showListOptions(
+  //     List<OptionsModel> options, MenuCategoriesModel menu) {
+  //   return ListView.builder(
+  //     shrinkWrap: true,
+  //     physics: NeverScrollableScrollPhysics(),
+  //     itemCount: options.length,
+  //     itemBuilder: (context, index) => _itemOption(options[index], menu),
+  //   );
+  // }
 
-  Widget _itemOption(OptionsModel option, MenuCategoriesModel menu) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(option.name),
-        StreamBuilder<bool>(
-          stream: productBlocProvider.optionAvailableStream,
-          builder: (context, snapshot) {
-            return Switch(
-              value: snapshot.hasData ? snapshot.data : true,
-              activeColor: colorSuccess,
-              onChanged: (bool value) {
-                productBlocProvider.changeStatusOption(option, menu, value);
-              },
-            );
-          },
-        ),
-      ],
-    );
-  }
+  // Widget _itemOption(OptionsModel option, MenuCategoriesModel menu) {
+  //   return Padding(
+  //     padding: EdgeInsets.only(left: 8),
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //       children: [
+  //         Text(option.name),
+  //         StreamBuilder<OptionsModel>(
+  //           stream: productBlocProvider.optionAvailableStream,
+  //           builder: (context, snapshot) {
+  //             return Switch(
+  //               value: _getValueSwitch(snapshot, option),
+  //               activeColor: colorSuccess,
+  //               onChanged: (bool value) {
+  //                 _showAlert(
+  //                     context,
+  //                     'Vas a cambiar el estado de una opción del producto, ¿Estás de acuerdo?',
+  //                     option,
+  //                     menu,
+  //                     value);
+  //                 // productBlocProvider.changeStatusOption(option, menu, value);
+  //               },
+  //             );
+  //           },
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
+
+  // bool _getValueSwitch(
+  //     AsyncSnapshot<OptionsModel> snapshot, OptionsModel option) {
+  //   if (snapshot.hasData) {
+  //     if (snapshot.data == option) {
+  //       return snapshot.data.isAvailable;
+  //     }
+  //     return option.isAvailable;
+  //   } else {
+  //     return true;
+  //   }
+  // }
 
   Widget _customFloating(BuildContext context) {
     return StreamBuilder<bool>(
@@ -487,7 +323,7 @@ class ProductDetailsPage extends StatelessWidget {
     productModel.name = productBlocProvider.productName;
     productModel.price = productBlocProvider.productPrice;
     productModel.isAvailable = productBlocProvider.productAvailable;
-    productModel.menuCategories = productBlocProvider.listMenuCategories;
+    // productModel.menuCategories = productBlocProvider.listMenuCategories;
     // productModel.picture = productBlocProvider.imagePicked.path;
 
     if (productModel.name.isEmpty || productModel.price == null) {
@@ -550,4 +386,30 @@ class ProductDetailsPage extends StatelessWidget {
     }
     return listings;
   }
+
+  // void _showAlert(BuildContext context, String mensaje, OptionsModel option,
+  //     MenuCategoriesModel menuOption, bool isAvailable) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) {
+  //       return AlertDialog(
+  //         // title: Text('Información incorrecta'),
+  //         content: Text(mensaje),
+  //         actions: <Widget>[
+  //           RaisedButton(
+  //             color: accentColor,
+  //             child: Text('Aceptar'),
+  //             onPressed: () => productBlocProvider.changeStatusOption(
+  //                 option, menuOption, isAvailable, productModel.id),
+  //           ),
+  //           RaisedButton(
+  //             color: Colors.red,
+  //             child: Text('Cancelar'),
+  //             onPressed: () => Navigator.pop(context),
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 }
