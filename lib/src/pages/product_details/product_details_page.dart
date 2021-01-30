@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scootermerchant/src/blocs/product_bloc_provider.dart';
 import 'package:scootermerchant/src/blocs/provider.dart';
 import 'package:scootermerchant/src/models/product_model.dart';
+import 'package:scootermerchant/src/pages/product_details/edit_category/edit_category_page.dart';
 import 'package:scootermerchant/src/pages/product_details/product_image.dart';
 import 'package:scootermerchant/utilities/constants.dart';
 import 'package:shimmer/shimmer.dart';
@@ -195,7 +196,8 @@ class ProductDetailsPage extends StatelessWidget {
         if (snapshot.hasData) {
           return SliverList(
             delegate: SliverChildBuilderDelegate(
-              (context, index) => _showItemMenuCategories(snapshot.data[index], index),
+              (context, index) =>
+                  _showItemMenuCategories(snapshot.data[index], index, context),
               childCount: snapshot.data.length,
             ),
           );
@@ -212,20 +214,18 @@ class ProductDetailsPage extends StatelessWidget {
   }
 
   Widget _showItemMenuCategories(
-      MenuCategoriesModel menuCaregory, int category) {
+      MenuCategoriesModel menuCategory, int category, BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 12.0, left: 20, right: 20),
-      child: Column(
-        children: [
-          Align(
-            alignment: Alignment.bottomLeft,
-            child: Text(
-              menuCaregory.name,
-              style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
-            ),
-          ),
-          // _showListOptions(menuCaregory.options, menuCaregory),
-        ],
+      padding: EdgeInsets.only(top: 12.0),
+      child: ListTile(
+        onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) => EditCategoryPage(
+                      categories: menuCategory,
+                    ))),
+        title: Text(menuCategory.name),
+        trailing: Icon(Icons.arrow_forward_ios),
       ),
     );
   }
@@ -386,30 +386,4 @@ class ProductDetailsPage extends StatelessWidget {
     }
     return listings;
   }
-
-  // void _showAlert(BuildContext context, String mensaje, OptionsModel option,
-  //     MenuCategoriesModel menuOption, bool isAvailable) {
-  //   showDialog(
-  //     context: context,
-  //     builder: (context) {
-  //       return AlertDialog(
-  //         // title: Text('Información incorrecta'),
-  //         content: Text(mensaje),
-  //         actions: <Widget>[
-  //           RaisedButton(
-  //             color: accentColor,
-  //             child: Text('Aceptar'),
-  //             onPressed: () => productBlocProvider.changeStatusOption(
-  //                 option, menuOption, isAvailable, productModel.id),
-  //           ),
-  //           RaisedButton(
-  //             color: Colors.red,
-  //             child: Text('Cancelar'),
-  //             onPressed: () => Navigator.pop(context),
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
 }
